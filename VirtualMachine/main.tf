@@ -116,7 +116,7 @@ resource "azurerm_virtual_machine_data_disk_attachment" "example" {
   depends_on         = [azurerm_managed_disk.example]
 }
 
-resource "azurerm_virtual_machine_extension" "disk_setup" {
+resource "azurerm_virtual_machine_extension" "CD_drive_setup" {
   name                      = "assign-drive-letter"
   virtual_machine_id        = azurerm_windows_virtual_machine.main.id
   publisher                 = "Microsoft.Compute"
@@ -126,7 +126,22 @@ resource "azurerm_virtual_machine_extension" "disk_setup" {
 
   settings = <<EOT
   {
-  "commandToExecute": "powershell -ExecutionPolicy Bypass -Command \"$disk = Get-Disk | Where-Object PartitionStyle -eq 'RAW'; if ($disk) { Initialize-Disk -Number $disk.Number -PartitionStyle GPT -Confirm:$false; $partition = New-Partition -DiskNumber $disk.Number -UseMaximumSize -AssignDriveLetter; Format-Volume -DriveLetter $partition.DriveLetter -FileSystem NTFS -Confirm:$false } else { Write-Output 'No RAW disk found for initialization.' }\""
+  "commandToExecute": "powershell -ExecutionPolicy Bypass -Command \'$Drive=Get-WmiObject -Class Win32_Volume -Filter "DriveType=5";$Drive | Set-WmiInstance -Arguments @{DriveLetter="Z:"}'\""
+  }
+  EOT
+}
+
+resource "azurerm_virtual_machine_extension" "disk_setup" {
+  name                      = "assign-drive-letter"
+  virtual_machine_id        = azurerm_windows_virtual_machine.main.id
+  publisher                 = "Microsoft.Compute"
+  type                      = "CustomScriptExtension"
+  type_handler_version      = "1.10"
+  depends_on                = [azurerm_virtual_machine_extension.CD_drive_setup]
+
+  settings = <<EOT
+  {
+  "commandToExecute": "powershell -ExecutionPolicy Bypass -Command \'$Drive=Get-Disk | Where-Object {$_.PartitionStyle -eq "Raw"};Initialize-Disk -Number $Drive.Number -PartitionStyle GPT;New-Partition -DiskNumber $Drive.Number -DriveLetter D -UseMaximumSize;Format-Volume -DriveLetter D -FileSystem NTFS'\""
   }
   EOT
 }

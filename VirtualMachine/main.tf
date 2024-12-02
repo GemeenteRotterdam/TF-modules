@@ -117,7 +117,7 @@ resource "azurerm_virtual_machine_data_disk_attachment" "example" {
 }
 
 resource "azurerm_virtual_machine_extension" "CD_drive_setup" {
-  name                      = "assign-drive-letter"
+  name                      = "assign-cddrive-letter"
   virtual_machine_id        = azurerm_windows_virtual_machine.main.id
   publisher                 = "Microsoft.Compute"
   type                      = "CustomScriptExtension"
@@ -126,7 +126,7 @@ resource "azurerm_virtual_machine_extension" "CD_drive_setup" {
 
   settings = <<EOT
   {
-  "commandToExecute": "powershell -ExecutionPolicy Bypass -Command \'$Drive=Get-WmiObject -Class Win32_Volume -Filter "DriveType=5";$Drive | Set-WmiInstance -Arguments @{DriveLetter="Z:"}'\""
+  "commandToExecute": "powershell -ExecutionPolicy Bypass -Command \"`$Drive=Get-WmiObject -Class Win32_Volume -Filter 'DriveType=5';`$Drive | Set-WmiInstance -Arguments @{DriveLetter='Z:'}\""
   }
   EOT
 }
@@ -139,11 +139,10 @@ resource "azurerm_virtual_machine_extension" "disk_setup" {
   type_handler_version      = "1.10"
   depends_on                = [azurerm_virtual_machine_extension.CD_drive_setup]
 
-  settings = <<EOT
-  {
-  "commandToExecute": "powershell -ExecutionPolicy Bypass -Command \'$Drive=Get-Disk | Where-Object {$_.PartitionStyle -eq "Raw"};Initialize-Disk -Number $Drive.Number -PartitionStyle GPT;New-Partition -DiskNumber $Drive.Number -DriveLetter D -UseMaximumSize;Format-Volume -DriveLetter D -FileSystem NTFS'\""
-  }
-  EOT
+  settings = jsonencode({
+  commandToExecute = "powershell -ExecutionPolicy Bypass -Command \"\\$Drive=Get-Disk | Where-Object {\\$_.PartitionStyle -eq 'Raw'};Initialize-Disk -Number \\$Drive.Number -PartitionStyle GPT;New-Partition -DiskNumber \\$Drive.Number -DriveLetter D -UseMaximumSize;Format-Volume -DriveLetter D -FileSystem NTFS\""
+})
+
 }
 
 # Resource for setting DNS Suffix

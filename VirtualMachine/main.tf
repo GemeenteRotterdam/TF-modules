@@ -57,7 +57,9 @@ resource "azurerm_network_interface_security_group_association" "example" {
   network_interface_id      = azurerm_network_interface.main.id
   network_security_group_id = azurerm_network_security_group.example.id
   depends_on                = [azurerm_network_interface.main]
-}                                               
+}
+
+
 
 resource "azurerm_windows_virtual_machine" "main" {
   name                       = var.vm_name

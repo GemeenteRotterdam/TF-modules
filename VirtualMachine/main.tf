@@ -87,8 +87,8 @@ resource "azurerm_windows_virtual_machine" "main" {
 
   identity {
     identity_ids = []
-    principal_id = "6365670c-83a9-4814-ae8c-bb394572ca9c"
-    tenant_id    = "49c4cd82-8f65-4d6a-9a3b-0ecd07c0cf5b"
+    principal_id = azurerm_windows_virtual_machine.main.principal_id
+    tenant_id    = azurerm_windows_virtual_machine.main.tenant_id
     type         = "SystemAssigned"
         }
 

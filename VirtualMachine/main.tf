@@ -116,20 +116,20 @@ resource "azurerm_virtual_machine_data_disk_attachment" "example" {
   depends_on         = [azurerm_managed_disk.example]
 }
 
-resource "azurerm_virtual_machine_extension" "CD_drive_setup" {
-  name                      = "assign-cddrive-letter"
-  virtual_machine_id        = azurerm_windows_virtual_machine.main.id
-  publisher                 = "Microsoft.Compute"
-  type                      = "CustomScriptExtension"
-  type_handler_version      = "1.10"
-  depends_on                = [azurerm_virtual_machine_data_disk_attachment.example]
+# resource "azurerm_virtual_machine_extension" "CD_drive_setup" {
+#   name                      = "assign-cddrive-letter"
+#   virtual_machine_id        = azurerm_windows_virtual_machine.main.id
+#   publisher                 = "Microsoft.Compute"
+#   type                      = "CustomScriptExtension"
+#   type_handler_version      = "1.10"
+#   depends_on                = [azurerm_virtual_machine_data_disk_attachment.example]
 
-  settings = <<EOT
-  {
-  "commandToExecute": "powershell -ExecutionPolicy Bypass -Command \"`$Drive=Get-WmiObject -Class Win32_Volume -Filter 'DriveType=5';`$Drive | Set-WmiInstance -Arguments @{DriveLetter='Z:'}\""
-  }
-  EOT
-}
+#   settings = <<EOT
+#     {
+#       "commandToExecute": "powershell -ExecutionPolicy Bypass -Command \"try { Write-Output 'Starting drive letter change for CD/DVD drive...'; `$Drive=Get-CimInstance -ClassName Win32_Volume -Filter 'DriveType=5 AND DriveLetter=\\'D:\\''; if (`$null -ne `$Drive) { Write-Output 'CD/DVD drive found with letter D:. Changing to Z:...'; `$Drive | Invoke-CimMethod -MethodName SetDriveLetter -Arguments @{DriveLetter=\\'Z:\\'}; Write-Output 'Drive letter successfully changed to Z:.' } else { Write-Output 'No CD/DVD drive found with letter D:. No changes made.' } } catch { Write-Error 'An error occurred: `$_.Exception.Message'; Exit 1 }\""
+#     }
+#     EOT
+# }
 
 resource "azurerm_virtual_machine_extension" "disk_setup" {
   name                      = "assign-drive-letter"
@@ -139,10 +139,11 @@ resource "azurerm_virtual_machine_extension" "disk_setup" {
   type_handler_version      = "1.10"
   depends_on                = [azurerm_virtual_machine_extension.CD_drive_setup]
 
-  settings = jsonencode({
-  commandToExecute = "powershell -ExecutionPolicy Bypass -Command \"\\$Drive=Get-Disk | Where-Object {\\$_.PartitionStyle -eq 'Raw'};Initialize-Disk -Number \\$Drive.Number -PartitionStyle GPT;New-Partition -DiskNumber \\$Drive.Number -DriveLetter D -UseMaximumSize;Format-Volume -DriveLetter D -FileSystem NTFS\""
-})
-
+  settings = <<EOT
+  {
+  "commandToExecute": "powershell -ExecutionPolicy Bypass -Command \"$disk = Get-Disk | Where-Object PartitionStyle -eq 'RAW'; if ($disk) { Initialize-Disk -Number $disk.Number -PartitionStyle GPT -Confirm:$false; $partition = New-Partition -DiskNumber $disk.Number -UseMaximumSize -AssignDriveLetter; Format-Volume -DriveLetter $partition.DriveLetter -FileSystem NTFS -Confirm:$false } else { Write-Output 'No RAW disk found for initialization.' }\""
+  }
+  EOT
 }
 
 # Resource for setting DNS Suffix

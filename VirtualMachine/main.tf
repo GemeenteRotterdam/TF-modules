@@ -116,20 +116,20 @@ resource "azurerm_virtual_machine_data_disk_attachment" "example" {
   depends_on         = [azurerm_managed_disk.example]
 }
 
-resource "azurerm_virtual_machine_extension" "CD_drive_setup" {
-  name                      = "assign-cddrive-letter"
-  virtual_machine_id        = azurerm_windows_virtual_machine.main.id
-  publisher                 = "Microsoft.Compute"
-  type                      = "CustomScriptExtension"
-  type_handler_version      = "1.10"
-  depends_on                = [azurerm_virtual_machine_data_disk_attachment.example]
+# resource "azurerm_virtual_machine_extension" "CD_drive_setup" {
+#   name                      = "assign-cddrive-letter"
+#   virtual_machine_id        = azurerm_windows_virtual_machine.main.id
+#   publisher                 = "Microsoft.Compute"
+#   type                      = "CustomScriptExtension"
+#   type_handler_version      = "1.10"
+#   depends_on                = [azurerm_virtual_machine_data_disk_attachment.example]
 
-  settings = <<EOT
-    {
-      "commandToExecute": "powershell -ExecutionPolicy Bypass -Command \"try { Write-Output 'Starting drive letter change for CD/DVD drive...'; `$Drive=Get-CimInstance -ClassName Win32_Volume -Filter 'DriveType=5 AND DriveLetter=\\'D:\\''; if (`$null -ne `$Drive) { Write-Output 'CD/DVD drive found with letter D:. Changing to Z:...'; `$Drive | Invoke-CimMethod -MethodName SetDriveLetter -Arguments @{DriveLetter=\\'Z:\\'}; Write-Output 'Drive letter successfully changed to Z:.' } else { Write-Output 'No CD/DVD drive found with letter D:. No changes made.' } } catch { Write-Error 'An error occurred: `$_.Exception.Message'; Exit 1 }\""
-    }
-    EOT
-}
+#   settings = <<EOT
+#     {
+#       "commandToExecute": "powershell -ExecutionPolicy Bypass -Command \"try { Write-Output 'Starting drive letter change for CD/DVD drive...'; `$Drive=Get-CimInstance -ClassName Win32_Volume -Filter 'DriveType=5 AND DriveLetter=\\'D:\\''; if (`$null -ne `$Drive) { Write-Output 'CD/DVD drive found with letter D:. Changing to Z:...'; `$Drive | Invoke-CimMethod -MethodName SetDriveLetter -Arguments @{DriveLetter=\\'Z:\\'}; Write-Output 'Drive letter successfully changed to Z:.' } else { Write-Output 'No CD/DVD drive found with letter D:. No changes made.' } } catch { Write-Error 'An error occurred: `$_.Exception.Message'; Exit 1 }\""
+#     }
+#     EOT
+# }
 
 resource "azurerm_virtual_machine_extension" "disk_setup" {
   name                      = "assign-drive-letter"

@@ -137,7 +137,7 @@ resource "azurerm_virtual_machine_extension" "disk_setup" {
   publisher                 = "Microsoft.Compute"
   type                      = "CustomScriptExtension"
   type_handler_version      = "1.10"
-  depends_on                = [azurerm_virtual_machine_extension.CD_drive_setup]
+  depends_on                = [azurerm_virtual_machine_data_disk_attachment.example]
 
   settings = <<EOT
   {

@@ -85,13 +85,6 @@ resource "azurerm_windows_virtual_machine" "main" {
     disk_encryption_set_id = data.azurerm_disk_encryption_set.disk_encryption.id
   }
 
-  identity {
-    identity_ids = []
-    principal_id = azurerm_windows_virtual_machine.main.principal_id
-    tenant_id    = azurerm_windows_virtual_machine.main.tenant_id
-    type         = "SystemAssigned"
-        }
-
   tags = {
     "terraform"    = "Yes"
     "change number" = var.tag_changenumber

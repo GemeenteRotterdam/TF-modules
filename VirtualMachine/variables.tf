@@ -1,12 +1,12 @@
-# variable "subscription_id" {
-#   description = "value"
-#   type        = string 
-# }
+variable "subscription_id" {
+  description = "value"
+  type        = string 
+}
 
-# variable "tenant_id" {
-#   description = "value"
-#   type        = string 
-# }
+variable "tenant_id" {
+  description = "value"
+  type        = string 
+}
 
 variable "resource_group_name" {
   description = "value"

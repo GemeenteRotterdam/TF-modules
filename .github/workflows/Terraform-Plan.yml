@@ -1,0 +1,60 @@
+name: Terraform Plan
+
+on:
+  workflow_call:
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+
+jobs:
+  terraform-plan:
+    name: Terraform Plan
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Terraform Plan
+        if: github.event_name == 'pull_request' || github.event_name == 'push' || github.event_name == 'schedule'
+        id: tf-plan
+        run: |
+          terraform plan -input=false | tee plan_output.log
+
+      - name: Prevent Only Destroy Operations (Scheduled Runs Only)
+        if: github.event_name == 'schedule'
+        run: |
+          echo "🔍 Checking for destroy actions using Terraform output..."
+          PLAN_OUTPUT=$(terraform plan -no-color)
+
+          if echo "$PLAN_OUTPUT" | grep -q "No changes. Your infrastructure matches the configuration."; then
+            echo "✅ No changes detected. Continuing workflow..."
+            exit 0  # Allow the workflow to continue
+          fi
+
+          destroy_count=$(echo "$PLAN_OUTPUT" | grep -Eo '[0-9]+ to destroy' | awk '{sum+=$1} END {print sum}')
+          
+          destroy_count=${destroy_count:-0}
+
+          if [[ "$destroy_count" -gt 0 ]]; then
+            echo "❌ Terraform plan detected $destroy_count destroy operations! Stopping workflow."
+            exit 1  # Stop workflow on destroy actions
+          else
+            echo "✅ No destroy operations detected. Continuing workflow..."
+          fi
+
+      - name: Post Terraform Plan result in PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const planOutput = fs.readFileSync('plan_output.log', 'utf8');
+            const truncatedOutput = planOutput.length > 60000 ? planOutput.slice(-60000) : planOutput; // Truncate if too long
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `### Terraform Plan Output\n\`\`\`\n${truncatedOutput}\n\`\`\``
+            });

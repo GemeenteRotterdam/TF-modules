@@ -86,3 +86,7 @@ jobs:
               repo: context.repo.repo,
               body: `### Terraform Plan Output\n\`\`\`\n${truncatedOutput}\n\`\`\`` 
             });
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule')
+        run: terraform apply -auto-approve -input=false

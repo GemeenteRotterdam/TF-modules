@@ -1,0 +1,30 @@
+# name: Terraform Deployment
+
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
+#   schedule:
+#     - cron: "0 1 * * *"  # Runs every day at 01:00 UTC
+
+# permissions:
+#   id-token: write
+#   contents: read
+#   pull-requests: write  # Required for PR comments
+
+# jobs:
+#   setup:
+#     name: Setup Environment
+#     uses: GemeenteRotterdam/TF-modules/.github/workflows/Setup-Runner.yml@main
+#     secrets:
+#       GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+#   terraform:
+#     name: Terraform
+#     needs: setup
+#     uses: GemeenteRotterdam/TF-modules/.github/workflows/Terraform.yml@main
+#     secrets:
+#       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+#       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+#       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}

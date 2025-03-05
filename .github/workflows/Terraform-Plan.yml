@@ -2,12 +2,6 @@ name: Terraform Plan
 
 on:
   workflow_call:
-    # No need to define GITHUB_TOKEN in secrets here since it's a system-provided token
-    secrets:
-      # Other secrets that may be required, but not GITHUB_TOKEN
-      # Example:
-      # MY_CUSTOM_SECRET:
-      #   required: true
 
 jobs:
   terraform-plan:

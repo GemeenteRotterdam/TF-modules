@@ -2,9 +2,12 @@ name: Terraform Plan
 
 on:
   workflow_call:
+    # No need to define GITHUB_TOKEN in secrets here since it's a system-provided token
     secrets:
-      GITHUB_TOKEN:
-        required: true
+      # Other secrets that may be required, but not GITHUB_TOKEN
+      # Example:
+      # MY_CUSTOM_SECRET:
+      #   required: true
 
 jobs:
   terraform-plan:
@@ -56,5 +59,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `### Terraform Plan Output\n\`\`\`\n${truncatedOutput}\n\`\`\``
+              body: `### Terraform Plan Output\n\`\`\`\n${truncatedOutput}\n\`\`\`` 
             });

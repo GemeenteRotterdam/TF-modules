@@ -55,15 +55,22 @@ jobs:
             exit 0  # Allow the workflow to continue
           fi
 
-          destroy_count=$(echo "$PLAN_OUTPUT" | grep -Eo 'Plan: [0-9]+ to add, [0-9]+ to change, [0-9]+ to destroy' | awk -F ', ' '{print $NF}' | awk '{print $1}')
+          destroy_count=$(echo "$PLAN_OUTPUT" | grep -Eo 'Plan: [0-9]+ to add, [0-9]+ to change, [0-9]+ to destroy' | awk '{print $NF}')
 
           destroy_count=${destroy_count:-0}
 
-          if [[ "$destroy_count" -gt 0 ]]; then
-            echo "❌ Terraform plan detected $destroy_count destroy operations! Stopping workflow."
-            exit 1
+          echo "Extracted destroy count: $destroy_count"
+
+          if [[ "$destroy_count" =~ ^[0-9]+$ ]]; then
+            if [[ "$destroy_count" -gt 0 ]]; then
+              echo "❌ Terraform plan detected $destroy_count destroy operations! Stopping workflow."
+              exit 1
+            else
+              echo "✅ No destroy operations detected. Continuing workflow..."
+            fi
           else
-            echo "✅ No destroy operations detected. Continuing workflow..."
+            echo "⚠️ Error: Invalid destroy count '$destroy_count'. Check Terraform output."
+            exit 1
           fi
 
       - name: Post Terraform Plan result in PR

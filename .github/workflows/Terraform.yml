@@ -50,21 +50,18 @@ jobs:
           echo "🔍 Checking for destroy actions using Terraform output..."
           PLAN_OUTPUT=$(terraform plan -no-color)
 
-          # Check if Terraform reports "No changes"
           if echo "$PLAN_OUTPUT" | grep -q "No changes. Your infrastructure matches the configuration."; then
             echo "✅ No changes detected. Continuing workflow..."
             exit 0  # Allow the workflow to continue
           fi
 
-          # Extract destroy count only from the summary line
-          destroy_count=$(echo "$PLAN_OUTPUT" | grep -Eo 'Plan: [0-9]+ to add, [0-9]+ to change, [0-9]+ to destroy' | awk '{print $NF}')
+          destroy_count=$(echo "$PLAN_OUTPUT" | grep -Eo 'Plan: [0-9]+ to add, [0-9]+ to change, [0-9]+ to destroy' | awk -F ', ' '{print $NF}' | awk '{print $1}')
 
-          # Ensure destroy_count is treated as zero if empty
           destroy_count=${destroy_count:-0}
 
           if [[ "$destroy_count" -gt 0 ]]; then
             echo "❌ Terraform plan detected $destroy_count destroy operations! Stopping workflow."
-            exit 1  # Stop workflow on destroy actions
+            exit 1
           else
             echo "✅ No destroy operations detected. Continuing workflow..."
           fi

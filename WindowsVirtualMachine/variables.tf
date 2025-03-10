@@ -168,11 +168,11 @@ variable "OU_path" {
 variable "extra_tags" {
   description = "Set the change number as a tag"
   type        = map(string)
-  default = {}
+  default     = {}
 }
 
 variable "tag_update_schedule" {
-  description = "Map of tags including update schedule."
+  description = "Update schedule for the resource."
   type        = string
 
   validation {
@@ -183,7 +183,7 @@ variable "tag_update_schedule" {
       "vrijdag 01:00", 
       "woensdag 00:00", 
       "handmatig"
-    ], var.tag_update_schedule["update schedule"])
+    ], var.tag_update_schedule)
     error_message = "Invalid update schedule. Allowed values: dinsdag 23:00, donderdag 00:00, maandag 23:00, vrijdag 01:00, woensdag 00:00, handmatig."
   }
 }

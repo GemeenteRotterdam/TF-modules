@@ -183,7 +183,7 @@ variable "tag_update_schedule" {
       "vrijdag 01:00", 
       "woensdag 00:00", 
       "handmatig"
-    ], var.tags["update schedule"])
+    ], var.extra_tags["update schedule"])
     error_message = "Invalid update schedule. Allowed values: dinsdag 23:00, donderdag 00:00, maandag 23:00, vrijdag 01:00, woensdag 00:00, handmatig."
   }
 }

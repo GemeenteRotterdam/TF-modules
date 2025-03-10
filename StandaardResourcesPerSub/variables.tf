@@ -18,9 +18,10 @@ variable "subnet_vnet" {
   type        = string
 }
 
-variable "tags" {
+variable "extra_tags" {
   description = "Set the change number as a tag"
   type        = map(string)
+  default     = {}
 }
 
 //KeyVault variables
@@ -137,92 +138,46 @@ variable "identity_name_mikv" {
   type        = string 
 }
 
-variable "identity_name_github" {
-  description = "The name of the identity that is going to be created"
-  type        = string 
-}
-
 // Key vault Key variables
-variable "keyvault_key_name_2048" {
+variable "keyvault_key_name" {
   description = "The name of the key vault that is going to be created"
   type        = string 
 }
 
-variable "key_type_2048" {
+variable "key_type" {
   description = "Specifies the Key Type to use for this Key Vault Key. Possible values are EC (Elliptic Curve), EC-HSM, RSA and RSA-HSM."
   type        = string
   default     = "RSA" 
 }
 
-variable "key_size_2048" {
+variable "key_size" {
   description = "Specifies the Size of the RSA key to create in bytes. For example, 1024 or 2048. Note: This field is required if key_type is RSA or RSA-HSM"
   type        = number
   default     = 2048
 }
 
-variable "key_opts_2048" {
+variable "key_opts" {
   description = "A list of JSON web key operations. Possible values include: decrypt, encrypt, sign, unwrapKey, verify and wrapKey. Please note these values are case sensitive."
   type        = list(string) 
   default     = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
 }
 
-variable "time_after_creation_2048" {
+variable "time_after_creation" {
   description = "Rotate automatically at a duration after create as an ISO 8601 duration."
   type        = string
   default     = "P18M"
 }
 
-variable "notify_before_expiry_2048" {
+variable "notify_before_expiry" {
   description = "Notify at a given duration before expiry as an ISO 8601 duration."
   type        = string
   default     = "P30D"
 }
 
-variable "expire_after_2048" {
+variable "expire_after" {
   description = "Expire a Key Vault Key after given duration as an ISO 8601 duration."
   type        = string
   default     = "P2Y"
-}
-
-variable "keyvault_key_name_4096" {
-  description = "The name of the key vault that is going to be created"
-  type        = string 
-}
-
-variable "key_type_4096" {
-  description = "Specifies the Key Type to use for this Key Vault Key. Possible values are EC (Elliptic Curve), EC-HSM, RSA and RSA-HSM."
-  type        = string
-  default     = "RSA" 
-}
-
-variable "key_size_4096" {
-  description = "Specifies the Size of the RSA key to create in bytes. For example, 1024 or 2048. Note: This field is required if key_type is RSA or RSA-HSM"
-  type        = number
-  default     = 4096
-}
-
-variable "key_opts_4096" {
-  description = "A list of JSON web key operations. Possible values include: decrypt, encrypt, sign, unwrapKey, verify and wrapKey. Please note these values are case sensitive."
-  type        = list(string) 
-  default     = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
-}
-
-variable "time_after_creation_4096" {
-  description = "Rotate automatically at a duration after create as an ISO 8601 duration."
-  type        = string
-  default     = "P83D"
-}
-
-variable "notify_before_expiry_4096" {
-  description = "Notify at a given duration before expiry as an ISO 8601 duration."
-  type        = string
-  default     = "P30D"
-}
-
-variable "expire_after_4096" {
-  description = "Expire a Key Vault Key after given duration as an ISO 8601 duration."
-  type        = string
-  default     = "P90D"
 }
 
 //Disk Encryption Set variables
@@ -230,12 +185,6 @@ variable "disk_encryption_set_name" {
   description = "The name of the Disk Encryption Set. Changing this forces a new resource to be created."
   type        = string 
 }
-
-# variable "key_vault_key_id_des" {
-#   description = "Specifies the URL to a Key Vault Key (either from a Key Vault Key, or the Key URL for the Key Vault Secret)."
-#   type        = "string"
-#   default     = 
-# }
 
 variable "auto_key_rotation_enabled" {
   description = "Boolean flag to specify whether Azure Disk Encryption Set automatically rotates the encryption Key to latest version or not. Possible values are true or false"

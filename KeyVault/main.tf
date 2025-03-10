@@ -20,11 +20,7 @@ resource "azurerm_key_vault" "example" {
     virtual_network_subnet_ids = [data.azurerm_subnet.example.id]
   }
 
-  tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+  tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
 }
 
 resource "azurerm_private_endpoint" "example" {
@@ -47,11 +43,7 @@ resource "azurerm_private_endpoint" "example" {
 
   custom_network_interface_name = "${var.private_endpoint_name_for_kv}-nic"
 
-  tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+  tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
 
   depends_on = [azurerm_key_vault.example]
 }

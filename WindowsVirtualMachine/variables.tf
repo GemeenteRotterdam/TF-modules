@@ -18,7 +18,7 @@ variable "subnet_vnet" {
   type        = string
 }
 
-variable "NSG_name" {
+variable "nsg_name" {
   description = "Specifies the name of the network security group. Changing this forces a new resource to be created."
   type        = string 
 }

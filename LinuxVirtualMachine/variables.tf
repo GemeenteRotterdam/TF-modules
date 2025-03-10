@@ -30,9 +30,10 @@ variable "ssh_key_rg" {
   default     = "RG-Rdam-Linux-Beheer"
 }
 
-variable "tags" {
+variable "extra_tags" {
   description = "Set the change number as a tag"
   type        = map(string)
+  default     = {}
 }
 
 variable "NSG_name" {
@@ -54,6 +55,18 @@ variable "vm_name" {
 variable "vm_size" {
   description = "The SKU which should be used for this Virtual Machine"
   type        = string
+}
+
+variable "source_image_reference" {
+  description = "Source image reference for the virtual machine"
+  type        = map(string)
+
+  default = {
+    publisher = "RedHat"
+    offer     = "RHEL"
+    sku       = "94_gen2"
+    version   = "latest"
+  }
 }
 
 variable "admin_username" {

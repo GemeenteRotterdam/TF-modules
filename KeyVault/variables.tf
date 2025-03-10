@@ -18,9 +18,10 @@ variable "subnet_vnet" {
   type        = string
 }
 
-variable "tags" {
+variable "extra_tags" {
   description = "Set the change number as a tag"
   type        = map(string)
+  default     = {}
 }
 
 //KeyVault variables

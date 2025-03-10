@@ -3,11 +3,7 @@ resource "azurerm_network_security_group" "example" {
   location            = data.azurerm_resource_group.rg.location
   resource_group_name = data.azurerm_resource_group.rg.name
 
-  tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+  tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
   
   depends_on = [data.azurerm_subnet.example]
 }
@@ -23,11 +19,7 @@ resource "azurerm_network_interface" "main-1" {
     private_ip_address_allocation = var.private_ip_address_allocation1
   }
 
-  tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+  tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
   
   depends_on = [azurerm_network_security_group.example]
 }
@@ -64,10 +56,10 @@ resource "azurerm_windows_virtual_machine" "main-1" {
   }
 
   lifecycle {
-    ignore_changes = [identity, tags]
+    ignore_changes = [identity]
   }
 
-  tags = var.tags
+  tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { "update schedule" = var.tag_update_schedule, source = "Terraform" })
 
   depends_on = [azurerm_network_interface_security_group_association.example-1]
 }
@@ -81,11 +73,7 @@ resource "azurerm_managed_disk" "disk1" {
   disk_size_gb                  = var.managed_disk_size1
   disk_encryption_set_id        = var.disk_encryption_set_id
   
- tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+ tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
 
   depends_on = [azurerm_windows_virtual_machine.main-1]
 }
@@ -107,11 +95,7 @@ resource "azurerm_managed_disk" "disk2" {
   disk_size_gb                  = var.managed_disk_size2
   disk_encryption_set_id        = var.disk_encryption_set_id
   
-  tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+  tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
 
   depends_on = [azurerm_windows_virtual_machine.main-1]
 }
@@ -133,11 +117,7 @@ resource "azurerm_managed_disk" "disk3" {
   disk_size_gb                  = var.managed_disk_size3
   disk_encryption_set_id        = var.disk_encryption_set_id
   
-  tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+  tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
 
   depends_on = [azurerm_windows_virtual_machine.main-1]
 }
@@ -159,11 +139,7 @@ resource "azurerm_managed_disk" "disk4" {
   disk_size_gb                  = var.managed_disk_size4
   disk_encryption_set_id        = var.disk_encryption_set_id
   
-  tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+  tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
 
   depends_on = [azurerm_windows_virtual_machine.main-1]
 }
@@ -187,11 +163,7 @@ resource "azurerm_network_interface" "main-2" {
     private_ip_address_allocation = var.private_ip_address_allocation2
   }
 
-  tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+  tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
   
   depends_on = [azurerm_network_security_group.example]
 }
@@ -228,10 +200,10 @@ resource "azurerm_windows_virtual_machine" "main-2" {
   }
 
   lifecycle {
-    ignore_changes = [identity, tags]
+    ignore_changes = [identity]
   }
 
-  tags = var.tags
+  tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { "update schedule" = var.tag_update_schedule, source = "Terraform" })
 
   depends_on = [azurerm_network_interface_security_group_association.example-2]
 }
@@ -245,11 +217,7 @@ resource "azurerm_managed_disk" "disk5" {
   disk_size_gb                  = var.managed_disk_size5
   disk_encryption_set_id        = var.disk_encryption_set_id
   
-  tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+  tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
 
   depends_on = [azurerm_windows_virtual_machine.main-2]
 }
@@ -271,11 +239,7 @@ resource "azurerm_managed_disk" "disk6" {
   disk_size_gb                  = var.managed_disk_size6
   disk_encryption_set_id        = var.disk_encryption_set_id
   
-  tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+  tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
 
   depends_on = [azurerm_windows_virtual_machine.main-2]
 }
@@ -297,11 +261,7 @@ resource "azurerm_managed_disk" "disk7" {
   disk_size_gb                  = var.managed_disk_size7
   disk_encryption_set_id        = var.disk_encryption_set_id
   
-  tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+  tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
 
   depends_on = [azurerm_windows_virtual_machine.main-2]
 }
@@ -323,11 +283,7 @@ resource "azurerm_managed_disk" "disk8" {
   disk_size_gb                  = var.managed_disk_size8
   disk_encryption_set_id        = var.disk_encryption_set_id
   
-  tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+  tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
 
   depends_on = [azurerm_windows_virtual_machine.main-2]
 }
@@ -358,8 +314,7 @@ module "storage_account" {
   storage_account_name                   = var.storage_account_name                       
   private_endpoint_name_for_sa           = var.private_endpoint_name_for_sa               
   private_dns_zone_name_sa               = var.private_dns_zone_name_kv
-  private_dns_zone_id_sa                 = var.private_dns_zone_id_sa 
-  tags                                   = var.tags              
+  private_dns_zone_id_sa                 = var.private_dns_zone_id_sa              
 }
 
 resource "azurerm_storage_share" "example" {

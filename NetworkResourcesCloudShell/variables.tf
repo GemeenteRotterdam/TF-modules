@@ -29,64 +29,22 @@ variable "nsg_name" {
   type        = string 
 }
 
-variable "security_rule_name" {
-  description = "The name of the security rule."
-  type        = string
-  default     = "DenyIntraSubnetTraffic"
-}
+variable "security_rule" {
+  description = "Security rule configuration for the network security group."
+  type        = map(string)
 
-variable "security_rule_description" {
-  description = "A description for this rule. Restricted to 140 characters."
-  type        = string
-  default     = "Deny traffic between container groups in cloudshellsubnet"
-}
-
-variable "security_rule_priority" {
-  description = "Specifies the priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule."
-  type        = number
-  default     = 100
-}
-
-variable "security_rule_direction" {
-  description = "The direction specifies if rule will be evaluated on incoming or outgoing traffic. Possible values are Inbound and Outbound."
-  type        = string
-  default     = "Inbound"
-}
-
-variable "security_rule_access" {
-  description = "Specifies whether network traffic is allowed or denied. Possible values are Allow and Deny."
-  type        = string
-  default     = "Deny"
-}
-
-variable "security_rule_protocol" {
-  description = "Network protocol this rule applies to. Possible values include Tcp, Udp, Icmp, Esp, Ah or * (which matches all)."
-  type        = string
-  default     = "*"
-}
-
-variable "security_rule_source_port_range" {
-  description = "Source Port or Range. Integer or range between 0 and 65535 or * to match any. This is required if source_port_ranges is not specified."
-  type        = string
-  default     = "*"
-}
-
-variable "security_rule_destination_port_range" {
-  description = "Destination Port or Range. Integer or range between 0 and 65535 or * to match any. This is required if destination_port_ranges is not specified."
-  type        = string
-  default     = "*"
-}
-
-variable "security_rule_source_address_prefix" {
-  description = "CIDR or source IP range or * to match any IP. Tags such as VirtualNetwork, AzureLoadBalancer and Internet can also be used. This is required if source_address_prefixes is not specified."
-  type        = string
-  default     = "*"
-}
-
-variable "security_rule_destination_address_prefix" {
-  description = "CIDR or destination IP range or * to match any IP. Tags such as VirtualNetwork, AzureLoadBalancer and Internet can also be used. This is required if destination_address_prefixes is not specified."
-  type        = string
-  default     = "*"
+  default = {
+    name                       = "DenyIntraSubnetTraffic"
+    description                = "Deny traffic between container groups in cloudshellsubnet"
+    priority                   = "100"
+    direction                  = "Inbound"
+    access                     = "Deny"
+    protocol                   = "*"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
 }
 
 variable "container_subnet_name" {
@@ -152,7 +110,13 @@ variable "storage_subnet_address_prefix" {
   type        = list(string) 
 }
 
-variable "tags" {
+variable "extra_tags" {
   description = "Set the change number as a tag"
   type        = map(string)
+  default     = {}
+}
+
+variable "resource_group_name" {
+  description = "The name of the existing resource group in which to create the resource"
+  type        = string
 }

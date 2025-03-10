@@ -20,11 +20,7 @@ resource "azurerm_key_vault" "example" {
     virtual_network_subnet_ids = [data.azurerm_subnet.example.id]
   }
 
-  tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+  tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
 }
 
 resource "azurerm_role_assignment" "key_vault_role" {
@@ -54,11 +50,7 @@ resource "azurerm_private_endpoint" "example" {
 
   custom_network_interface_name = "${var.private_endpoint_name_for_kv}-nic"
 
-  tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+  tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
 
   depends_on = [azurerm_role_assignment.key_vault_role]
 }
@@ -69,11 +61,7 @@ resource "azurerm_user_assigned_identity" "example" {
   location            = data.azurerm_resource_group.resource_group.location
   depends_on          = [azurerm_private_endpoint.example]
 
-  tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+  tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
 }
 
 resource "azurerm_role_assignment" "example" {
@@ -91,7 +79,7 @@ resource "azurerm_key_vault_key" "example" {
   key_opts     = var.key_opts
   depends_on   = [azurerm_role_assignment.example]
 
-  tags = var.tags
+  tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
 
    rotation_policy {
     automatic {
@@ -99,10 +87,6 @@ resource "azurerm_key_vault_key" "example" {
     }
     expire_after         = var.expire_after_4096
     notify_before_expiry = var.notify_before_expiry_4096
-  }
-
-  lifecycle {
-    ignore_changes = [tags]
   }
 }
 
@@ -145,17 +129,17 @@ resource "azurerm_storage_account" "example" {
     }
   }
 
-  tags = var.tags
+  tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
 
   lifecycle {
-    ignore_changes = [tags, azure_files_authentication, network_rules]
+    ignore_changes = [azure_files_authentication, network_rules]
   }
 
   depends_on = [azurerm_role_assignment.example]
 }
 
 resource "azurerm_private_endpoint" "example2" {
-  name                = var.private_endpoint_name_for_sa
+  name                = var.private_endpoint_name_for_sa // "$pep-{var.tenant}-{var.applicationname}-{var.omgeving}-{var.volgnummer}"
   location            = data.azurerm_resource_group.resource_group.location
   resource_group_name = data.azurerm_resource_group.resource_group.name
   subnet_id           = data.azurerm_subnet.example.id
@@ -174,10 +158,7 @@ resource "azurerm_private_endpoint" "example2" {
 
   custom_network_interface_name = "${var.private_endpoint_name_for_sa}-nic"
 
-  tags = var.tags
+  tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
 
-  lifecycle {
-    ignore_changes = [tags]
-  }
   depends_on = [azurerm_storage_account.example]
 }

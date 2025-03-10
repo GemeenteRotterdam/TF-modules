@@ -20,11 +20,7 @@ resource "azurerm_key_vault" "example" {
     virtual_network_subnet_ids = [data.azurerm_subnet.example.id]
   }
 
-  tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+  tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
 }
 
 resource "azurerm_role_assignment" "example" {
@@ -54,11 +50,7 @@ resource "azurerm_private_endpoint" "example" {
 
   custom_network_interface_name = "${var.private_endpoint_name_for_kv}-nic"
 
-  tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+  tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
 
   depends_on = [azurerm_role_assignment.example]
 }
@@ -69,11 +61,7 @@ resource "azurerm_user_assigned_identity" "mikv" {
   location            = data.azurerm_resource_group.resource_group.location
   depends_on          = [azurerm_private_endpoint.example]
 
-  tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
+  tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
 }
 
 resource "azurerm_role_assignment" "cryptoservice" {
@@ -83,63 +71,22 @@ resource "azurerm_role_assignment" "cryptoservice" {
   depends_on           = [azurerm_user_assigned_identity.mikv]
 }
 
-resource "azurerm_user_assigned_identity" "github" {
-  name                = var.identity_name_github
-  resource_group_name = data.azurerm_resource_group.resource_group.name
-  location            = data.azurerm_resource_group.resource_group.location
-  depends_on          = [azurerm_role_assignment.cryptoservice]
-
-  tags = var.tags
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
-}
-
-resource "azurerm_key_vault_key" "key-2048" {
-  name         = var.keyvault_key_name_2048
+resource "azurerm_key_vault_key" "key" {
+  name         = var.keyvault_key_name
   key_vault_id = azurerm_key_vault.example.id
-  key_type     = var.key_type_2048
-  key_size     = var.key_size_2048
-  key_opts     = var.key_opts_2048
-  depends_on   = [azurerm_user_assigned_identity.github]
+  key_type     = var.key_type
+  key_size     = var.key_size
+  key_opts     = var.key_opts
+  depends_on   = [azurerm_role_assignment.cryptoservice]
 
-  tags = var.tags
+  tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
 
   rotation_policy {
     automatic {
-      time_after_creation = var.time_after_creation_2048
+      time_after_creation = var.time_after_creation
     }
-    expire_after         = var.expire_after_2048
-    notify_before_expiry = var.notify_before_expiry_2048
-  }
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
-}
-
-resource "azurerm_key_vault_key" "key-4096" {
-  name         = var.keyvault_key_name_4096
-  key_vault_id = azurerm_key_vault.example.id
-  key_type     = var.key_type_4096
-  key_size     = var.key_size_4096
-  key_opts     = var.key_opts_4096
-  depends_on   = [azurerm_key_vault_key.key-2048]
-
-  tags = var.tags
-
-  rotation_policy {
-    automatic {
-      time_after_creation = var.time_after_creation_4096
-    }
-
-    expire_after         = var.expire_after_4096
-    notify_before_expiry = var.notify_before_expiry_4096
-  }
-
-  lifecycle {
-    ignore_changes = [tags]
+    expire_after         = var.expire_after
+    notify_before_expiry = var.notify_before_expiry
   }
 }
 
@@ -147,76 +94,18 @@ resource "azurerm_disk_encryption_set" "example" {
   name                      = var.disk_encryption_set_name
   location                  = data.azurerm_resource_group.resource_group.location
   resource_group_name       = data.azurerm_resource_group.resource_group.name
-  key_vault_key_id          = azurerm_key_vault_key.key-2048.versionless_id
+  key_vault_key_id          = azurerm_key_vault_key.key.versionless_id
   auto_key_rotation_enabled = var.auto_key_rotation_enabled
   encryption_type           = var.encryption_type
-  depends_on                = [azurerm_key_vault_key.key-4096]
+  depends_on                = [azurerm_key_vault_key.key]
 
   identity {
     type         = var.identity_type
     identity_ids = [azurerm_user_assigned_identity.mikv.id]
   }
+
+  tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
 }
-
-resource "azurerm_role_assignment" "contributor_mi_github" {
-  scope                = azurerm_key_vault.example.id // zelfde sub
-  role_definition_name = "Contributor"
-  principal_id         = azurerm_user_assigned_identity.github.principal_id
-  depends_on           = [azurerm_disk_encryption_set.example]
-}
-
-resource "azurerm_role_assignment" "user_access_mi_github" {
-  scope                = azurerm_key_vault.example.id // zelfde sub
-  role_definition_name = "User Access Administrator"
-  principal_id         = azurerm_user_assigned_identity.github.principal_id
-  depends_on           = [azurerm_disk_encryption_set.example]
-}
-
-resource "azurerm_role_assignment" "kv_contributor_mi_github" {
-  scope                = azurerm_key_vault.example.id
-  role_definition_name = "Key Vault Contributor"
-  principal_id         = azurerm_user_assigned_identity.github.principal_id
-  depends_on           = [azurerm_disk_encryption_set.example]
-}
-
-resource "azurerm_role_assignment" "private_dns_zone_reader_mi_github" {
-  scope                = "/subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/RG_Rdam_PF_Connectivity_Private_DNS"
-  role_definition_name = "Private DNS Zone Reader"
-  principal_id         = azurerm_user_assigned_identity.github.principal_id
-  depends_on           = [azurerm_disk_encryption_set.example]
-}
-
-resource "azurerm_role_assignment" "private_dns_zone_arecord_contributor_mi_github" {
-  scope                = "/subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/RG_Rdam_PF_Connectivity_Private_DNS"
-  role_definition_name = "Private DNS Zones A Record Contributor"
-  principal_id         = azurerm_user_assigned_identity.github.principal_id
-  depends_on           = [azurerm_disk_encryption_set.example]
-}
-
-resource "azurerm_role_assignment" "kv_secrets_user_mi_github" {
-  scope                = "/subscriptions/aa20029e-2e39-4966-acb2-70e228663a84/resourceGroups/RG_Rdam_PF_Management_Alg/providers/Microsoft.KeyVault/vaults/KVRdamPFManagementAlg"
-  role_definition_name = "Key Vault Secrets User"
-  principal_id         = azurerm_user_assigned_identity.github.principal_id
-  depends_on           = [azurerm_disk_encryption_set.example]
-}
-
-resource "azurerm_role_assignment" "kv_reader_mi_github" {
-  scope                = "/subscriptions/aa20029e-2e39-4966-acb2-70e228663a84/resourceGroups/RG_Rdam_PF_Management_Alg/providers/Microsoft.KeyVault/vaults/KVRdamPFManagementAlg"
-  role_definition_name = "Key Vault Reader"
-  principal_id         = azurerm_user_assigned_identity.github.principal_id
-  depends_on           = [azurerm_disk_encryption_set.example]
-}
-
-resource "azurerm_role_assignment" "storage_blob_data_contributor_mi_github" {
-  scope                = "/subscriptions/aa20029e-2e39-4966-acb2-70e228663a84/resourceGroups/RG_Rdam_PF_Management_tfbackend/providers/Microsoft.Storage/storageAccounts/sardamapplicationsprd001"
-  role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = azurerm_user_assigned_identity.github.principal_id
-  depends_on           = [azurerm_disk_encryption_set.example]
-}
-
-
-
-
 
 
 

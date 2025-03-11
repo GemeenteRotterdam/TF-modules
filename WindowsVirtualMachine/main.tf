@@ -84,25 +84,6 @@ resource "azurerm_virtual_machine_data_disk_attachment" "example" {
   depends_on         = [azurerm_managed_disk.example]
 }
 
-# resource "azurerm_virtual_machine_extension" "disk_setup" {
-#   name                      = "assign-drive-letter"
-#   virtual_machine_id        = azurerm_windows_virtual_machine.main.id
-#   publisher                 = "Microsoft.Compute"
-#   type                      = "CustomScriptExtension"
-#   type_handler_version      = "1.10"
-#   depends_on                = [azurerm_virtual_machine_data_disk_attachment.example]
-
-#   lifecycle {
-#     ignore_changes = [tags]
-#   }
-
-#   settings = <<EOT
-#   {
-#   "commandToExecute": "powershell -ExecutionPolicy Bypass -Command \"$disk = Get-Disk | Where-Object PartitionStyle -eq 'RAW'; if ($disk) { Initialize-Disk -Number $disk.Number -PartitionStyle GPT -Confirm:$false; $partition = New-Partition -DiskNumber $disk.Number -UseMaximumSize -AssignDriveLetter; Format-Volume -DriveLetter $partition.DriveLetter -FileSystem NTFS -Confirm:$false } else { Write-Output 'No RAW disk found for initialization.' }\""
-#   }
-#   EOT
-# }
-
 resource "azurerm_virtual_machine_extension" "disk_setup" {
   name                      = "assign-drive-letter"
   virtual_machine_id        = azurerm_windows_virtual_machine.main.id
@@ -121,7 +102,6 @@ resource "azurerm_virtual_machine_extension" "disk_setup" {
   }
   EOT
 }
-
 
 
 # Resource for setting DNS Suffix

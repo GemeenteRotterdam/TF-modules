@@ -83,10 +83,10 @@ resource "azurerm_key_vault_key" "example" {
 
    rotation_policy {
     automatic {
-      time_after_creation = var.time_after_creation_4096
+      time_after_creation = var.time_after_creation
     }
-    expire_after         = var.expire_after_4096
-    notify_before_expiry = var.notify_before_expiry_4096
+    expire_after         = var.expire_after
+    notify_before_expiry = var.notify_before_expiry
   }
 }
 

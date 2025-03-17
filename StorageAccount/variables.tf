@@ -170,19 +170,19 @@ variable "key_opts" {
   default     = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
 }
 
-variable "time_after_creation_4096" {
+variable "time_after_creation" {
   description = "Rotate automatically at a duration after create as an ISO 8601 duration."
   type        = string
   default     = "P83D"
 }
 
-variable "notify_before_expiry_4096" {
+variable "notify_before_expiry" {
   description = "Notify at a given duration before expiry as an ISO 8601 duration."
   type        = string
   default     = "P30D"
 }
 
-variable "expire_after_4096" {
+variable "expire_after" {
   description = "Expire a Key Vault Key after given duration as an ISO 8601 duration."
   type        = string
   default     = "P90D"

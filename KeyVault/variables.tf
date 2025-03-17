@@ -39,7 +39,7 @@ variable "sku_name" {
 variable "soft_delete_retention_days" {
   description = "Days to retain deleted vaults"
   type        = number
-  default     = 7 
+  default     = 7
 }
 
 variable "purge_protection_enabled" {
@@ -108,12 +108,12 @@ variable "is_manual_connection_kv" {
   default     = false
 }
 
-variable "private_dns_zone_name_kv"{
+variable "private_dns_zone_name_kv" {
   description = "Name of the private dns zone group name that needs to be assigned for the key vault"
   type        = string
 }
 
-variable "private_dns_zone_id_kv"{
+variable "private_dns_zone_id_kv" {
   description = "ID of the private dns zone group name that needs to be assigned for the key vault"
-  type        = list(string) 
+  type        = list(string)
 }

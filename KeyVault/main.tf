@@ -15,8 +15,8 @@ resource "azurerm_key_vault" "example" {
   enable_rbac_authorization     = var.enable_rbac_authorization
 
   network_acls {
-    default_action = var.network_acls_default_action
-    bypass         = var.network_acls_bypass
+    default_action             = var.network_acls_default_action
+    bypass                     = var.network_acls_bypass
     virtual_network_subnet_ids = [data.azurerm_subnet.example.id]
   }
 

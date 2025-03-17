@@ -110,7 +110,7 @@ resource "azurerm_storage_account" "example" {
   }
 
   customer_managed_key {
-    key_vault_key_id          = azurerm_key_vault_key.example.id
+    key_vault_key_id          = azurerm_key_vault_key.example.versionless_id
     user_assigned_identity_id = azurerm_user_assigned_identity.example.id
   }
 

@@ -36,7 +36,7 @@ variable "extra_tags" {
   default     = {}
 }
 
-variable "NSG_name" {
+variable "nsg_name" {
   description = "Specifies the name of the network security group. Changing this forces a new resource to be created."
   type        = string 
 }
@@ -80,11 +80,6 @@ variable "secure_boot_enabled" {
   default     = true
 }
 
-# variable "source_image_id" {
-#   description = "The ID of the Image which this Virtual Machine should be created from. Changing this forces a new resource to be created."
-#   type        = string
-# }
-
 variable "patch_mode" {
   description = "Specifies the mode of in-guest patching to this Windows Virtual Machine. Possible values are Manual, AutomaticByOS and AutomaticByPlatform."
   type        = string
@@ -118,41 +113,12 @@ variable "storage_account_type_os_disk" {
 variable "disk_size_os_disk" {
   description = "The Size of the Internal OS Disk in GB, if you wish to vary from the size used in the image this Virtual Machine is sourced from."
   type        = number
-  default     = 100 
+  default     = 32 
 }
 
 variable "disk_encryption_set_id" {
   description = "The ID of the Disk Encryption Set which should be used to Encrypt the OS or managed Disk."
   type        = string 
-}
-
-# variable "OU_path" {
-#   description = "The Organizational Unit (OU) path for the server"
-#   type        = string
-#   //default     = "OU=Management servers,OU=Servers,DC=rotterdam,DC=local"
-
-#   validation {
-#     condition     = can(regex("^OU=.*DC=.*$", var.OU_path))
-#     error_message = "The OU Path must start with 'OU=' and contain 'DC=' components."
-#   }
-# }
-
-variable "domain_join_password" {
-  description = "Password for domain join"
-  type        = string
-  default     = "ufpIBoYRXUNjkFo<>"
-}
-
-variable "domain_join_user" {
-  description = "Service account for domain join"
-  type        = string
-  default     = "SA_SRV_TERRAFORM_DJ"
-}
-
-variable "domain_name" {
-  description = "Name of the domain for domain join"
-  type        = string
-  default     = "rotterdam.local"
 }
 
 

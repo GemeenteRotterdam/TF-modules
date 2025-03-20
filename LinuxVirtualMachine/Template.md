@@ -1,4 +1,4 @@
-module "linuxvm" {
+module "XXX" {
   source = "git::https://github.com/GemeenteRotterdam/TF-modules.git//LinuxVirtualMachine?ref=main"
 
   resource_group_name = ""

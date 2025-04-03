@@ -1,5 +1,5 @@
 module "XXX" {
-  source = "./module"
+  source = "git::https://github.com/GemeenteRotterdam/TF-modules.git//SQL-machines?ref=main""
 
   resource_group_name = ""
   subnet_name         = ""

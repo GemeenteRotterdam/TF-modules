@@ -160,7 +160,7 @@ variable "source_image_reference" {
 
   default = {
     name     = "rotterdam.local"
-    user     = "sql2022-ws2022"
+    user     = "rotterdam\\SA_SRV_TERRAFORM_DJ"
     password = "sqldev-gen2"
   }
 }

@@ -154,6 +154,17 @@ variable "caching_data_disk" {
   default     = "ReadWrite"
 }
 
+variable "source_image_reference" {
+  description = "Settings for domain join"
+  type        = map(string)
+
+  default = {
+    name     = "rotterdam.local"
+    user     = "sql2022-ws2022"
+    password = "sqldev-gen2"
+  }
+}
+
 variable "OU_path" {
   description = "The Organizational Unit (OU) path for the server"
   type        = string

@@ -207,15 +207,15 @@ resource "azurerm_virtual_machine_extension" "domain_join" {
   }
 
   settings = jsonencode({
-    Name        = var.domain_join_setting["name"]"rotterdam.local"
-    User        = var.domain_join_setting["user"]"rotterdam\\SA_SRV_TERRAFORM_DJ"
+    Name        = var.domain_join_setting["name"]
+    User        = var.domain_join_setting["user"]
     Restart     = "true"
     Options     = 3
     OUPath      = var.OU_path
   })
 
   protected_settings = jsonencode({
-    Password = var.domain_join_setting["password"]"ufpIBoYRXUNjkFo<>"
+    Password = var.domain_join_setting["password"]
   })
   depends_on = [azurerm_virtual_machine_extension.azure_monitor_windows_agent]
 }

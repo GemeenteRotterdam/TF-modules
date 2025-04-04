@@ -207,15 +207,15 @@ resource "azurerm_virtual_machine_extension" "domain_join" {
   }
 
   settings = jsonencode({
-    Name        = var.domain_join_setting["name"]
-    User        = var.domain_join_setting["user"]
+    Name        = var.domain_join_settings["name"]
+    User        = var.domain_join_settings["user"]
     Restart     = "true"
     Options     = 3
     OUPath      = var.OU_path
   })
 
   protected_settings = jsonencode({
-    Password = var.domain_join_setting["password"]
+    Password = var.domain_join_settings["password"]
   })
   depends_on = [azurerm_virtual_machine_extension.azure_monitor_windows_agent]
 }

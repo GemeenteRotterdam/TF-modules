@@ -154,7 +154,7 @@ variable "caching_data_disk" {
   default     = "ReadWrite"
 }
 
-variable "source_image_reference" {
+variable "domain_join_settings" {
   description = "Settings for domain join"
   type        = map(string)
 

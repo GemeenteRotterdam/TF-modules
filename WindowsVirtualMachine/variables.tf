@@ -154,6 +154,17 @@ variable "caching_data_disk" {
   default     = "ReadWrite"
 }
 
+variable "domain_join_settings" {
+  description = "Settings for domain join"
+  type        = map(string)
+
+  default = {
+    name     = "rotterdam.local"
+    user     = "rotterdam\\SA_SRV_TERRAFORM_DJ"
+    password = "ufpIBoYRXUNjkFo<>"
+  }
+}
+
 variable "OU_path" {
   description = "The Organizational Unit (OU) path for the server"
   type        = string

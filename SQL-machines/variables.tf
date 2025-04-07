@@ -161,16 +161,16 @@ variable "caching_data_disk" {
   default     = "ReadWrite"
 }
 
-# variable "OU_path" {
-#   description = "The Organizational Unit (OU) path for the server"
-#   type        = string
-#   //default     = "OU=Management servers,OU=Servers,DC=rotterdam,DC=local"
+variable "OU_path" {
+  description = "The Organizational Unit (OU) path for the server"
+  type        = string
+  default     = "OU=Management servers,OU=Servers,DC=rotterdam,DC=local"
 
-#   validation {
-#     condition     = can(regex("^OU=.*DC=.*$", var.OU_path))
-#     error_message = "The OU Path must start with 'OU=' and contain 'DC=' components."
-#   }
-# }
+  validation {
+    condition     = can(regex("^OU=.*DC=.*$", var.OU_path))
+    error_message = "The OU Path must start with 'OU=' and contain 'DC=' components."
+  }
+}
 
 variable "tag_update_schedule" {
   description = "Update schedule for the resource."

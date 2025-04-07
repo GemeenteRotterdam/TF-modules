@@ -9,7 +9,7 @@ on:
 jobs:
   setup:
     name: Install Required Tools
-    runs-on: self-hosted
+    runs-on: rdam
 
     steps:
       - name: Checkout

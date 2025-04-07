@@ -38,7 +38,7 @@ variable "extra_tags" {
 
 variable "nsg_name" {
   description = "Specifies the name of the network security group. Changing this forces a new resource to be created."
-  type        = string 
+  type        = string
 }
 
 variable "private_ip_address_allocation" {
@@ -71,7 +71,7 @@ variable "source_image_reference" {
 
 variable "admin_username" {
   description = "The username of the local administrator used for the Virtual Machine. Changing this forces a new resource to be created."
-  type        = string 
+  type        = string
 }
 
 variable "secure_boot_enabled" {
@@ -113,12 +113,12 @@ variable "storage_account_type_os_disk" {
 variable "disk_size_os_disk" {
   description = "The Size of the Internal OS Disk in GB, if you wish to vary from the size used in the image this Virtual Machine is sourced from."
   type        = number
-  default     = 32 
+  default     = 32
 }
 
 variable "disk_encryption_set_id" {
   description = "The ID of the Disk Encryption Set which should be used to Encrypt the OS or managed Disk."
-  type        = string 
+  type        = string
 }
 
 

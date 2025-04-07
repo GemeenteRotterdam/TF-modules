@@ -26,7 +26,7 @@ variable "private_dns_zone_ids" {
 
 variable "nsg_name" {
   description = "Specifies the name of the network security group. Changing this forces a new resource to be created."
-  type        = string 
+  type        = string
 }
 
 variable "security_rule" {
@@ -49,17 +49,17 @@ variable "security_rule" {
 
 variable "container_subnet_name" {
   description = "The name of the subnet. Changing this forces a new resource to be created."
-  type        = string 
+  type        = string
 }
 
 variable "container_subnet_address_prefix" {
   description = "The address prefixes to use for the subnet."
-  type        = list(string) 
+  type        = list(string)
 }
 
 variable "network_profile_name" {
   description = "Specifies the name of the Network Profile. Changing this forces a new resource to be created."
-  type        = string 
+  type        = string
 }
 
 variable "relay_namespace_name" {
@@ -70,33 +70,33 @@ variable "relay_namespace_name" {
 variable "relay_namespace_sku" {
   description = "The name of the SKU to use. At this time the only supported value is Standard."
   type        = string
-  default     = "Standard" 
+  default     = "Standard"
 }
 
 variable "relay_subnet_name" {
   description = "The name of the subnet. Changing this forces a new resource to be created."
-  type        = string 
+  type        = string
 }
 
 variable "relay_subnet_address_prefix" {
   description = "The address prefixes to use for the subnet."
-  type        = list(string) 
+  type        = list(string)
 }
 
 variable "storage_subnet_name" {
   description = "The name of the subnet. Changing this forces a new resource to be created."
-  type        = string 
+  type        = string
 }
 
 variable "private_endpoint_name" {
   description = "Specifies the Name of the Private Endpoint. Changing this forces a new resource to be created."
-  type        = string 
+  type        = string
 }
 
 variable "private_endpoint_is_manual_connection" {
   description = "Does the Private Endpoint require Manual Approval from the remote resource owner? Changing this forces a new resource to be created."
   type        = bool
-  default     = false 
+  default     = false
 }
 
 variable "private_endpoint_subresources_names" {
@@ -107,7 +107,7 @@ variable "private_endpoint_subresources_names" {
 
 variable "storage_subnet_address_prefix" {
   description = "The address prefixes to use for the subnet."
-  type        = list(string) 
+  type        = list(string)
 }
 
 variable "extra_tags" {

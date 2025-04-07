@@ -15,8 +15,8 @@ resource "azurerm_key_vault" "example" {
   enable_rbac_authorization     = var.enable_rbac_authorization
 
   network_acls {
-    default_action = var.network_acls_default_action
-    bypass         = var.network_acls_bypass
+    default_action             = var.network_acls_default_action
+    bypass                     = var.network_acls_bypass
     virtual_network_subnet_ids = [data.azurerm_subnet.example.id]
   }
 
@@ -81,7 +81,7 @@ resource "azurerm_key_vault_key" "example" {
 
   tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
 
-   rotation_policy {
+  rotation_policy {
     automatic {
       time_after_creation = var.time_after_creation
     }
@@ -97,7 +97,7 @@ resource "azurerm_storage_account" "example" {
   account_tier              = var.storage_account_tier
   account_replication_type  = var.storage_account_replication_type
   shared_access_key_enabled = var.shared_access_key_enabled
-  
+
   public_network_access_enabled     = var.public_network_access_enabled_sa
   infrastructure_encryption_enabled = var.infrastructure_encryption_enabled
 
@@ -115,17 +115,17 @@ resource "azurerm_storage_account" "example" {
   }
 
   network_rules {
-    default_action             = var.network_rules_default_action
-    bypass                     = var.network_rules_bypass
+    default_action = var.network_rules_default_action
+    bypass         = var.network_rules_bypass
   }
 
   blob_properties {
     delete_retention_policy {
-     days    = var.blob_delete_retention_policy
+      days = var.blob_delete_retention_policy
     }
 
     container_delete_retention_policy {
-     days = var.container_delete_retention_policy
+      days = var.container_delete_retention_policy
     }
   }
 

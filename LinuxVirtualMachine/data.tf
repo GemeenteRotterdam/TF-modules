@@ -12,5 +12,5 @@ data "azurerm_subnet" "snet" {
 
 data "azurerm_ssh_public_key" "ssh" {
   name                = var.ssh_key_name
-  resource_group_name = var.ssh_key_rg  
+  resource_group_name = var.ssh_key_rg
 }

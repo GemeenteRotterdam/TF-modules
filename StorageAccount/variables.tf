@@ -39,7 +39,7 @@ variable "sku_name" {
 variable "soft_delete_retention_days" {
   description = "Days to retain deleted vaults"
   type        = number
-  default     = 7 
+  default     = 7
 }
 
 variable "purge_protection_enabled" {
@@ -92,7 +92,7 @@ variable "network_acls_bypass" {
 
 variable "role_definition_name_kv" {
   description = "The name of a built-in key vault role."
-  type        = string 
+  type        = string
   default     = "Key Vault Administrator"
 }
 
@@ -114,48 +114,48 @@ variable "is_manual_connection_kv" {
   default     = false
 }
 
-variable "private_dns_zone_name_kv"{
+variable "private_dns_zone_name_kv" {
   description = "Name of the private dns zone group name that needs to be assigned for the key vault"
   type        = string
 }
 
-variable "private_dns_zone_id_kv"{
+variable "private_dns_zone_id_kv" {
   description = "ID of the private dns zone group name that needs to be assigned for the key vault"
-  type        = list(string) 
+  type        = list(string)
 }
 
-variable "private_dns_zone_name_sa"{
+variable "private_dns_zone_name_sa" {
   description = "Name of the private dns zone group name that needs to be assigned for the storage account"
   type        = string
 }
 
-variable "private_dns_zone_id_sa"{
+variable "private_dns_zone_id_sa" {
   description = "ID of the private dns zone group name that needs to be assigned for the storage account"
-  type        = list(string) 
+  type        = list(string)
 }
 
 //Managed identity variables
 variable "identity_name" {
   description = "The name of the identity that is going to be created"
-  type        = string 
+  type        = string
 }
 
 variable "role_definition_name_mi" {
   description = "The name of a built-in managed identity role."
   type        = string
-  default     = "Key Vault Crypto Service Encryption User" 
+  default     = "Key Vault Crypto Service Encryption User"
 }
 
 //Key vault key variables
 variable "keyvault_key_name" {
   description = "The name of the key vault that is going to be created"
-  type        = string 
+  type        = string
 }
 
 variable "key_type" {
   description = "Specifies the Key Type to use for this Key Vault Key. Possible values are EC (Elliptic Curve), EC-HSM, RSA and RSA-HSM."
   type        = string
-  default     = "RSA" 
+  default     = "RSA"
 }
 
 variable "key_size" {
@@ -166,7 +166,7 @@ variable "key_size" {
 
 variable "key_opts" {
   description = "A list of JSON web key operations. Possible values include: decrypt, encrypt, sign, unwrapKey, verify and wrapKey. Please note these values are case sensitive."
-  type        = list(string) 
+  type        = list(string)
   default     = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
 }
 
@@ -190,32 +190,32 @@ variable "expire_after" {
 
 //Storage Account variables
 variable "storage_account_name" {
-    description = "The Name of the Storage Account"
-    type        = string 
+  description = "The Name of the Storage Account"
+  type        = string
 }
 
 variable "storage_account_tier" {
-    description = "Defines the Tier to use for this storage account. Valid options are Standard and Premium. For BlockBlobStorage and FileStorage accounts only Premium is valid."
-    type        = string
-    default     = "Standard" 
+  description = "Defines the Tier to use for this storage account. Valid options are Standard and Premium. For BlockBlobStorage and FileStorage accounts only Premium is valid."
+  type        = string
+  default     = "Standard"
 }
 
 variable "storage_account_replication_type" {
-    description = "Defines the type of replication to use for this storage account. Valid options are LRS, GRS, RAGRS, ZRS, GZRS and RAGZRS."
-    type        = string
-    default     = "LRS"
+  description = "Defines the type of replication to use for this storage account. Valid options are LRS, GRS, RAGRS, ZRS, GZRS and RAGZRS."
+  type        = string
+  default     = "LRS"
 }
 
 variable "shared_access_key_enabled" {
   description = "Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active Directory (Azure AD)."
   type        = bool
-  default     = true 
+  default     = true
 }
 
 variable "public_network_access_enabled_sa" {
-    description = "Whether the public network access is enabled?"
-    type        = bool
-    default     = false 
+  description = "Whether the public network access is enabled?"
+  type        = bool
+  default     = false
 }
 
 variable "infrastructure_encryption_enabled" {
@@ -225,21 +225,21 @@ variable "infrastructure_encryption_enabled" {
 }
 
 variable "allow_nested_items_to_be_public" {
-    description = "Allow or disallow nested items within this Account to opt into being public."
-    type        = bool
-    default     = false 
+  description = "Allow or disallow nested items within this Account to opt into being public."
+  type        = bool
+  default     = false
 }
 
 variable "cross_tenant_replication_enabled" {
   description = "Should cross Tenant replication be enabled?"
   type        = bool
-  default     = false 
+  default     = false
 }
 
 variable "identity_type" {
   description = "Specifies the type of Managed Service Identity that should be configured on this Storage Account. Possible values are SystemAssigned, UserAssigned, SystemAssigned, UserAssigned"
   type        = string
-  default     = "UserAssigned" 
+  default     = "UserAssigned"
 }
 
 variable "network_rules_default_action" {
@@ -255,15 +255,15 @@ variable "network_rules_bypass" {
 }
 
 variable "blob_delete_retention_policy" {
-    description = "Specifies the number of days that the blob should be retained, between 1 and 365 days."
-    type        = number
-    default     = 7
+  description = "Specifies the number of days that the blob should be retained, between 1 and 365 days."
+  type        = number
+  default     = 7
 }
 
 variable "container_delete_retention_policy" {
   description = "Specifies the number of days that the container should be retained, between 1 and 365 days."
   type        = number
-  default     = 7 
+  default     = 7
 }
 
 //Private endpoint for Storage Account variables

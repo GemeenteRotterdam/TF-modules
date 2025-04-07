@@ -20,7 +20,7 @@ variable "subnet_vnet" {
 
 variable "nsg_name" {
   description = "Specifies the name of the network security group. Changing this forces a new resource to be created."
-  type        = string 
+  type        = string
 }
 
 variable "private_ip_address_allocation" {
@@ -41,12 +41,12 @@ variable "vm_size" {
 
 variable "admin_username" {
   description = "The username of the local administrator used for the Virtual Machine. Changing this forces a new resource to be created."
-  type        = string 
+  type        = string
 }
 
 variable "admin_password" {
   description = "The Password which should be used for the local-administrator on this Virtual Machine. Changing this forces a new resource to be created."
-  type        = string 
+  type        = string
 }
 
 variable "license_type" {
@@ -111,12 +111,12 @@ variable "storage_account_type_os_disk" {
 variable "disk_size_os_disk" {
   description = "The Size of the Internal OS Disk in GB, if you wish to vary from the size used in the image this Virtual Machine is sourced from."
   type        = number
-  default     = 256 
+  default     = 256
 }
 
 variable "disk_encryption_set_id" {
   description = "The ID of the Disk Encryption Set which should be used to Encrypt the OS or managed Disk."
-  type        = string 
+  type        = string
 }
 
 variable "data_disk_name" {
@@ -177,11 +177,11 @@ variable "tag_update_schedule" {
 
   validation {
     condition = contains([
-      "dinsdag 23:00", 
-      "donderdag 00:00", 
-      "maandag 23:00", 
-      "vrijdag 01:00", 
-      "woensdag 00:00", 
+      "dinsdag 23:00",
+      "donderdag 00:00",
+      "maandag 23:00",
+      "vrijdag 01:00",
+      "woensdag 00:00",
       "handmatig"
     ], var.tag_update_schedule)
     error_message = "Invalid update schedule. Allowed values: dinsdag 23:00, donderdag 00:00, maandag 23:00, vrijdag 01:00, woensdag 00:00, handmatig."

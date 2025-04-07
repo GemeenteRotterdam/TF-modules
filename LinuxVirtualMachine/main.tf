@@ -18,7 +18,7 @@ resource "azurerm_network_interface" "main" {
   }
 
   tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
-  
+
   depends_on = [azurerm_network_security_group.example]
 }
 
@@ -26,7 +26,7 @@ resource "azurerm_network_interface_security_group_association" "example" {
   network_interface_id      = azurerm_network_interface.main.id
   network_security_group_id = azurerm_network_security_group.example.id
   depends_on                = [azurerm_network_interface.main]
-} 
+}
 
 resource "azurerm_linux_virtual_machine" "example" {
   name                       = var.vm_name
@@ -39,9 +39,9 @@ resource "azurerm_linux_virtual_machine" "example" {
   patch_mode                 = var.patch_mode
   patch_assessment_mode      = var.patch_assessment_mode
   encryption_at_host_enabled = var.encryption_at_host_enabled
-  computer_name              = var.vm_name 
+  computer_name              = var.vm_name
 
-   source_image_reference {
+  source_image_reference {
     publisher = var.source_image_reference["publisher"]
     offer     = var.source_image_reference["offer"]
     sku       = var.source_image_reference["sku"]
@@ -55,7 +55,7 @@ resource "azurerm_linux_virtual_machine" "example" {
   os_disk {
     caching                = var.caching_os_disk
     storage_account_type   = var.storage_account_type_os_disk
-    disk_size_gb           = var.disk_size_os_disk 
+    disk_size_gb           = var.disk_size_os_disk
     disk_encryption_set_id = var.disk_encryption_set_id
   }
 

@@ -6,7 +6,7 @@ resource "azurerm_network_security_group" "example" {
   security_rule {
     name                       = var.security_rule["name"]
     description                = var.security_rule["description"]
-    priority                   = tonumber(var.security_rule["priority"])  # Ensure priority is a number
+    priority                   = tonumber(var.security_rule["priority"]) # Ensure priority is a number
     direction                  = var.security_rule["direction"]
     access                     = var.security_rule["access"]
     protocol                   = var.security_rule["protocol"]
@@ -27,7 +27,7 @@ resource "azurerm_subnet" "container_subnet" {
 
   delegation {
     name = "Delegation"
-   
+
     service_delegation {
       name = "Microsoft.ContainerInstance/containerGroups"
     }
@@ -44,7 +44,7 @@ resource "azurerm_network_profile" "example" {
     name = "nic-${var.container_subnet_name}"
 
     ip_configuration {
-      name = "ipconfig-${var.container_subnet_name}"
+      name      = "ipconfig-${var.container_subnet_name}"
       subnet_id = azurerm_subnet.container_subnet.id
     }
   }
@@ -107,7 +107,7 @@ resource "azurerm_private_endpoint" "example" {
     private_dns_zone_ids = var.private_dns_zone_ids
   }
 
-   tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
+  tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
 
   depends_on = [azurerm_subnet.relay_subnet]
 }

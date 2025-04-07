@@ -39,7 +39,7 @@ variable "sku_name" {
 variable "soft_delete_retention_days" {
   description = "Days to retain deleted vaults"
   type        = number
-  default     = 7 
+  default     = 7
 }
 
 variable "purge_protection_enabled" {
@@ -94,13 +94,13 @@ variable "network_acls_bypass" {
 
 variable "role_definition_name" {
   description = "The name of a built-in key vault role."
-  type        = string 
+  type        = string
   default     = "Key Vault Crypto Officer"
 }
 
 variable "role_definition_name_cryptoservice" {
   description = "The name of a built-in key vault role."
-  type        = string 
+  type        = string
   default     = "Key Vault Crypto Service Encryption User"
 }
 
@@ -122,32 +122,32 @@ variable "is_manual_connection_kv" {
   default     = false
 }
 
-variable "private_dns_zone_name_kv"{
+variable "private_dns_zone_name_kv" {
   description = "Name of the private dns zone group name that needs to be assigned for the key vault"
   type        = string
 }
 
-variable "private_dns_zone_id_kv"{
+variable "private_dns_zone_id_kv" {
   description = "ID of the private dns zone group name that needs to be assigned for the key vault"
-  type        = list(string) 
+  type        = list(string)
 }
 
 // Managed identities
 variable "identity_name_mikv" {
   description = "The name of the identity that is going to be created"
-  type        = string 
+  type        = string
 }
 
 // Key vault Key variables
 variable "keyvault_key_name" {
   description = "The name of the key vault that is going to be created"
-  type        = string 
+  type        = string
 }
 
 variable "key_type" {
   description = "Specifies the Key Type to use for this Key Vault Key. Possible values are EC (Elliptic Curve), EC-HSM, RSA and RSA-HSM."
   type        = string
-  default     = "RSA" 
+  default     = "RSA"
 }
 
 variable "key_size" {
@@ -158,7 +158,7 @@ variable "key_size" {
 
 variable "key_opts" {
   description = "A list of JSON web key operations. Possible values include: decrypt, encrypt, sign, unwrapKey, verify and wrapKey. Please note these values are case sensitive."
-  type        = list(string) 
+  type        = list(string)
   default     = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
 }
 
@@ -183,7 +183,7 @@ variable "expire_after" {
 //Disk Encryption Set variables
 variable "disk_encryption_set_name" {
   description = "The name of the Disk Encryption Set. Changing this forces a new resource to be created."
-  type        = string 
+  type        = string
 }
 
 variable "auto_key_rotation_enabled" {
@@ -195,11 +195,11 @@ variable "auto_key_rotation_enabled" {
 variable "encryption_type" {
   description = "The type of key used to encrypt the data of the disk. Possible values are EncryptionAtRestWithCustomerKey, EncryptionAtRestWithPlatformAndCustomerKeys and ConfidentialVmEncryptedWithCustomerKey. Defaults to EncryptionAtRestWithCustomerKey. Changing this forces a new resource to be created."
   type        = string
-  default     = "EncryptionAtRestWithPlatformAndCustomerKeys" 
+  default     = "EncryptionAtRestWithPlatformAndCustomerKeys"
 }
 
 variable "identity_type" {
   description = "Specifies the type of Managed Service Identity that should be configured on this Storage Account. Possible values are SystemAssigned, UserAssigned, SystemAssigned, UserAssigned"
   type        = string
-  default     = "UserAssigned" 
+  default     = "UserAssigned"
 }

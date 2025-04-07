@@ -18,7 +18,7 @@ resource "azurerm_network_interface" "main" {
   }
 
   tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
-  
+
   depends_on = [azurerm_network_security_group.example]
 }
 
@@ -26,7 +26,7 @@ resource "azurerm_network_interface_security_group_association" "example" {
   network_interface_id      = azurerm_network_interface.main.id
   network_security_group_id = azurerm_network_security_group.example.id
   depends_on                = [azurerm_network_interface.main]
-}                                               
+}
 
 resource "azurerm_windows_virtual_machine" "main" {
   name                       = var.vm_name
@@ -49,7 +49,7 @@ resource "azurerm_windows_virtual_machine" "main" {
   os_disk {
     caching                = var.caching_os_disk
     storage_account_type   = var.storage_account_type_os_disk
-    disk_size_gb           = var.disk_size_os_disk 
+    disk_size_gb           = var.disk_size_os_disk
     disk_encryption_set_id = var.disk_encryption_set_id
   }
 
@@ -63,14 +63,14 @@ resource "azurerm_windows_virtual_machine" "main" {
 }
 
 resource "azurerm_managed_disk" "example" {
-  name                          = var.data_disk_name
-  location                      = data.azurerm_resource_group.rg.location
-  resource_group_name           = data.azurerm_resource_group.rg.name
-  storage_account_type          = var.storage_account_type_data_disk
-  create_option                 = var.managed_disk_create_option
-  disk_size_gb                  = var.managed_disk_size
-  disk_encryption_set_id        = var.disk_encryption_set_id
-  
+  name                   = var.data_disk_name
+  location               = data.azurerm_resource_group.rg.location
+  resource_group_name    = data.azurerm_resource_group.rg.name
+  storage_account_type   = var.storage_account_type_data_disk
+  create_option          = var.managed_disk_create_option
+  disk_size_gb           = var.managed_disk_size
+  disk_encryption_set_id = var.disk_encryption_set_id
+
   tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
 
   depends_on = [azurerm_windows_virtual_machine.main]
@@ -85,12 +85,12 @@ resource "azurerm_virtual_machine_data_disk_attachment" "example" {
 }
 
 resource "azurerm_virtual_machine_extension" "disk_setup" {
-  name                      = "assign-drive-letter"
-  virtual_machine_id        = azurerm_windows_virtual_machine.main.id
-  publisher                 = "Microsoft.Compute"
-  type                      = "CustomScriptExtension"
-  type_handler_version      = "1.10"
-  depends_on                = [azurerm_virtual_machine_data_disk_attachment.example]
+  name                 = "assign-drive-letter"
+  virtual_machine_id   = azurerm_windows_virtual_machine.main.id
+  publisher            = "Microsoft.Compute"
+  type                 = "CustomScriptExtension"
+  type_handler_version = "1.10"
+  depends_on           = [azurerm_virtual_machine_data_disk_attachment.example]
 
   lifecycle {
     ignore_changes = [tags]
@@ -113,7 +113,7 @@ resource "azurerm_virtual_machine_run_command" "set_dns_suffix" {
   lifecycle {
     ignore_changes = [tags]
   }
-  
+
   source {
     script = <<EOF
      Set-DnsClient -InterfaceIndex (Get-NetAdapter -InterfaceDescription "Microsoft Hyper-V*").IfIndex -ConnectionSpecificSuffix "rotterdam.local" -UseSuffixWhenRegistering $true; Register-DnsClient
@@ -124,14 +124,14 @@ resource "azurerm_virtual_machine_run_command" "set_dns_suffix" {
 
 # Resource for Azure Policy for Windows extension
 resource "azurerm_virtual_machine_extension" "azure_policy_windows" {
-  name                 = "AzurePolicyforWindows"
-  virtual_machine_id    = azurerm_windows_virtual_machine.main.id
-  publisher             = "Microsoft.GuestConfiguration"
-  type                  = "ConfigurationforWindows"
-  type_handler_version = "1.29"
+  name                       = "AzurePolicyforWindows"
+  virtual_machine_id         = azurerm_windows_virtual_machine.main.id
+  publisher                  = "Microsoft.GuestConfiguration"
+  type                       = "ConfigurationforWindows"
+  type_handler_version       = "1.29"
   auto_upgrade_minor_version = true
-  automatic_upgrade_enabled = true
-  depends_on = [azurerm_virtual_machine_run_command.set_dns_suffix]
+  automatic_upgrade_enabled  = true
+  depends_on                 = [azurerm_virtual_machine_run_command.set_dns_suffix]
 
   lifecycle {
     ignore_changes = [tags]
@@ -140,14 +140,14 @@ resource "azurerm_virtual_machine_extension" "azure_policy_windows" {
 
 # Resource for Monitoring Dependency Agent extension
 resource "azurerm_virtual_machine_extension" "monitoring_dependency_agent" {
-  name                 = "Microsoft.Azure.Monitoring.DependencyAgent"
-  virtual_machine_id    = azurerm_windows_virtual_machine.main.id
-  publisher             = "Microsoft.Azure.Monitoring.DependencyAgent"
-  type                  = "DependencyAgentWindows"
-  type_handler_version = "9.10"
+  name                       = "Microsoft.Azure.Monitoring.DependencyAgent"
+  virtual_machine_id         = azurerm_windows_virtual_machine.main.id
+  publisher                  = "Microsoft.Azure.Monitoring.DependencyAgent"
+  type                       = "DependencyAgentWindows"
+  type_handler_version       = "9.10"
   auto_upgrade_minor_version = true
-  automatic_upgrade_enabled = true
-  depends_on = [azurerm_virtual_machine_extension.azure_policy_windows]
+  automatic_upgrade_enabled  = true
+  depends_on                 = [azurerm_virtual_machine_extension.azure_policy_windows]
 
   lifecycle {
     ignore_changes = [tags]
@@ -167,26 +167,26 @@ resource "azurerm_virtual_machine_extension" "mde_windows" {
     ignore_changes = [tags, settings]
   }
 
-  settings                   = jsonencode({
+  settings = jsonencode({
     autoUpdate        = true
     azureResourceId   = azurerm_windows_virtual_machine.main.id
     forceReOnboarding = false
     vNextEnabled      = true
   })
 
-  depends_on                 = [azurerm_virtual_machine_extension.monitoring_dependency_agent]
+  depends_on = [azurerm_virtual_machine_extension.monitoring_dependency_agent]
 }
 
 # Resource for Azure Monitor Windows Agent extension
 resource "azurerm_virtual_machine_extension" "azure_monitor_windows_agent" {
-  name                 = "AzureMonitorWindowsAgent"
-  virtual_machine_id    = azurerm_windows_virtual_machine.main.id
-  publisher             = "Microsoft.Azure.Monitor"
-  type                  = "AzureMonitorWindowsAgent"
-  type_handler_version = "1.0"
+  name                       = "AzureMonitorWindowsAgent"
+  virtual_machine_id         = azurerm_windows_virtual_machine.main.id
+  publisher                  = "Microsoft.Azure.Monitor"
+  type                       = "AzureMonitorWindowsAgent"
+  type_handler_version       = "1.0"
   auto_upgrade_minor_version = true
-  automatic_upgrade_enabled = true
-  depends_on = [azurerm_virtual_machine_extension.mde_windows]
+  automatic_upgrade_enabled  = true
+  depends_on                 = [azurerm_virtual_machine_extension.mde_windows]
 
   lifecycle {
     ignore_changes = [tags]
@@ -195,11 +195,11 @@ resource "azurerm_virtual_machine_extension" "azure_monitor_windows_agent" {
 
 # Resource to join domain
 resource "azurerm_virtual_machine_extension" "domain_join" {
-  name                 = "domainJoin"
-  virtual_machine_id    = azurerm_windows_virtual_machine.main.id
-  publisher             = "Microsoft.Compute"
-  type                  = "JsonADDomainExtension"
-  type_handler_version = "1.3"
+  name                       = "domainJoin"
+  virtual_machine_id         = azurerm_windows_virtual_machine.main.id
+  publisher                  = "Microsoft.Compute"
+  type                       = "JsonADDomainExtension"
+  type_handler_version       = "1.3"
   auto_upgrade_minor_version = true
 
   lifecycle {
@@ -207,11 +207,11 @@ resource "azurerm_virtual_machine_extension" "domain_join" {
   }
 
   settings = jsonencode({
-    Name        = "rotterdam.local"
-    User        = "rotterdam\\SA_SRV_TERRAFORM_DJ"
-    Restart     = "true"
-    Options     = 3
-    OUPath      = var.OU_path
+    Name    = "rotterdam.local"
+    User    = "rotterdam\\SA_SRV_TERRAFORM_DJ"
+    Restart = "true"
+    Options = 3
+    OUPath  = var.OU_path
   })
 
   protected_settings = jsonencode({
@@ -225,8 +225,8 @@ resource "azurerm_virtual_machine_run_command" "set_timezone_vm" {
   virtual_machine_id = azurerm_windows_virtual_machine.main.id
   location           = azurerm_windows_virtual_machine.main.location
   source {
-  # Command to set timezone on vm
-  script = <<EOF
+    # Command to set timezone on vm
+    script = <<EOF
     Set-TimeZone -Id "W. Europe Standard Time"
   EOF
   }
@@ -242,8 +242,8 @@ resource "azurerm_virtual_machine_run_command" "restart_vm" {
   virtual_machine_id = azurerm_windows_virtual_machine.main.id
   location           = azurerm_windows_virtual_machine.main.location
   source {
-  # Command to restart the Windows VM
-  script = <<EOF
+    # Command to restart the Windows VM
+    script = <<EOF
     Restart-Computer -Force
   EOF
   }

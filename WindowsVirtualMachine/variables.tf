@@ -161,7 +161,7 @@ variable "domain_join_settings" {
   default = {
     name     = "rotterdam.local"
     user     = "rotterdam\\SA_SRV_TERRAFORM_DJ"
-    password = "ufpIBoYRXUNjkFo<>"
+  # password = ""
   }
 }
 

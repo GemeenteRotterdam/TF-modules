@@ -154,15 +154,24 @@ variable "caching_data_disk" {
   default     = "ReadWrite"
 }
 
-variable "domain_join_settings" {
-  description = "Settings for domain join"
-  type        = map(string)
+variable "domain_join_fqdn" {
+  description = "FQDN for Domain Join"
+  type        = string
 
-  default = {
-    name     = "rotterdam.local"
-    user     = "rotterdam\\SA_SRV_TERRAFORM_DJ"
-  # password = ""
+  validation {
+    condition     = contains(["rotterdam.local", "azdev.local"], var.domain_join_fqdn)
+    error_message = "The FQDN must be either 'rotterdam.local' or 'azdev.local'."
   }
+}
+
+variable "domain_join_username" {
+  description = "Username of the SA for Domain join"
+  type        = string
+}
+
+variable "domain_join_password" {
+  description = "Password of the SA for Domain join"
+  type        = string
 }
 
 variable "OU_path" {

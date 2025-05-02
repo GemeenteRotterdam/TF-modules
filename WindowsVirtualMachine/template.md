@@ -12,7 +12,6 @@ module "XXX" {
   subnet_vnet = "" // Set the resource group name where the subnet is in
   subnet_rg   = "" // Set the existing vnet name where subnet is in
 
-  nsg_name       = "" // Set the name for the nsg
   vm_name        = "" // Set the name of the vm
   vm_size        =    //Choose the desired SKU in locals.tf ex: local.vm_size3
   data_disk_name = "" // Set the name of the data disk

@@ -18,16 +18,9 @@ variable "subnet_vnet" {
   type        = string
 }
 
-variable "ssh_key_name" {
+variable "ssh_public_key" {
   description = "The name of this SSH Public Key."
   type        = string
-  default     = "sshkey-rdam-linux-beheer-001"
-}
-
-variable "ssh_key_rg" {
-  description = "The name of the Resource Group where the SSH Public Key exists."
-  type        = string
-  default     = "RG-Rdam-Linux-Beheer"
 }
 
 variable "extra_tags" {

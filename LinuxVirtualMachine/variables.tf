@@ -101,7 +101,7 @@ variable "storage_account_type_os_disk" {
 variable "disk_size_os_disk" {
   description = "The Size of the Internal OS Disk in GB, if you wish to vary from the size used in the image this Virtual Machine is sourced from."
   type        = number
-  default     = 32
+  default     = 64
 }
 
 variable "disk_encryption_set_id" {

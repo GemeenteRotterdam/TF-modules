@@ -50,7 +50,7 @@ resource "azurerm_linux_virtual_machine" "example" {
 
   admin_ssh_key {
     username   = var.admin_username
-    public_key = data.azurerm_ssh_public_key.ssh.public_key
+    public_key = var.ssh_public_key //data.azurerm_ssh_public_key.ssh.public_key
   }
   os_disk {
     caching                = var.caching_os_disk

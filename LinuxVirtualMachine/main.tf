@@ -61,5 +61,9 @@ resource "azurerm_linux_virtual_machine" "example" {
 
   tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
 
+  lifecycle {
+    ignore_changes = [identity]
+  }
+
   depends_on = [azurerm_network_interface_security_group_association.example]
 }

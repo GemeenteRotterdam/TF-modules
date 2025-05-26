@@ -13,3 +13,7 @@ output "key_vault_key_id" {
 output "storage_account_id" {
   value = azurerm_storage_account.example.id
 }
+
+output "managed_identity_client_id" {
+  value = azurerm_storage_account.example.id
+}

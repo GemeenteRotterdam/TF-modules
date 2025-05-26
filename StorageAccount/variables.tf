@@ -170,10 +170,10 @@ variable "key_opts" {
   default     = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
 }
 
-variable "time_after_creation" {
-  description = "Rotate automatically at a duration after create as an ISO 8601 duration."
+variable "time_before_expiry" {
+  description = "Rotate automatically at a duration before expiry as an ISO 8601 duration."
   type        = string
-  default     = "P83D"
+  default     = "P7D"
 }
 
 variable "notify_before_expiry" {

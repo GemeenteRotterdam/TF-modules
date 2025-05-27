@@ -1,6 +1,6 @@
 resource "azurerm_key_vault" "example" {
   name                       = var.keyvault_name
-  location                   = data.azurerm_resource_group.resource_group.location
+  location                   = var.location //data.azurerm_resource_group.resource_group.location
   resource_group_name        = var.resource_group_name //data.azurerm_resource_group.resource_group.name
   sku_name                   = var.sku_name
   tenant_id                  = data.azurerm_client_config.current.tenant_id
@@ -32,7 +32,7 @@ resource "azurerm_role_assignment" "key_vault_role" {
 
 resource "azurerm_private_endpoint" "example" {
   name                = var.private_endpoint_name_for_kv
-  location            = data.azurerm_resource_group.resource_group.location
+  location            = var.location //data.azurerm_resource_group.resource_group.location
   resource_group_name = var.resource_group_name //data.azurerm_resource_group.resource_group.name
   subnet_id           = data.azurerm_subnet.example.id
 
@@ -58,7 +58,7 @@ resource "azurerm_private_endpoint" "example" {
 resource "azurerm_user_assigned_identity" "example" {
   name                = var.identity_name
   resource_group_name = var.resource_group_name //data.azurerm_resource_group.resource_group.name
-  location            = data.azurerm_resource_group.resource_group.location
+  location            = var.location //data.azurerm_resource_group.resource_group.location
   depends_on          = [azurerm_private_endpoint.example]
 
   tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
@@ -93,7 +93,7 @@ resource "azurerm_key_vault_key" "example" {
 resource "azurerm_storage_account" "example" {
   name                      = var.storage_account_name
   resource_group_name       = var.resource_group_name //data.azurerm_resource_group.resource_group.name
-  location                  = data.azurerm_resource_group.resource_group.location
+  location                  = var.location //data.azurerm_resource_group.resource_group.location
   account_tier              = var.storage_account_tier
   account_replication_type  = var.storage_account_replication_type
   shared_access_key_enabled = var.shared_access_key_enabled
@@ -140,7 +140,7 @@ resource "azurerm_storage_account" "example" {
 
 resource "azurerm_private_endpoint" "example2" {
   name                = var.private_endpoint_name_for_sa // "$pep-{var.tenant}-{var.applicationname}-{var.omgeving}-{var.volgnummer}"
-  location            = data.azurerm_resource_group.resource_group.location
+  location            = var.location //data.azurerm_resource_group.resource_group.location
   resource_group_name = var.resource_group_name //data.azurerm_resource_group.resource_group.name
   subnet_id           = data.azurerm_subnet.example.id
 

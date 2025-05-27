@@ -2,6 +2,7 @@ module "XXX" {
   source = "git::https://github.com/GemeenteRotterdam/TF-modules.git//StorageAccount?ref=main"
   // Bestaande resources
   resource_group_name = ""
+  location            = ""
   subnet_name         = ""
   subnet_vnet         = ""
   subnet_rg           = ""

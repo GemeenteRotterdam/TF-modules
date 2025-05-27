@@ -17,3 +17,7 @@ output "storage_account_id" {
 output "managed_identity_client_id" {
   value = azurerm_user_assigned_identity.example.client_id
 }
+
+output "storage_account_name" {
+  value = azurerm_storage_account.example.name
+}

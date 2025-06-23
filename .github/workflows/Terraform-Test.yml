@@ -24,6 +24,7 @@ jobs:
   setup-terraform:
     name: Setup Terraform
     runs-on: rdam
+    environment: production
 
     steps:
       - name: Checkout

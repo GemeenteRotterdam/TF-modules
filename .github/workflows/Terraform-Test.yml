@@ -1,0 +1,96 @@
+name: Terraform
+
+on:
+  workflow_call:
+    secrets:
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
+      AZURE_BACKEND_RESOURCE_GROUP_NAME:
+        required: true
+      AZURE_BACKEND_STORAGE_ACCOUNT_NAME:
+        required: true
+      AZURE_BACKEND_CONTAINER_NAME:
+        required: true
+      AZURE_BACKEND_STATE_FILE:
+        required: true
+      AZURE_DEFAULT_LOCATION:
+        required: true
+
+jobs:
+  setup-terraform:
+    name: Setup Terraform
+    runs-on: rdam
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          enable-AzPSSession: false
+          #auth-type: IDENTITY
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: | 
+          terraform init \
+            -backend-config="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
+            -backend-config="resource_group_name=${{ secrets.AZURE_BACKEND_RESOURCE_GROUP_NAME }}" \
+            -backend-config="storage_account_name=${{ secrets.AZURE_BACKEND_STORAGE_ACCOUNT_NAME }}" \
+            -backend-config="container_name=${{ secrets.AZURE_BACKEND_CONTAINER_NAME }}" \
+            -backend-config="key=${{ secrets.AZURE_BACKEND_STATE_FILE }}" \
+            -backend-config="use_azuread_auth=true"
+
+      - name: Terraform Format
+        run: terraform fmt -check
+
+      - name: Terraform Plan
+        if: github.event_name == 'pull_request' || github.event_name == 'push' || github.event_name == 'schedule'
+        id: tf-plan
+        run: |
+          terraform plan -input=false | tee plan_output.log
+
+      - name: Prevent Only Destroy Operations (Scheduled Runs Only)
+        if: github.event_name == 'schedule'
+        run: |
+          echo "🔍 Checking for destroy actions using Terraform output..."
+            destroy_count=$(terraform plan -no-color | grep -Eo '[0-9]+ to destroy' | awk '{sum+=$1} END {print sum}')
+  
+            destroy_count=${destroy_count:-0}
+  
+            if [[ "$destroy_count" -gt 0 ]]; then
+              echo "❌ Terraform plan detected destroy operations! Stopping workflow."
+              exit 1
+            else
+              echo "✅ No destroy operations detected. Proceeding..."
+            fi
+
+      - name: Post Terraform Plan result in PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+           const fs = require('fs');
+           const planOutput = fs.readFileSync('plan_output.log', 'utf8');
+           const truncatedOutput = planOutput.length > 60000 ? planOutput.slice(-60000) : planOutput; // Truncate if too long
+           github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `### Terraform Plan Output\n\`\`\`\n${truncatedOutput}\n\`\`\``
+           });
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule')
+        run: terraform apply -auto-approve -input=false

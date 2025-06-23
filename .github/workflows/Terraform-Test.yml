@@ -42,15 +42,12 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
-      - name: Set Variables
-        run: |
+      - name: Terraform Init
+        run: | 
           export TF_VAR_tenant_id="${{ secrets.AZURE_TENANT_ID }}"
           export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"
           export TF_VAR_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
           export TF_VAR_location="${{ secrets.AZURE_DEFAULT_LOCATION }}"
-
-      - name: Terraform Init
-        run: | 
           terraform init \
             -backend-config="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
             -backend-config="resource_group_name=${{ secrets.AZURE_BACKEND_RESOURCE_GROUP_NAME }}" \
@@ -66,6 +63,10 @@ jobs:
         if: github.event_name == 'pull_request' || github.event_name == 'push' || github.event_name == 'schedule'
         id: tf-plan
         run: |
+          export TF_VAR_tenant_id="${{ secrets.AZURE_TENANT_ID }}"
+          export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"
+          export TF_VAR_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+          export TF_VAR_location="${{ secrets.AZURE_DEFAULT_LOCATION }}"
           terraform plan -input=false | tee plan_output.log
 
       - name: Prevent Only Destroy Operations (Scheduled Runs Only)
@@ -101,4 +102,9 @@ jobs:
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule')
-        run: terraform apply -auto-approve -input=false
+        run: |
+          export TF_VAR_tenant_id="${{ secrets.AZURE_TENANT_ID }}"
+          export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"
+          export TF_VAR_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+          export TF_VAR_location="${{ secrets.AZURE_DEFAULT_LOCATION }}"
+          terraform apply -auto-approve -input=false

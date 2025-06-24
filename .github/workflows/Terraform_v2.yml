@@ -72,6 +72,10 @@ jobs:
       - name: Terraform Import
         continue-on-error: true
         run: |
+          export TF_VAR_tenant_id="${{ secrets.AZURE_TENANT_ID }}"
+          export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"
+          export TF_VAR_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+          export TF_VAR_location="${{ inputs.AZURE_DEFAULT_LOCATION }}"
           terraform import -input=false azurerm_resource_group.rg ${{ inputs.AZURE_BACKEND_RESOURCE_GROUP_RID }}
           terraform import -input=false azurerm_user_assigned_identity.id ${{ inputs.AZURE_MANAGED_IDENTITY_RID }}
           terraform import -input=false azurerm_federated_identity_credential.fc ${{ inputs.AZURE_FEDERATED_CREDENTIAL_RID }}

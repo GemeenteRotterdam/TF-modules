@@ -7,7 +7,16 @@ on:
       AZURE_DEFAULT_LOCATION:
         required: true
         type: string
-
+      AZURE_BACKEND_STATE_FILE:
+        required: true
+        type: string
+      AZURE_MANAGED_IDENTITY_RID:
+        required: true
+        type: string
+      AZURE_FEDERATED_CREDENTIAL_RID:
+        required: true
+        type: string
+  
     secrets:
       AZURE_CLIENT_ID:
         required: true
@@ -20,10 +29,6 @@ on:
       AZURE_BACKEND_STORAGE_ACCOUNT_NAME:
         required: true
       AZURE_BACKEND_CONTAINER_NAME:
-        required: true
-      AZURE_BACKEND_STATE_FILE:
-        required: true
-      AZURE_DEFAULT_LOCATION:
         required: true
 
 jobs:
@@ -59,8 +64,14 @@ jobs:
             -backend-config="resource_group_name=${{ secrets.AZURE_BACKEND_RESOURCE_GROUP_NAME }}" \
             -backend-config="storage_account_name=${{ secrets.AZURE_BACKEND_STORAGE_ACCOUNT_NAME }}" \
             -backend-config="container_name=${{ secrets.AZURE_BACKEND_CONTAINER_NAME }}" \
-            -backend-config="key=${{ secrets.AZURE_BACKEND_STATE_FILE }}" \
+            -backend-config="key=${{ inputs.AZURE_BACKEND_STATE_FILE }}" \
             -backend-config="use_azuread_auth=true"
+
+      - name: Terraform Import
+        continue-on-error: true
+        run: |
+          terraform import -input=false -allow-missing-config azurerm_user_assigned_identity.id ${{ inputs.AZURE_MANAGED_IDENTITY_RID }} \
+          terraform import -input=false -allow-missing-config azurerm_federated_identity_credential.fc ${{ inputs.AZURE_FEDERATED_CREDENTIAL_RID }}
 
       - name: Terraform Format
         run: terraform fmt -check
@@ -72,7 +83,7 @@ jobs:
           export TF_VAR_tenant_id="${{ secrets.AZURE_TENANT_ID }}"
           export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"
           export TF_VAR_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-          export TF_VAR_location="${{ secrets.AZURE_DEFAULT_LOCATION }}"
+          export TF_VAR_location="${{ inputs.AZURE_DEFAULT_LOCATION }}"
           terraform plan -input=false | tee plan_output.log
 
       - name: Prevent Only Destroy Operations (Scheduled Runs Only)
@@ -96,5 +107,5 @@ jobs:
           export TF_VAR_tenant_id="${{ secrets.AZURE_TENANT_ID }}"
           export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"
           export TF_VAR_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-          export TF_VAR_location="${{ secrets.AZURE_DEFAULT_LOCATION }}"
+          export TF_VAR_location="${{ inputs.AZURE_DEFAULT_LOCATION }}"
           terraform apply -auto-approve -input=false

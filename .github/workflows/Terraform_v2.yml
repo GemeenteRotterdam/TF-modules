@@ -70,8 +70,8 @@ jobs:
       - name: Terraform Import
         continue-on-error: true
         run: |
-          terraform import -input=false -allow-missing-config azurerm_user_assigned_identity.id ${{ inputs.AZURE_MANAGED_IDENTITY_RID }}
-          terraform import -input=false -allow-missing-config azurerm_federated_identity_credential.fc ${{ inputs.AZURE_FEDERATED_CREDENTIAL_RID }}
+          terraform import -input=false azurerm_user_assigned_identity.id ${{ inputs.AZURE_MANAGED_IDENTITY_RID }}
+          terraform import -input=false azurerm_federated_identity_credential.fc ${{ inputs.AZURE_FEDERATED_CREDENTIAL_RID }}
 
       - name: Terraform Format
         run: terraform fmt -check

@@ -4,7 +4,7 @@ on:
   workflow_call:
 
     inputs:
-      AZURE_BACKEND_RESOURCE_GROUP_ID:
+      AZURE_BACKEND_RESOURCE_GROUP_RID:
         type: string
       AZURE_DEFAULT_LOCATION:
         required: true
@@ -72,7 +72,7 @@ jobs:
       - name: Terraform Import
         continue-on-error: true
         run: |
-          terraform import -input=false azurerm_resource_group.rg ${{ inputs.AZURE_BACKEND_RESOURCE_GROUP_ID }}
+          terraform import -input=false azurerm_resource_group.rg ${{ inputs.AZURE_BACKEND_RESOURCE_GROUP_RID }}
           terraform import -input=false azurerm_user_assigned_identity.id ${{ inputs.AZURE_MANAGED_IDENTITY_RID }}
           terraform import -input=false azurerm_federated_identity_credential.fc ${{ inputs.AZURE_FEDERATED_CREDENTIAL_RID }}
 

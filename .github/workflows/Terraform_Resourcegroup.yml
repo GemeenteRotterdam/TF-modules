@@ -10,6 +10,9 @@ on:
       AZURE_BACKEND_STATE_FILE:
         required: true
         type: string
+      AZURE_RESOURCE_GROUP_NAME:
+        required: true
+        type: string
   
     secrets:
       AZURE_CLIENT_ID:
@@ -53,6 +56,7 @@ jobs:
           export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"
           export TF_VAR_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
           export TF_VAR_location="${{ inputs.AZURE_DEFAULT_LOCATION }}"
+          export TF_VAR_location="${{ inputs.AZURE_RESOURCE_GROUP_NAME }}"
           terraform init \
             -backend-config="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
             -backend-config="resource_group_name=${{ secrets.AZURE_BACKEND_RESOURCE_GROUP_NAME }}" \
@@ -72,6 +76,7 @@ jobs:
           export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"
           export TF_VAR_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
           export TF_VAR_location="${{ inputs.AZURE_DEFAULT_LOCATION }}"
+          export TF_VAR_location="${{ inputs.AZURE_RESOURCE_GROUP_NAME }}"
           terraform plan -input=false | tee plan_output.log
 
       - name: Prevent Only Destroy Operations (Scheduled Runs Only)
@@ -96,4 +101,5 @@ jobs:
           export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"
           export TF_VAR_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
           export TF_VAR_location="${{ inputs.AZURE_DEFAULT_LOCATION }}"
+          export TF_VAR_location="${{ inputs.AZURE_RESOURCE_GROUP_NAME }}"
           terraform apply -auto-approve -input=false

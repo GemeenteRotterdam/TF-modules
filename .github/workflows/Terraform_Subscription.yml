@@ -18,7 +18,13 @@ on:
       AZURE_FEDERATED_CREDENTIAL_RID:
         required: true
         type: string
-  
+      AZURE_BACKEND_STORAGE_ACCOUNT_RID:
+        required: true
+        type: string
+      AZURE_BACKEND_CONTAINER_RID:
+        required: true
+        type: string
+      
     secrets:
       AZURE_CLIENT_ID:
         required: true
@@ -60,6 +66,9 @@ jobs:
           export TF_VAR_tenant_id="${{ secrets.AZURE_TENANT_ID }}"
           export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"
           export TF_VAR_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+          export TF_VAR_resource_group_name="${{ secrets.AZURE_BACKEND_RESOURCE_GROUP_NAME }}"
+          export TF_VAR_storage_account_name="${{ secrets.AZURE_BACKEND_STORAGE_ACCOUNT_NAME }}"
+          export TF_VAR_storage_container_name="${{ secrets.AZURE_BACKEND_CONTAINER_NAME }}"          
           export TF_VAR_location="${{ inputs.AZURE_DEFAULT_LOCATION }}"
           terraform init \
             -backend-config="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
@@ -75,10 +84,15 @@ jobs:
           export TF_VAR_tenant_id="${{ secrets.AZURE_TENANT_ID }}"
           export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"
           export TF_VAR_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+          export TF_VAR_resource_group_name="${{ secrets.AZURE_BACKEND_RESOURCE_GROUP_NAME }}"
+          export TF_VAR_storage_account_name="${{ secrets.AZURE_BACKEND_STORAGE_ACCOUNT_NAME }}"
+          export TF_VAR_storage_container_name="${{ secrets.AZURE_BACKEND_CONTAINER_NAME }}" 
           export TF_VAR_location="${{ inputs.AZURE_DEFAULT_LOCATION }}"
           terraform import -input=false azurerm_resource_group.rg ${{ inputs.AZURE_BACKEND_RESOURCE_GROUP_RID }}
           terraform import -input=false azurerm_user_assigned_identity.id ${{ inputs.AZURE_MANAGED_IDENTITY_RID }}
           terraform import -input=false azurerm_federated_identity_credential.fc ${{ inputs.AZURE_FEDERATED_CREDENTIAL_RID }}
+          terraform import -input=false azurerm_storage_account.this ${{ inputs.AZURE_BACKEND_STORAGE_ACCOUNT_RID }}
+          terraform import -input=false azurerm_storage_container.this ${{ inputs.AZURE_BACKEND_CONTAINER_RID }}
 
       - name: Terraform Format
         run: terraform fmt -check
@@ -90,6 +104,9 @@ jobs:
           export TF_VAR_tenant_id="${{ secrets.AZURE_TENANT_ID }}"
           export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"
           export TF_VAR_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+          export TF_VAR_resource_group_name="${{ secrets.AZURE_BACKEND_RESOURCE_GROUP_NAME }}"
+          export TF_VAR_storage_account_name="${{ secrets.AZURE_BACKEND_STORAGE_ACCOUNT_NAME }}"
+          export TF_VAR_storage_container_name="${{ secrets.AZURE_BACKEND_CONTAINER_NAME }}" 
           export TF_VAR_location="${{ inputs.AZURE_DEFAULT_LOCATION }}"
           terraform plan -input=false | tee plan_output.log
 
@@ -114,5 +131,8 @@ jobs:
           export TF_VAR_tenant_id="${{ secrets.AZURE_TENANT_ID }}"
           export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"
           export TF_VAR_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+          export TF_VAR_resource_group_name="${{ secrets.AZURE_BACKEND_RESOURCE_GROUP_NAME }}"
+          export TF_VAR_storage_account_name="${{ secrets.AZURE_BACKEND_STORAGE_ACCOUNT_NAME }}"
+          export TF_VAR_storage_container_name="${{ secrets.AZURE_BACKEND_CONTAINER_NAME }}" 
           export TF_VAR_location="${{ inputs.AZURE_DEFAULT_LOCATION }}"
           terraform apply -auto-approve -input=false

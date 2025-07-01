@@ -88,9 +88,9 @@ jobs:
           export TF_VAR_storage_account_name="${{ secrets.AZURE_BACKEND_STORAGE_ACCOUNT_NAME }}"
           export TF_VAR_storage_container_name="${{ secrets.AZURE_BACKEND_CONTAINER_NAME }}" 
           export TF_VAR_location="${{ inputs.AZURE_DEFAULT_LOCATION }}"
-          terraform import -input=false azurerm_resource_group.rg ${{ inputs.AZURE_BACKEND_RESOURCE_GROUP_RID }}
-          terraform import -input=false azurerm_user_assigned_identity.id ${{ inputs.AZURE_MANAGED_IDENTITY_RID }}
-          terraform import -input=false azurerm_federated_identity_credential.fc ${{ inputs.AZURE_FEDERATED_CREDENTIAL_RID }}
+          terraform import -input=false azurerm_resource_group.this ${{ inputs.AZURE_BACKEND_RESOURCE_GROUP_RID }}
+          terraform import -input=false azurerm_user_assigned_identity.this ${{ inputs.AZURE_MANAGED_IDENTITY_RID }}
+          terraform import -input=false azurerm_federated_identity_credential.this ${{ inputs.AZURE_FEDERATED_CREDENTIAL_RID }}
           terraform import -input=false azurerm_storage_account.this ${{ inputs.AZURE_BACKEND_STORAGE_ACCOUNT_RID }}
           terraform import -input=false azurerm_storage_container.this ${{ inputs.AZURE_BACKEND_CONTAINER_RID }}
 

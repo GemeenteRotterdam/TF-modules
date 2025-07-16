@@ -18,12 +18,6 @@ on:
       AZURE_FEDERATED_CREDENTIAL_RID:
         required: true
         type: string
-      AZURE_BACKEND_STORAGE_ACCOUNT_RID:
-        required: true
-        type: string
-      AZURE_BACKEND_CONTAINER_RID:
-        required: true
-        type: string
       AZURE_BACKEND_RESOURCE_GROUP_NAME:
         type: string
         required: true
@@ -94,8 +88,6 @@ jobs:
           terraform import -input=false azurerm_resource_group.this ${{ inputs.AZURE_BACKEND_RESOURCE_GROUP_RID }}
           terraform import -input=false azurerm_user_assigned_identity.this ${{ inputs.AZURE_MANAGED_IDENTITY_RID }}
           terraform import -input=false azurerm_federated_identity_credential.this ${{ inputs.AZURE_FEDERATED_CREDENTIAL_RID }}
-          terraform import -input=false azurerm_storage_account.this ${{ inputs.AZURE_BACKEND_STORAGE_ACCOUNT_RID }}
-          terraform import -input=false azurerm_storage_container.this ${{ inputs.AZURE_BACKEND_CONTAINER_RID }}
 
       - name: Terraform Format
         run: terraform fmt -check

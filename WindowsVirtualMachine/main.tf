@@ -207,11 +207,11 @@ resource "azurerm_virtual_machine_extension" "domain_join" {
   }
 
   settings = jsonencode({
-    Name        = var.domain_join_fqdn
-    User        = var.domain_join_username
-    Restart     = "true"
-    Options     = 3
-    OUPath      = var.OU_path
+    Name    = var.domain_join_fqdn
+    User    = var.domain_join_username
+    Restart = "true"
+    Options = 3
+    OUPath  = var.OU_path
   })
 
   protected_settings = jsonencode({

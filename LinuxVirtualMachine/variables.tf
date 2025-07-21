@@ -18,27 +18,15 @@ variable "subnet_vnet" {
   type        = string
 }
 
-variable "ssh_key_name" {
+variable "ssh_public_key" {
   description = "The name of this SSH Public Key."
   type        = string
-  default     = "sshkey-rdam-linux-beheer-001"
-}
-
-variable "ssh_key_rg" {
-  description = "The name of the Resource Group where the SSH Public Key exists."
-  type        = string
-  default     = "RG-Rdam-Linux-Beheer"
 }
 
 variable "extra_tags" {
   description = "Set the change number as a tag"
   type        = map(string)
   default     = {}
-}
-
-variable "nsg_name" {
-  description = "Specifies the name of the network security group. Changing this forces a new resource to be created."
-  type        = string
 }
 
 variable "private_ip_address_allocation" {
@@ -113,7 +101,7 @@ variable "storage_account_type_os_disk" {
 variable "disk_size_os_disk" {
   description = "The Size of the Internal OS Disk in GB, if you wish to vary from the size used in the image this Virtual Machine is sourced from."
   type        = number
-  default     = 32
+  default     = 64
 }
 
 variable "disk_encryption_set_id" {

@@ -1,5 +1,5 @@
 resource "azurerm_network_security_group" "example" {
-  name                = var.nsg_name
+  name                = "${var.vm_name}-nsg"
   location            = data.azurerm_resource_group.rg.location
   resource_group_name = data.azurerm_resource_group.rg.name
 
@@ -50,7 +50,7 @@ resource "azurerm_linux_virtual_machine" "example" {
 
   admin_ssh_key {
     username   = var.admin_username
-    public_key = data.azurerm_ssh_public_key.ssh.public_key
+    public_key = var.ssh_public_key
   }
   os_disk {
     caching                = var.caching_os_disk
@@ -60,6 +60,10 @@ resource "azurerm_linux_virtual_machine" "example" {
   }
 
   tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
+
+  lifecycle {
+    ignore_changes = [identity]
+  }
 
   depends_on = [azurerm_network_interface_security_group_association.example]
 }

@@ -18,11 +18,6 @@ variable "subnet_vnet" {
   type        = string
 }
 
-variable "nsg_name" {
-  description = "Specifies the name of the network security group. Changing this forces a new resource to be created."
-  type        = string
-}
-
 variable "private_ip_address_allocation" {
   description = "The allocation method used for the Private IP Address. Possible values are Dynamic and Static."
   type        = string

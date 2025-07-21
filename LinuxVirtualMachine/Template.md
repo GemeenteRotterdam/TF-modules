@@ -3,13 +3,13 @@ module "XXX" {
 
   resource_group_name = ""
   subnet_name         = ""
-  subnet_rg           = ""
   subnet_vnet         = ""
+  subnet_rg           = ""
 
   vm_name  = ""
   vm_size  = ""
-  nsg_name = ""
 
   disk_encryption_set_id = data.azurerm_disk_encryption_set.disk_encryption.id
-  admin_username         = data.azurerm_key_vault_secret.admin_username.value
+  admin_username         = data.azurerm_key_vault_secret.admin_username.value // Authenticate with SSH-key
+  ssh_public_key         = data.azurerm_ssh_public_key.ssh.public_key
 }

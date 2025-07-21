@@ -1,5 +1,5 @@
 variable "resource_group_name" {
-  description = "The name of the existing resource group in which to create the resource"
+  description = "The name of the resource group in which to create the resource"
   type        = string
 }
 

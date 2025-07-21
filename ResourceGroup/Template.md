@@ -1,5 +1,5 @@
 module "rg_example_dev" {
-  source = "./modules/resource-group"
+  source = "git::https://github.com/GemeenteRotterdam/TF-modules.git//ResourceGroup?ref=main"
 
   name         = ""
   location     = var.location

@@ -21,10 +21,12 @@ module "XXX" {
   disk_encryption_set_id = data.azurerm_disk_encryption_set.disk_encryption.id // Don't change this value
   source_image_id        = //Choose the desired image in locals.tf ex: local.ID_Rdam_Windows_Server_2022_DC_Gen2_TrustedLaunch
 
-  domain_join_fqdn     = "" //Choose between rotterdam.local and azdev.local
-  domain_join_username = data.azurerm_key_vault_secret.domain_join_username.value
-  domain_join_password = data.azurerm_key_vault_secret.domain_join_password.value
-
-  OU_path             = "" // Set the path for the domain join of the vm ex: "OU=Management servers,OU=Servers,DC=rotterdam,DC=local"
   tag_update_schedule = "" // Choose from: "dinsdag 23:00", "donderdag 00:00", "maandag 23:00", "vrijdag 01:00", "woensdag 00:00", "handmatig"
 }
+
+
+<!-- Do not copy!
+domain_join_fqdn     = "" //Choose between rotterdam.local and azdev.local
+domain_join_username = data.azurerm_key_vault_secret.domain_join_username.value
+domain_join_password = data.azurerm_key_vault_secret.domain_join_password.value
+OU_path             = "" // Set the path for the domain join of the vm ex: "OU=Management servers,OU=Servers,DC=rotterdam,DC=local" -->

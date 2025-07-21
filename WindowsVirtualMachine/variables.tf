@@ -149,36 +149,36 @@ variable "caching_data_disk" {
   default     = "ReadWrite"
 }
 
-variable "domain_join_fqdn" {
-  description = "FQDN for Domain Join"
-  type        = string
+# variable "domain_join_fqdn" {
+#   description = "FQDN for Domain Join"
+#   type        = string
 
-  validation {
-    condition     = contains(["rotterdam.local", "azdev.local"], var.domain_join_fqdn)
-    error_message = "The FQDN must be either 'rotterdam.local' or 'azdev.local'."
-  }
-}
+#   validation {
+#     condition     = contains(["rotterdam.local", "azdev.local"], var.domain_join_fqdn)
+#     error_message = "The FQDN must be either 'rotterdam.local' or 'azdev.local'."
+#   }
+# }
 
-variable "domain_join_username" {
-  description = "Username of the SA for Domain join"
-  type        = string
-}
+# variable "domain_join_username" {
+#   description = "Username of the SA for Domain join"
+#   type        = string
+# }
 
-variable "domain_join_password" {
-  description = "Password of the SA for Domain join"
-  type        = string
-}
+# variable "domain_join_password" {
+#   description = "Password of the SA for Domain join"
+#   type        = string
+# }
 
-variable "OU_path" {
-  description = "The Organizational Unit (OU) path for the server"
-  type        = string
-  //default     = "OU=Management servers,OU=Servers,DC=rotterdam,DC=local"
+# variable "OU_path" {
+#   description = "The Organizational Unit (OU) path for the server"
+#   type        = string
+#   //default     = "OU=Management servers,OU=Servers,DC=rotterdam,DC=local"
 
-  validation {
-    condition     = can(regex("^OU=.*DC=.*$", var.OU_path))
-    error_message = "The OU Path must start with 'OU=' and contain 'DC=' components."
-  }
-}
+#   validation {
+#     condition     = can(regex("^OU=.*DC=.*$", var.OU_path))
+#     error_message = "The OU Path must start with 'OU=' and contain 'DC=' components."
+#   }
+# }
 
 variable "extra_tags" {
   description = "Set the change number as a tag"

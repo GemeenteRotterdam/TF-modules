@@ -194,31 +194,31 @@ resource "azurerm_virtual_machine_extension" "azure_monitor_windows_agent" {
 }
 
 # Resource to join domain
-resource "azurerm_virtual_machine_extension" "domain_join" {
-  name                       = "domainJoin"
-  virtual_machine_id         = azurerm_windows_virtual_machine.main.id
-  publisher                  = "Microsoft.Compute"
-  type                       = "JsonADDomainExtension"
-  type_handler_version       = "1.3"
-  auto_upgrade_minor_version = true
+# resource "azurerm_virtual_machine_extension" "domain_join" {
+#   name                       = "domainJoin"
+#   virtual_machine_id         = azurerm_windows_virtual_machine.main.id
+#   publisher                  = "Microsoft.Compute"
+#   type                       = "JsonADDomainExtension"
+#   type_handler_version       = "1.3"
+#   auto_upgrade_minor_version = true
 
-  lifecycle {
-    ignore_changes = [tags]
-  }
+#   lifecycle {
+#     ignore_changes = [tags]
+#   }
 
-  settings = jsonencode({
-    Name        = var.domain_join_fqdn
-    User        = var.domain_join_username
-    Restart     = "true"
-    Options     = 3
-    OUPath      = var.OU_path
-  })
+#   settings = jsonencode({
+#     Name    = var.domain_join_fqdn
+#     User    = var.domain_join_username
+#     Restart = "true"
+#     Options = 3
+#     OUPath  = var.OU_path
+#   })
 
-  protected_settings = jsonencode({
-    Password = var.domain_join_password
-  })
-  depends_on = [azurerm_virtual_machine_extension.azure_monitor_windows_agent]
-}
+#   protected_settings = jsonencode({
+#     Password = var.domain_join_password
+#   })
+#   depends_on = [azurerm_virtual_machine_extension.azure_monitor_windows_agent]
+# }
 
 resource "azurerm_virtual_machine_run_command" "set_timezone_vm" {
   name               = "SetTimeZoneOnVm"
@@ -230,7 +230,7 @@ resource "azurerm_virtual_machine_run_command" "set_timezone_vm" {
     Set-TimeZone -Id "W. Europe Standard Time"
   EOF
   }
-  depends_on = [azurerm_virtual_machine_extension.domain_join]
+  depends_on = [azurerm_virtual_machine_extension.azure_monitor_windows_agent]
 
   lifecycle {
     ignore_changes = [tags]

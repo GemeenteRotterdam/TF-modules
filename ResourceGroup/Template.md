@@ -3,7 +3,7 @@ module "rg_example_dev" {
 
   name         = ""
   location     = var.location
-  rg_name_mi   = azurerm_user_assigned_identity.this.resource_group_name
+  mi_rg_name   = azurerm_user_assigned_identity.this.resource_group_name
   mi_parent_id = azurerm_user_assigned_identity.this.id
 
   tags = {

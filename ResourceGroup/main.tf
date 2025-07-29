@@ -1,4 +1,4 @@
-resource "azurerm_resource_group" "rg-example-dev" {
+resource "azurerm_resource_group" "rg" {
   name     = var.name
   location = var.location
   tags = {
@@ -19,11 +19,11 @@ resource "azurerm_resource_group" "rg-example-dev" {
   }
 }
 
-resource "azurerm_federated_identity_credential" "rg-example-dev" {
-  name                = azurerm_resource_group.rg-example-dev.name
-  resource_group_name = var.rg_name_mi
+resource "azurerm_federated_identity_credential" "rg" {
+  name                = azurerm_resource_group.rg.name
+  resource_group_name = var.mi_rg_name
   audience            = ["api://AzureADTokenExchange"]
   issuer              = "https://token.actions.githubusercontent.com"
   parent_id           = var.mi_parent_id
-  subject             = "repo:GemeenteRotterdam/${azurerm_resource_group.rg-example-dev.name}:environment:production"
+  subject             = "repo:GemeenteRotterdam/${azurerm_resource_group.rg.name}:environment:production"
 }

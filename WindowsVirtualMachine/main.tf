@@ -162,6 +162,7 @@ resource "azurerm_virtual_machine_extension" "mde_windows" {
   type                       = "MDE.Windows"
   type_handler_version       = "1.0"
   auto_upgrade_minor_version = true
+  protected_settings         = jsonencode({})
 
   lifecycle {
     ignore_changes = [tags, settings]

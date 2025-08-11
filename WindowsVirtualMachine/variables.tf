@@ -91,6 +91,11 @@ variable "source_image_id" {
   type        = string
 }
 
+variable "availability_set_id" {
+  type    = string
+  default = null
+}
+
 variable "caching_os_disk" {
   description = "The Type of Caching which should be used for the Internal OS Disk. Possible values are None, ReadOnly and ReadWrite."
   type        = string

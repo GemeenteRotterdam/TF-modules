@@ -20,7 +20,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 resource "azurerm_federated_identity_credential" "rg" {
-  name                = azurerm_resource_group.rg.name
+  name                = "GitHub-${azurerm_resource_group.rg.name}"
   resource_group_name = var.mi_rg_name
   audience            = ["api://AzureADTokenExchange"]
   issuer              = "https://token.actions.githubusercontent.com"

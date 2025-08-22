@@ -6,8 +6,12 @@ module "XXX" {
   subnet_vnet         = ""
   subnet_rg           = ""
 
-  keyvault_name                = ""
-  private_endpoint_name_for_kv = ""
+  tenant_name = ""
+  app_name    = ""
+  description = ""
+  environment = ""
+  volgnr_kv   = ""
+  volgnr_pep  = ""
 
   private_dns_zone_name_kv = data.azurerm_private_dns_zone.vaultcore.name
   private_dns_zone_id_kv   = [data.azurerm_private_dns_zone.vaultcore.id]

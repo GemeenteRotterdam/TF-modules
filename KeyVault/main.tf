@@ -1,5 +1,5 @@
 resource "azurerm_key_vault" "example" {
-  name                       = var.keyvault_name
+  name                       = "kv-${var.tenant_name}-${var.app_name}-${var.description}-${var.environment}-${var.volgnr_kv}"
   location                   = data.azurerm_resource_group.resource_group.location
   resource_group_name        = data.azurerm_resource_group.resource_group.name
   sku_name                   = var.sku_name
@@ -24,13 +24,13 @@ resource "azurerm_key_vault" "example" {
 }
 
 resource "azurerm_private_endpoint" "example" {
-  name                = var.private_endpoint_name_for_kv
+  name                = "pep-${var.tenant_name}-${var.app_name}-${var.description}-${var.environment}-${var.volgnr_pep}"
   location            = data.azurerm_resource_group.resource_group.location
   resource_group_name = data.azurerm_resource_group.resource_group.name
   subnet_id           = data.azurerm_subnet.example.id
 
   private_service_connection {
-    name                           = var.private_endpoint_name_for_kv
+    name                           = azurerm_private_endpoint.example.name
     private_connection_resource_id = azurerm_key_vault.example.id
     subresource_names              = var.subresource_names_kv
     is_manual_connection           = var.is_manual_connection_kv
@@ -41,7 +41,7 @@ resource "azurerm_private_endpoint" "example" {
     private_dns_zone_ids = var.private_dns_zone_id_kv
   }
 
-  custom_network_interface_name = "${var.private_endpoint_name_for_kv}-nic"
+  custom_network_interface_name = "${azurerm_private_endpoint.example.name}-nic"
 
   tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
 

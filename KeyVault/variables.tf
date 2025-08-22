@@ -25,8 +25,48 @@ variable "extra_tags" {
 }
 
 //KeyVault variables
-variable "keyvault_name" {
-  description = "The name of the Key Vault"
+# variable "keyvault_name" {
+#   description = "The name of the Key Vault"
+#   type        = string
+# }
+
+variable "tenant_name" {
+  description = "value"
+  type        = string
+
+  validation {
+    condition     = var.tenant == "rdam" || var.tenant == "azdev"
+    error_message = "Tenant can only be 'rdam' or 'azdev'."
+  }
+}
+
+variable "app_name" {
+  description = "value"
+  type        = string
+}
+
+variable "description" {
+  description = "value"
+  type        = string
+}
+
+variable "environment" {
+  description = "value"
+  type        = string
+
+  validation {
+    condition     = var.environment == "ont" || var.environment == "tst" || var.environment == "acc" || var.environment == "prd"
+    error_message = "Environment must be one of: 'ont', 'tst', 'acc', or 'prd'."
+  }
+}
+
+variable "volgnr_kv" {
+  description = "value"
+  type        = string
+}
+
+variable "volgnr_pep" {
+  description = "value"
   type        = string
 }
 
@@ -91,10 +131,10 @@ variable "network_acls_bypass" {
 }
 
 //Private endpoint for Key vault variables
-variable "private_endpoint_name_for_kv" {
-  description = "The name of the private endpoint"
-  type        = string
-}
+# variable "private_endpoint_name_for_kv" {
+#   description = "The name of the private endpoint"
+#   type        = string
+# }
 
 variable "subresource_names_kv" {
   description = "A list of subresource names which the Private Endpoint is able to connect to."

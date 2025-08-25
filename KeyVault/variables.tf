@@ -1,3 +1,5 @@
+// Context Variables
+
 variable "resource_group_name" {
   description = "The name of the existing resource group in which to create the resource"
   type        = string
@@ -24,30 +26,36 @@ variable "extra_tags" {
   default     = {}
 }
 
-//KeyVault variables
-# variable "keyvault_name" {
-#   description = "The name of the Key Vault"
-#   type        = string
-# }
+// Naming Variables
 
 variable "tenant_name" {
   description = "value"
   type        = string
 
   validation {
-    condition     = var.tenant == "rdam" || var.tenant == "azdev"
-    error_message = "Tenant can only be 'rdam' or 'azdev'."
+    condition     = contains(["azdev", "rdam"])
+    error_message = "Tenant must be one of: 'rdam', 'azdev'."
   }
 }
 
 variable "app_name" {
   description = "value"
   type        = string
+ 
+    validation {
+    condition     = length(var.app_name) <= 8
+    error_message = "Value must be 8 characters or fewer."
+  }
 }
 
 variable "description" {
   description = "value"
   type        = string
+  
+    validation {
+    condition     = length(var.description) <= 8
+    error_message = "Value must be 8 characters or fewer."
+  }
 }
 
 variable "environment" {
@@ -55,8 +63,8 @@ variable "environment" {
   type        = string
 
   validation {
-    condition     = var.environment == "ont" || var.environment == "tst" || var.environment == "acc" || var.environment == "prd"
-    error_message = "Environment must be one of: 'ont', 'tst', 'acc', or 'prd'."
+    condition     = contains(["sbx", "ont", "tst", "acc", "prd"])
+    error_message = "Environment must be one of: 'sbx', 'ont', 'tst', 'acc', or 'prd'."
   }
 }
 
@@ -69,6 +77,30 @@ variable "volgnr_pep" {
   description = "value"
   type        = string
 }
+
+variable "resource_azurerm_key_vault_this_name" {
+  description = "Full name of the Key Vault"
+  type        = string
+  default     = "kv-${var.tenant_name}-${var.app_name}-${var.description}-${var.environment}-${var.volgnr_kv}"
+
+  validation {
+    condition     = can(regex("^kv-(rdam|azdev)-[a-zA-Z0-9]{1,8}-[a-zA-Z]{1,8}-(sbx|ont|tst|acc|prd)-([0][0-9]{2}|[1-9][0-9]{2})$"))
+    error_message = "Failed to match Regular Expression."
+  }
+}
+
+variable "resource_azurerm_private_endpoint_this_name" {
+  description = "Full name of the Private Endpoint"
+  type        = string
+  default     = "pep-${var.tenant_name}-${var.app_name}-${var.description}-${var.environment}-${var.volgnr_pep}"
+
+  validation {
+    condition     = can(regex("^pep-(rdam|azdev)-[a-zA-Z0-9]{1,8}-[a-zA-Z]{1,8}-(sbx|ont|tst|acc|prd)-([0][0-9]{2}|[1-9][0-9]{2})$"))
+    error_message = "Failed to match Regular Expression."
+  }
+}
+
+// Configuration Variables
 
 variable "sku_name" {
   description = "The pricing tier of the Key vault"
@@ -129,12 +161,6 @@ variable "network_acls_bypass" {
   type        = string
   default     = "AzureServices"
 }
-
-//Private endpoint for Key vault variables
-# variable "private_endpoint_name_for_kv" {
-#   description = "The name of the private endpoint"
-#   type        = string
-# }
 
 variable "subresource_names_kv" {
   description = "A list of subresource names which the Private Endpoint is able to connect to."

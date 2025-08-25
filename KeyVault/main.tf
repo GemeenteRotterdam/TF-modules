@@ -1,5 +1,5 @@
-resource "azurerm_key_vault" "example" {
-  name                       = "kv-${var.tenant_name}-${var.app_name}-${var.description}-${var.environment}-${var.volgnr_kv}"
+resource "azurerm_key_vault" "this" {
+  name                       = var.resource_azurerm_key_vault_this_name
   location                   = data.azurerm_resource_group.resource_group.location
   resource_group_name        = data.azurerm_resource_group.resource_group.name
   sku_name                   = var.sku_name
@@ -17,21 +17,21 @@ resource "azurerm_key_vault" "example" {
   network_acls {
     default_action             = var.network_acls_default_action
     bypass                     = var.network_acls_bypass
-    virtual_network_subnet_ids = [data.azurerm_subnet.example.id]
+    virtual_network_subnet_ids = [data.azurerm_subnet.this.id]
   }
 
   tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
 }
 
-resource "azurerm_private_endpoint" "example" {
-  name                = "pep-${var.tenant_name}-${var.app_name}-${var.description}-${var.environment}-${var.volgnr_pep}"
+resource "azurerm_private_endpoint" "this" {
+  name                = var.resource_azurerm_private_endpoint_this_name
   location            = data.azurerm_resource_group.resource_group.location
   resource_group_name = data.azurerm_resource_group.resource_group.name
-  subnet_id           = data.azurerm_subnet.example.id
+  subnet_id           = data.azurerm_subnet.this.id
 
   private_service_connection {
-    name                           = azurerm_private_endpoint.example.name
-    private_connection_resource_id = azurerm_key_vault.example.id
+    name                           = azurerm_private_endpoint.this.name
+    private_connection_resource_id = azurerm_key_vault.this.id
     subresource_names              = var.subresource_names_kv
     is_manual_connection           = var.is_manual_connection_kv
   }
@@ -41,9 +41,9 @@ resource "azurerm_private_endpoint" "example" {
     private_dns_zone_ids = var.private_dns_zone_id_kv
   }
 
-  custom_network_interface_name = "${azurerm_private_endpoint.example.name}-nic"
+  custom_network_interface_name = "${azurerm_private_endpoint.this.name}-nic"
 
   tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
 
-  depends_on = [azurerm_key_vault.example]
+  depends_on = [azurerm_key_vault.this]
 }

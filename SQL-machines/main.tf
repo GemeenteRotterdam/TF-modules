@@ -201,11 +201,11 @@ resource "azurerm_virtual_machine_extension" "azure_monitor_windows_agent" {
 
 # Resource to join domain
 resource "azurerm_virtual_machine_extension" "domain_join" {
-  name                 = "domainJoin"
-  virtual_machine_id    = azurerm_windows_virtual_machine.main.id
-  publisher             = "Microsoft.Compute"
-  type                  = "JsonADDomainExtension"
-  type_handler_version = "1.3"
+  name                       = "domainJoin"
+  virtual_machine_id         = azurerm_windows_virtual_machine.main.id
+  publisher                  = "Microsoft.Compute"
+  type                       = "JsonADDomainExtension"
+  type_handler_version       = "1.3"
   auto_upgrade_minor_version = true
 
   lifecycle {
@@ -213,11 +213,11 @@ resource "azurerm_virtual_machine_extension" "domain_join" {
   }
 
   settings = jsonencode({
-    Name        = "rotterdam.local"
-    User        = "rotterdam\\SA_SRV_TERRAFORM_DJ"
-    Restart     = "true"
-    Options     = 3
-    OUPath      = var.OU_path
+    Name    = "rotterdam.local"
+    User    = "rotterdam\\SA_SRV_TERRAFORM_DJ"
+    Restart = "true"
+    Options = 3
+    OUPath  = var.OU_path
   })
 
   protected_settings = jsonencode({

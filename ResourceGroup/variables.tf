@@ -29,8 +29,8 @@ variable "tags" {
   default = {}
 }
 
-variable "rg_name_mi" {
-  description = "Resource Group name of the managed identity where the federated credential will  be set."
+variable "mi_rg_name" {
+  description = "Resource Group name of the managed identity where the federated credential will be set."
   type        = string
 }
 

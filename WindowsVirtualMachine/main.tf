@@ -45,6 +45,7 @@ resource "azurerm_windows_virtual_machine" "main" {
   computer_name              = var.vm_name
   patch_assessment_mode      = var.patch_assessment_mode
   source_image_id            = var.source_image_id
+  availability_set_id        = var.availability_set_id
 
   os_disk {
     caching                = var.caching_os_disk
@@ -162,6 +163,7 @@ resource "azurerm_virtual_machine_extension" "mde_windows" {
   type                       = "MDE.Windows"
   type_handler_version       = "1.0"
   auto_upgrade_minor_version = true
+  protected_settings         = jsonencode({})
 
   lifecycle {
     ignore_changes = [tags, settings]

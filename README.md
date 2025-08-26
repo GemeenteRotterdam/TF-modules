@@ -8,11 +8,17 @@ Terraform modules
 ```
 // Basic Usage
 
-source = "git::https://github.com/GemeenteRotterdam/TF-modules.git//<module>?ref=main
+module "example" {
+  source = "git::https://github.com/GemeenteRotterdam/TF-modules.git//<module>?ref=main
+  ...
+}
 
 // Target Specific Release
 
-source = "git::https://github.com/GemeenteRotterdam/TF-modules.git//KeyVault?ref=19-08-2025
+module "example" {
+  source = "git::https://github.com/GemeenteRotterdam/TF-modules.git//KeyVault?ref=19-08-2025
+  ...
+}
 
 ```
 

@@ -18,11 +18,6 @@ variable "subnet_vnet" {
   type        = string
 }
 
-variable "ssh_public_key" {
-  description = "The name of this SSH Public Key."
-  type        = string
-}
-
 variable "extra_tags" {
   description = "Set the change number as a tag"
   type        = map(string)
@@ -59,6 +54,11 @@ variable "source_image_reference" {
 
 variable "admin_username" {
   description = "The username of the local administrator used for the Virtual Machine. Changing this forces a new resource to be created."
+  type        = string
+}
+
+variable "admin_password" {
+  description = "The password of the local administrator used for the Virtual Machine. Changing this forces a new resource to be created."
   type        = string
 }
 

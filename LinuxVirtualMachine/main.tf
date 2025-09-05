@@ -29,18 +29,19 @@ resource "azurerm_network_interface_security_group_association" "example" {
 }
 
 resource "azurerm_linux_virtual_machine" "example" {
-  name                       = var.vm_name
-  resource_group_name        = data.azurerm_resource_group.rg.name
-  location                   = data.azurerm_resource_group.rg.location
-  size                       = var.vm_size
-  admin_username             = var.admin_username
-  admin_password             = var.admin_password
-  network_interface_ids      = [azurerm_network_interface.main.id]
-  secure_boot_enabled        = var.secure_boot_enabled
-  patch_mode                 = var.patch_mode
-  patch_assessment_mode      = var.patch_assessment_mode
-  encryption_at_host_enabled = var.encryption_at_host_enabled
-  computer_name              = var.vm_name
+  name                            = var.vm_name
+  resource_group_name             = data.azurerm_resource_group.rg.name
+  location                        = data.azurerm_resource_group.rg.location
+  size                            = var.vm_size
+  admin_username                  = var.admin_username
+  admin_password                  = var.admin_password
+  network_interface_ids           = [azurerm_network_interface.main.id]
+  secure_boot_enabled             = var.secure_boot_enabled
+  patch_mode                      = var.patch_mode
+  patch_assessment_mode           = var.patch_assessment_mode
+  encryption_at_host_enabled      = var.encryption_at_host_enabled
+  computer_name                   = var.vm_name
+  disable_password_authentication = var.disable_password_authentication
 
   source_image_reference {
     publisher = var.source_image_reference["publisher"]

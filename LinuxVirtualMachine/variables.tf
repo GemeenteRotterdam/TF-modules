@@ -62,6 +62,12 @@ variable "admin_password" {
   type        = string
 }
 
+variable "disable_password_authentication" {
+  description = "Should Password Authentication be disabled on this Virtual Machine? Changing this forces a new resource to be created."
+  type        = bool
+  default     = false
+}
+
 variable "secure_boot_enabled" {
   description = "Specifies if Secure Boot and Trusted Launch is enabled for the Virtual Machine. Changing this forces a new resource to be created."
   type        = bool

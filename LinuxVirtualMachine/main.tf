@@ -34,6 +34,7 @@ resource "azurerm_linux_virtual_machine" "example" {
   location                   = data.azurerm_resource_group.rg.location
   size                       = var.vm_size
   admin_username             = var.admin_username
+  admin_password             = var.admin_password
   network_interface_ids      = [azurerm_network_interface.main.id]
   secure_boot_enabled        = var.secure_boot_enabled
   patch_mode                 = var.patch_mode
@@ -48,10 +49,6 @@ resource "azurerm_linux_virtual_machine" "example" {
     version   = var.source_image_reference["version"]
   }
 
-  admin_ssh_key {
-    username   = var.admin_username
-    public_key = var.ssh_public_key
-  }
   os_disk {
     caching                = var.caching_os_disk
     storage_account_type   = var.storage_account_type_os_disk

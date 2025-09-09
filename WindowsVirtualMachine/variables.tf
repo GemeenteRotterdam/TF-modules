@@ -29,7 +29,7 @@ variable "vm_name" {
   type        = string
 
   validation {
-    condition = can(regex("^VC[RAWUOD][ZOTAP][WL][A-Z]{3}[0-9]{3}$", var.server_name))
+    condition = can(regex("^VC[RAWUOD][ZOTAP][WL][A-Z]{3}[0-9]{3}$", var.vm_name))
     error_message = "Failed To Match Naming Convention"
   }
 }

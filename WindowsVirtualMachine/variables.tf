@@ -27,6 +27,11 @@ variable "private_ip_address_allocation" {
 variable "vm_name" {
   description = "The name of the Windows Virtual Machine. Changing this forces a new resource to be created."
   type        = string
+
+  validation {
+    condition = can(regex("^VC[RAWUOD][ZOTAP][WL][A-Z]{3}[0-9]{3}$", var.vm_name))
+    error_message = "Failed To Match Naming Convention"
+  }
 }
 
 variable "vm_size" {

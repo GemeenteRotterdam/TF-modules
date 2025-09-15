@@ -6,6 +6,10 @@ variable "resource_group_name" {
 variable "virtual_network_name" {
   description = "The name of the virtual network"
   type        = string
+  validation {
+    condition = can(regex("^vnet-(rdam|azdev)-[a-z0-9]{1,16}-[a-z]{1,16}-[0-9]{3}$", var.vm_name))
+    error_message = "Failed To Match Naming Convention"
+  }
 }
 
 variable "dns_servers" {

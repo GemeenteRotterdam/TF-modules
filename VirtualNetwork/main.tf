@@ -12,9 +12,9 @@ resource "azurerm_subnet" "this" {
   name                                          = each.key
   virtual_network_name                          = azurerm_virtual_network.this.name
   resource_group_name                           = var.resource_group_name
-  address_prefixes                              = each.address_space
-  service_endpoint_policy_ids                   = each.service_endpoint_policy_ids
-  service_endpoints                             = each.service_endpoints
+  address_prefixes                              = each.value.address_space
+  service_endpoint_policy_ids                   = each.value.service_endpoint_policy_ids
+  service_endpoints                             = each.value.service_endpoints
   default_outbound_access_enabled               = false
   private_link_service_network_policies_enabled = true
   private_endpoint_network_policies             = "Enabled"

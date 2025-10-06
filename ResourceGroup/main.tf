@@ -15,7 +15,7 @@ resource "azurerm_resource_group" "rg" {
     owner                 = var.tags.owner
     shared                = var.tags.shared
     "short name"          = var.tags.short_name
-    "tasknumber projects" = "test" //var.tags.tasknumber_projects
+    "tasknumber projects" = var.tags.tasknumber_projects
   }
 }
 

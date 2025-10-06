@@ -20,6 +20,6 @@ module "rg_example_dev" {
     owner                 = ""
     shared                = ""
     short_name            = ""
-    taaknummer_projecten  = ""
+    tasknumber_projects   = ""
   }
 }

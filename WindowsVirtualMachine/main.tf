@@ -120,7 +120,7 @@ resource "azurerm_virtual_machine_run_command" "set_dns_suffix" {
      Set-DnsClient -InterfaceIndex (Get-NetAdapter -InterfaceDescription "Microsoft Hyper-V*").IfIndex -ConnectionSpecificSuffix "rotterdam.local" -UseSuffixWhenRegistering $true; Register-DnsClient
      EOF
   }
-  depends_on = [azurerm_virtual_machine_extension.disk_setup]
+  //depends_on = [azurerm_virtual_machine_extension.disk_setup]
 }
 
 # # Resource for Azure Policy for Windows extension
@@ -148,7 +148,7 @@ resource "azurerm_virtual_machine_extension" "monitoring_dependency_agent" {
   type_handler_version       = "9.10"
   auto_upgrade_minor_version = true
   automatic_upgrade_enabled  = true
-  depends_on                 = [azurerm_virtual_machine_extension.azure_policy_windows]
+  //depends_on                 = [azurerm_virtual_machine_extension.azure_policy_windows]
 
   lifecycle {
     ignore_changes = [tags]
@@ -188,7 +188,7 @@ resource "azurerm_virtual_machine_extension" "azure_monitor_windows_agent" {
   type_handler_version       = "1.0"
   auto_upgrade_minor_version = true
   automatic_upgrade_enabled  = true
-  depends_on                 = [azurerm_virtual_machine_extension.mde_windows]
+  //depends_on                 = [azurerm_virtual_machine_extension.mde_windows]
 
   lifecycle {
     ignore_changes = [tags]
@@ -232,29 +232,29 @@ resource "azurerm_virtual_machine_run_command" "set_timezone_vm" {
     Set-TimeZone -Id "W. Europe Standard Time"
   EOF
   }
-  depends_on = [azurerm_virtual_machine_extension.azure_monitor_windows_agent]
+  //depends_on = [azurerm_virtual_machine_extension.azure_monitor_windows_agent]
 
   lifecycle {
     ignore_changes = [tags]
   }
 }
 
-resource "azurerm_virtual_machine_run_command" "restart_vm" {
-  name               = "RestartVM"
-  virtual_machine_id = azurerm_windows_virtual_machine.main.id
-  location           = azurerm_windows_virtual_machine.main.location
-  source {
-    # Command to restart the Windows VM
-    script = <<EOF
-    Restart-Computer -Force
-  EOF
-  }
-  depends_on = [azurerm_virtual_machine_run_command.set_timezone_vm]
+# resource "azurerm_virtual_machine_run_command" "restart_vm" {
+#   name               = "RestartVM"
+#   virtual_machine_id = azurerm_windows_virtual_machine.main.id
+#   location           = azurerm_windows_virtual_machine.main.location
+#   source {
+#     # Command to restart the Windows VM
+#     script = <<EOF
+#     Restart-Computer -Force
+#   EOF
+#   }
+#   depends_on = [azurerm_virtual_machine_run_command.set_timezone_vm]
 
-  lifecycle {
-    ignore_changes = [tags]
-  }
-}
+#   lifecycle {
+#     ignore_changes = [tags]
+#   }
+# }
 
 
 

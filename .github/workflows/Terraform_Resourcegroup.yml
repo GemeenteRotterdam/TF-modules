@@ -84,18 +84,7 @@ jobs:
 
       - name: Prevent Only Destroy Operations (Scheduled Runs Only)
         if: github.event_name == 'schedule'
-        run: |
-          echo "🔍 Checking for destroy actions using Terraform output..."
-            destroy_count=$(terraform plan -no-color | grep -Eo '[0-9]+ to destroy' | awk '{sum+=$1} END {print sum}')
-  
-            destroy_count=${destroy_count:-0}
-  
-            if [[ "$destroy_count" -gt 0 ]]; then
-              echo "❌ Terraform plan detected destroy operations! Stopping workflow."
-              exit 1
-            else
-              echo "✅ No destroy operations detected. Proceeding..."
-            fi
+        run: terraform plan -out=tfplan && terraform show -json tfplan | jq -e '.resource_changes[]?.change.actions | index("delete")' >/dev/null && { echo "Destroy operations detected in Terraform plan. Cancelling pipeline."; exit 1; } || echo "No destroy operations detected."
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule')

@@ -103,7 +103,7 @@ jobs:
         run: terraform fmt -check
 
       - name: Terraform Plan
-        if: github.event_name == 'pull_request' || github.event_name == 'push' || github.event_name == 'schedule'
+        if: github.event_name == 'pull_request' || github.event_name == 'push'
         id: tf-plan
         run: |
           export TF_VAR_tenant_id="${{ secrets.AZURE_TENANT_ID }}"
@@ -117,9 +117,19 @@ jobs:
           export TF_VAR_managed_identity_name="${{ inputs.AZURE_MANAGED_IDENTITY_NAME }}"
           terraform plan -input=false | tee plan_output.log
 
-      - name: Prevent Only Destroy Operations (Scheduled Runs Only)
+      - name: Terraform Plan & Prevent Destroy (Scheduled Runs Only)
         if: github.event_name == 'schedule'
-        run: terraform plan -out=tfplan && terraform show -json tfplan | jq -e '.resource_changes[]?.change.actions | index("delete")' >/dev/null && { echo "Destroy operations detected in Terraform plan. Cancelling pipeline."; exit 1; } || echo "No destroy operations detected."
+        run: | 
+          export TF_VAR_tenant_id="${{ secrets.AZURE_TENANT_ID }}"
+          export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"
+          export TF_VAR_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+          export TF_VAR_resource_group_name="${{ inputs.AZURE_RESOURCE_GROUP_NAME }}"
+          export TF_VAR_storage_account_name="${{ inputs.AZURE_BACKEND_STORAGE_ACCOUNT_NAME }}"
+          export TF_VAR_storage_container_name="${{ inputs.AZURE_BACKEND_CONTAINER_NAME }}" 
+          export TF_VAR_location="${{ inputs.AZURE_DEFAULT_LOCATION }}"
+          export TF_VAR_subscription_name="${{ inputs.AZURE_SUBSCRIPTION_NAME }}"
+          export TF_VAR_managed_identity_name="${{ inputs.AZURE_MANAGED_IDENTITY_NAME }}"          
+          terraform plan -out=tfplan && terraform show -json tfplan | jq -e '.resource_changes[]?.change.actions | index("delete")' >/dev/null && { echo "Destroy operations detected in Terraform plan. Cancelling pipeline."; exit 1; } || echo "No destroy operations detected."
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule')

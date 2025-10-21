@@ -29,7 +29,7 @@ variable "vm_name" {
   type        = string
 
   validation {
-    condition = can(regex("^VC[RAWUOD][ZOTAP][WL][A-Z]{3}[0-9]{3}$", var.vm_name))
+    condition     = can(regex("^VC[RAWUOD][ZOTAP][WL][A-Z]{3}[0-9]{3}$", var.vm_name))
     error_message = "Failed To Match Naming Convention"
   }
 }
@@ -67,7 +67,7 @@ variable "vtpm_enabled" {
   default     = true
 }
 
-variable "enable_automatic_updates" {
+variable "automatic_updates_enabled" {
   description = "Specifies if Automatic Updates are Enabled for the Windows Virtual Machine. Changing this forces a new resource to be created."
   type        = bool
   default     = false

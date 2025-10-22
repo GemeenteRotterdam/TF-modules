@@ -12,7 +12,7 @@ resource "azurerm_key_vault" "example" {
   enabled_for_deployment          = var.enabled_for_deployment
 
   public_network_access_enabled = var.public_network_access_enabled_kv
-  enable_rbac_authorization     = var.enable_rbac_authorization
+  rbac_authorization_enabled    = var.rbac_authorization_enabled
 
   network_acls {
     default_action             = var.network_acls_default_action

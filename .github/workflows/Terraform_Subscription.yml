@@ -129,7 +129,15 @@ jobs:
           export TF_VAR_location="${{ inputs.AZURE_DEFAULT_LOCATION }}"
           export TF_VAR_subscription_name="${{ inputs.AZURE_SUBSCRIPTION_NAME }}"
           export TF_VAR_managed_identity_name="${{ inputs.AZURE_MANAGED_IDENTITY_NAME }}"          
-          terraform plan -out=tfplan && terraform show -json tfplan | jq -e '.resource_changes[]?.change.actions | index("delete")' >/dev/null && { echo "Destroy operations detected in Terraform plan. Cancelling pipeline."; exit 1; } || echo "No destroy operations detected."
+          terraform plan -out=tfplan.binary
+          terraform show -json tfplan.binary > tfplan.json
+          if jq -e '.resource_changes[] | select(.change.actions[] == "delete" or .change.actions[] == "destroy")' tfplan.json > /dev/null; then
+            echo "Destroy operation detected."
+            exit 1
+          else
+            echo "No destroy operations detected."
+            exit 0
+          fi
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule')

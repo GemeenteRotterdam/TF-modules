@@ -55,6 +55,16 @@ jobs:
     name: Setup Terraform
     runs-on: ${{ inputs.GITHUB_RUNNER_POOL }}
     environment: production
+    env:
+      TF_VAR_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      TF_VAR_client_id: ${{ secrets.AZURE_CLIENT_ID }}
+      TF_VAR_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      TF_VAR_resource_group_name: ${{ inputs.AZURE_RESOURCE_GROUP_NAME }}
+      TF_VAR_storage_account_name: ${{ inputs.AZURE_BACKEND_STORAGE_ACCOUNT_NAME }}
+      TF_VAR_storage_container_name: ${{ inputs.AZURE_BACKEND_CONTAINER_NAME }}
+      TF_VAR_location: ${{ inputs.AZURE_DEFAULT_LOCATION }}
+      TF_VAR_subscription_name: ${{ inputs.AZURE_SUBSCRIPTION_NAME }}
+      TF_VAR_managed_identity_name: ${{ inputs.AZURE_MANAGED_IDENTITY_NAME }}
 
     steps:
       - name: Checkout
@@ -74,15 +84,6 @@ jobs:
 
       - name: Terraform Init
         run: | 
-          export TF_VAR_tenant_id="${{ secrets.AZURE_TENANT_ID }}"
-          export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"
-          export TF_VAR_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-          export TF_VAR_resource_group_name="${{ inputs.AZURE_RESOURCE_GROUP_NAME }}"
-          export TF_VAR_storage_account_name="${{ inputs.AZURE_BACKEND_STORAGE_ACCOUNT_NAME }}"
-          export TF_VAR_storage_container_name="${{ inputs.AZURE_BACKEND_CONTAINER_NAME }}"          
-          export TF_VAR_location="${{ inputs.AZURE_DEFAULT_LOCATION }}"
-          export TF_VAR_subscription_name="${{ inputs.AZURE_SUBSCRIPTION_NAME }}"
-          export TF_VAR_managed_identity_name="${{ inputs.AZURE_MANAGED_IDENTITY_NAME }}"
           terraform init \
             -backend-config="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
             -backend-config="resource_group_name=${{ inputs.AZURE_RESOURCE_GROUP_NAME }}" \
@@ -95,15 +96,6 @@ jobs:
         continue-on-error: true
         if: ${{ github.event.inputs.OPTION_RUN_IMPORT == true }}
         run: |
-          export TF_VAR_tenant_id="${{ secrets.AZURE_TENANT_ID }}"
-          export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"
-          export TF_VAR_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-          export TF_VAR_resource_group_name="${{ inputs.AZURE_RESOURCE_GROUP_NAME }}"
-          export TF_VAR_storage_account_name="${{ inputs.AZURE_BACKEND_STORAGE_ACCOUNT_NAME }}"
-          export TF_VAR_storage_container_name="${{ inputs.AZURE_BACKEND_CONTAINER_NAME }}" 
-          export TF_VAR_location="${{ inputs.AZURE_DEFAULT_LOCATION }}"
-          export TF_VAR_subscription_name="${{ inputs.AZURE_SUBSCRIPTION_NAME }}"
-          export TF_VAR_managed_identity_name="${{ inputs.AZURE_MANAGED_IDENTITY_NAME }}"
           terraform import -input=false azurerm_resource_group.this ${{ inputs.AZURE_RESOURCE_GROUP_RID }}
           terraform import -input=false azurerm_user_assigned_identity.this ${{ inputs.AZURE_MANAGED_IDENTITY_RID }}
           terraform import -input=false azurerm_federated_identity_credential.this ${{ inputs.AZURE_FEDERATED_CREDENTIAL_RID }}
@@ -115,29 +107,11 @@ jobs:
         if: github.event_name == 'pull_request' || github.event_name == 'push'
         id: tf-plan
         run: |
-          export TF_VAR_tenant_id="${{ secrets.AZURE_TENANT_ID }}"
-          export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"
-          export TF_VAR_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-          export TF_VAR_resource_group_name="${{ inputs.AZURE_RESOURCE_GROUP_NAME }}"
-          export TF_VAR_storage_account_name="${{ inputs.AZURE_BACKEND_STORAGE_ACCOUNT_NAME }}"
-          export TF_VAR_storage_container_name="${{ inputs.AZURE_BACKEND_CONTAINER_NAME }}" 
-          export TF_VAR_location="${{ inputs.AZURE_DEFAULT_LOCATION }}"
-          export TF_VAR_subscription_name="${{ inputs.AZURE_SUBSCRIPTION_NAME }}"
-          export TF_VAR_managed_identity_name="${{ inputs.AZURE_MANAGED_IDENTITY_NAME }}"
           terraform plan -input=false | tee plan_output.log
 
       - name: Terraform Plan & Prevent Destroy (Scheduled Runs Only)
         if: github.event_name == 'schedule'
-        run: | 
-          export TF_VAR_tenant_id="${{ secrets.AZURE_TENANT_ID }}"
-          export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"
-          export TF_VAR_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-          export TF_VAR_resource_group_name="${{ inputs.AZURE_RESOURCE_GROUP_NAME }}"
-          export TF_VAR_storage_account_name="${{ inputs.AZURE_BACKEND_STORAGE_ACCOUNT_NAME }}"
-          export TF_VAR_storage_container_name="${{ inputs.AZURE_BACKEND_CONTAINER_NAME }}" 
-          export TF_VAR_location="${{ inputs.AZURE_DEFAULT_LOCATION }}"
-          export TF_VAR_subscription_name="${{ inputs.AZURE_SUBSCRIPTION_NAME }}"
-          export TF_VAR_managed_identity_name="${{ inputs.AZURE_MANAGED_IDENTITY_NAME }}"          
+        run: |          
           terraform plan -out=tfplan.binary
           terraform show -json tfplan.binary > tfplan.json
           if jq -e '.resource_changes[] | select(.change.actions[] == "delete" or .change.actions[] == "destroy")' tfplan.json > /dev/null; then
@@ -151,13 +125,4 @@ jobs:
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule')
         run: |
-          export TF_VAR_tenant_id="${{ secrets.AZURE_TENANT_ID }}"
-          export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"
-          export TF_VAR_subscription_id="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-          export TF_VAR_resource_group_name="${{ inputs.AZURE_RESOURCE_GROUP_NAME }}"
-          export TF_VAR_storage_account_name="${{ inputs.AZURE_BACKEND_STORAGE_ACCOUNT_NAME }}"
-          export TF_VAR_storage_container_name="${{ inputs.AZURE_BACKEND_CONTAINER_NAME }}" 
-          export TF_VAR_location="${{ inputs.AZURE_DEFAULT_LOCATION }}"
-          export TF_VAR_subscription_name="${{ inputs.AZURE_SUBSCRIPTION_NAME }}"
-          export TF_VAR_managed_identity_name="${{ inputs.AZURE_MANAGED_IDENTITY_NAME }}"
           terraform apply -auto-approve -input=false

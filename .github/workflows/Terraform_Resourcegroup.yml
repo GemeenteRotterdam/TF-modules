@@ -22,6 +22,10 @@ on:
       AZURE_BACKEND_CONTAINER_NAME:
         type: string
         required: true
+      GITHUB_RUNNER_POOL:
+        required: true
+        default: rdam
+        type: string
 
     secrets:
       AZURE_CLIENT_ID:
@@ -34,7 +38,7 @@ on:
 jobs:
   setup-terraform:
     name: Setup Terraform
-    runs-on: rdam
+    runs-on: ${{ inputs.GITHUB_RUNNER_POOL }}
     environment: production
 
     steps:

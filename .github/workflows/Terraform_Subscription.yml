@@ -37,7 +37,11 @@ on:
         required: true
         default: rdam
         type: string
-
+      OPTION_RUN_IMPORT:
+        required: true
+        default: true
+        type: boolean
+  
     secrets:
       AZURE_CLIENT_ID:
         required: true
@@ -89,6 +93,7 @@ jobs:
 
       - name: Terraform Import
         continue-on-error: true
+        if: ${{ github.event.inputs.OPTION_RUN_IMPORT == true }}
         run: |
           export TF_VAR_tenant_id="${{ secrets.AZURE_TENANT_ID }}"
           export TF_VAR_client_id="${{ secrets.AZURE_CLIENT_ID }}"

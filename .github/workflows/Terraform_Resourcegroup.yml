@@ -23,7 +23,7 @@ on:
         type: string
         required: true
       GITHUB_RUNNER_POOL:
-        required: true
+        required: false
         default: rdam
         type: string
 

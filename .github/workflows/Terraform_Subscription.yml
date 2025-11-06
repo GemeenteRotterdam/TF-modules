@@ -34,11 +34,11 @@ on:
         required: true
         type: string
       GITHUB_RUNNER_POOL:
-        required: true
+        required: false
         default: rdam
         type: string
       OPTION_RUN_IMPORT:
-        required: true
+        required: false
         default: true
         type: boolean
   

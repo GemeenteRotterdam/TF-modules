@@ -47,3 +47,5 @@ resource "azurerm_private_endpoint" "example" {
 
   depends_on = [azurerm_key_vault.example]
 }
+
+

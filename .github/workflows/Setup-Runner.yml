@@ -2,14 +2,22 @@ name: Setup Tools
 
 on:
   workflow_call:
+    inputs:
+      GITHUB_RUNNER_POOL:
+        required: false
+        default: rdam
+        type: string
+    
     secrets:
       GH_TOKEN:
         required: true
+    
+    
 
 jobs:
   setup:
     name: Install Required Tools
-    runs-on: rdam
+    runs-on: ${{ inputs.GITHUB_RUNNER_POOL }}
 
     steps:
       - name: Checkout

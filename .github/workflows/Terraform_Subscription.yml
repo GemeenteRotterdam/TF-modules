@@ -39,7 +39,7 @@ on:
         type: string
       OPTION_RUN_IMPORT:
         required: false
-        default: true
+        default: false
         type: boolean
   
     secrets:

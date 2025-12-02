@@ -10,6 +10,6 @@ module "XXX" {
   vm_size  = ""
 
   disk_encryption_set_id = ""
-  admin_username         = ""
-  admin_password         = ""
+  admin_username         = data.azurerm_key_vault_secret.admin_username.value // Authenticate with SSH-key
+  ssh_public_key         = data.azurerm_ssh_public_key.ssh.public_key
 }

@@ -18,6 +18,11 @@ variable "subnet_vnet" {
   type        = string
 }
 
+variable "ssh_public_key" {
+  description = "The name of this SSH Public Key."
+  type        = string
+}
+
 variable "extra_tags" {
   description = "Set the change number as a tag"
   type        = map(string)
@@ -57,16 +62,16 @@ variable "admin_username" {
   type        = string
 }
 
-variable "admin_password" {
-  description = "The password of the local administrator used for the Virtual Machine. Changing this forces a new resource to be created."
-  type        = string
-}
+# variable "admin_password" {
+#   description = "The password of the local administrator used for the Virtual Machine. Changing this forces a new resource to be created."
+#   type        = string
+# }
 
-variable "disable_password_authentication" {
-  description = "Should Password Authentication be disabled on this Virtual Machine? Changing this forces a new resource to be created."
-  type        = bool
-  default     = false
-}
+# variable "disable_password_authentication" {
+#   description = "Should Password Authentication be disabled on this Virtual Machine? Changing this forces a new resource to be created."
+#   type        = bool
+#   default     = false
+# }
 
 variable "secure_boot_enabled" {
   description = "Specifies if Secure Boot and Trusted Launch is enabled for the Virtual Machine. Changing this forces a new resource to be created."

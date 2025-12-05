@@ -275,7 +275,7 @@ variable "private_endpoint_name_for_sa" {
 variable "subresource_names_sa" {
   description = "A list of subresource names which the Private Endpoint is able to connect to."
   type        = list(string)
-  default     = ["File"]
+  default     = ["Blob"]
 }
 
 variable "is_manual_connection_sa" {
@@ -289,5 +289,6 @@ variable "dns_suffix" {
   type        = string
   default     = "vault.azure.net"
 }
+
 
 

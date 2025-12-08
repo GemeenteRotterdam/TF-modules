@@ -88,6 +88,12 @@ resource "azurerm_key_vault_key" "example" {
     expire_after         = var.expire_after
     notify_before_expiry = var.notify_before_expiry
   }
+
+  lifecycle {
+    ignore_changes = [
+      expiration_date,  # prevent ForceNew on each rotated version
+    ]
+  }
 }
 
 resource "azurerm_storage_account" "example" {
@@ -162,3 +168,4 @@ resource "azurerm_private_endpoint" "example2" {
 
   depends_on = [azurerm_storage_account.example]
 }
+

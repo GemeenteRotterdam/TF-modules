@@ -1,11 +1,3 @@
-resource "azurerm_network_security_group" "example" {
-  name                = "${var.vm_name}-nsg"
-  location            = data.azurerm_resource_group.rg.location
-  resource_group_name = data.azurerm_resource_group.rg.name
-
-  tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
-}
-
 resource "azurerm_network_interface" "main" {
   name                = "${var.vm_name}-nic"
   location            = data.azurerm_resource_group.rg.location
@@ -18,14 +10,6 @@ resource "azurerm_network_interface" "main" {
   }
 
   tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { source = "Terraform" })
-
-  depends_on = [azurerm_network_security_group.example]
-}
-
-resource "azurerm_network_interface_security_group_association" "example" {
-  network_interface_id      = azurerm_network_interface.main.id
-  network_security_group_id = azurerm_network_security_group.example.id
-  depends_on                = [azurerm_network_interface.main]
 }
 
 resource "azurerm_windows_virtual_machine" "main" {
@@ -60,7 +44,7 @@ resource "azurerm_windows_virtual_machine" "main" {
 
   tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { "update schedule" = var.tag_update_schedule, source = "Terraform" })
 
-  depends_on = [azurerm_network_interface_security_group_association.example]
+  depends_on = [azurerm_network_interface.example]
 }
 
 resource "azurerm_managed_disk" "example" {
@@ -255,6 +239,7 @@ resource "azurerm_virtual_machine_run_command" "set_timezone_vm" {
 #     ignore_changes = [tags]
 #   }
 # }
+
 
 
 

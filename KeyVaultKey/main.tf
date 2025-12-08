@@ -13,4 +13,10 @@ resource "azurerm_key_vault_key" "key" {
     expire_after         = var.key_lifetime
     notify_before_expiry = var.key_notification
   }
+
+  lifecycle {
+    ignore_changes = [
+      expiration_date
+    ]
+  }
 }

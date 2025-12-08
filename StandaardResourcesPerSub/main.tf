@@ -88,6 +88,12 @@ resource "azurerm_key_vault_key" "key" {
     expire_after         = var.expire_after
     notify_before_expiry = var.notify_before_expiry
   }
+
+  lifecycle {
+    ignore_changes = [
+      expiration_date,  # prevent ForceNew on each rotated version
+    ]
+  }
 }
 
 resource "azurerm_disk_encryption_set" "example" {
@@ -106,6 +112,7 @@ resource "azurerm_disk_encryption_set" "example" {
 
   tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
 }
+
 
 
 

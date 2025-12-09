@@ -12,10 +12,6 @@ on:
         required: true
         type: string
 
-      AZURE_MANAGED_IDENTITY_NAME:
-        required: true
-        type: string
-
       AZURE_BACKEND_STATE_FILE:
         required: true
         type: string

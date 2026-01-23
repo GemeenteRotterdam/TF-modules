@@ -44,7 +44,7 @@ resource "azurerm_windows_virtual_machine" "main" {
 
   tags = merge(data.azurerm_resource_group.rg.tags, var.extra_tags, { "update schedule" = var.tag_update_schedule, source = "Terraform" })
 
-  depends_on = [azurerm_network_interface.example]
+  depends_on = [azurerm_network_interface.main]
 }
 
 resource "azurerm_managed_disk" "example" {

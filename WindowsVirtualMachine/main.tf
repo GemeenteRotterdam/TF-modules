@@ -149,19 +149,19 @@ resource "azurerm_virtual_machine_extension" "mde_windows" {
   auto_upgrade_minor_version = true
   protected_settings         = jsonencode({})
 
-#   lifecycle {
-#     ignore_changes = [tags, settings]
-#   }
+  lifecycle {
+    ignore_changes = [tags, settings]
+  }
 
-#   settings = jsonencode({
-#     autoUpdate        = true
-#     azureResourceId   = azurerm_windows_virtual_machine.main.id
-#     forceReOnboarding = false
-#     vNextEnabled      = true
-#   })
+  settings = jsonencode({
+    autoUpdate        = true
+    azureResourceId   = azurerm_windows_virtual_machine.main.id
+    forceReOnboarding = false
+    vNextEnabled      = true
+  })
 
-#   depends_on = [azurerm_virtual_machine_extension.monitoring_dependency_agent]
-# }
+  depends_on = [azurerm_virtual_machine_extension.monitoring_dependency_agent]
+}
 
 # Resource for Azure Monitor Windows Agent extension
 resource "azurerm_virtual_machine_extension" "azure_monitor_windows_agent" {
@@ -239,6 +239,7 @@ resource "azurerm_virtual_machine_run_command" "restart_vm" {
     ignore_changes = [tags]
   }
 }
+
 
 
 

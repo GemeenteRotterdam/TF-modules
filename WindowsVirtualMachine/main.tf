@@ -23,7 +23,7 @@ resource "azurerm_windows_virtual_machine" "main" {
   license_type               = var.license_type
   secure_boot_enabled        = var.secure_boot_enabled
   vtpm_enabled               = var.vtpm_enabled
-  automatic_updates_enabled  = var.automatic_updates_enabled
+  //automatic_updates_enabled  = var.automatic_updates_enabled
   patch_mode                 = var.patch_mode
   encryption_at_host_enabled = var.encryption_at_host_enabled
   computer_name              = var.vm_name
@@ -239,6 +239,7 @@ resource "azurerm_virtual_machine_run_command" "set_timezone_vm" {
 #     ignore_changes = [tags]
 #   }
 # }
+
 
 
 

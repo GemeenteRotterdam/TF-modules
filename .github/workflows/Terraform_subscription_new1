@@ -1,1 +1,137 @@
+name: Terraform
 
+on:
+  workflow_call:
+
+    inputs:
+      AZURE_RESOURCE_GROUP_RID:
+        type: string
+      AZURE_DEFAULT_LOCATION:
+        required: true
+        type: string
+      AZURE_SUBSCRIPTION_NAME:
+        required: true
+        type: string
+      AZURE_MANAGED_IDENTITY_NAME:
+        required: true
+        type: string
+      AZURE_BACKEND_STATE_FILE:
+        required: true
+        type: string
+      AZURE_MANAGED_IDENTITY_RID:
+        required: true
+        type: string
+      AZURE_FEDERATED_CREDENTIAL_RID:
+        required: true
+        type: string
+      AZURE_RESOURCE_GROUP_NAME:
+        type: string
+        required: true
+      AZURE_BACKEND_STORAGE_ACCOUNT_NAME:
+        required: true
+        type: string
+      AZURE_BACKEND_CONTAINER_NAME:
+        required: true
+        type: string
+      GITHUB_RUNNER_POOL:
+        required: false
+        default: rdam
+        type: string
+      OPTION_RUN_IMPORT:
+        required: false
+        default: true
+        type: boolean
+  
+    secrets:
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
+      GH_TOKEN:
+        required: true
+
+jobs:
+  setup-terraform:
+    name: Setup Terraform
+    runs-on: ${{ inputs.GITHUB_RUNNER_POOL }}
+    environment: production
+    env:
+      TF_VAR_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      TF_VAR_client_id: ${{ secrets.AZURE_CLIENT_ID }}
+      TF_VAR_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      TF_VAR_resource_group_name: ${{ inputs.AZURE_RESOURCE_GROUP_NAME }}
+      TF_VAR_storage_account_name: ${{ inputs.AZURE_BACKEND_STORAGE_ACCOUNT_NAME }}
+      TF_VAR_storage_container_name: ${{ inputs.AZURE_BACKEND_CONTAINER_NAME }}
+      TF_VAR_location: ${{ inputs.AZURE_DEFAULT_LOCATION }}
+      TF_VAR_subscription_name: ${{ inputs.AZURE_SUBSCRIPTION_NAME }}
+      TF_VAR_managed_identity_name: ${{ inputs.AZURE_MANAGED_IDENTITY_NAME }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          enable-AzPSSession: false
+          # auth-type: IDENTITY
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Configure GitHub auth for private modules
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          git config --global url."https://x-access-token:${GH_TOKEN}@github.com/".insteadOf "https://github.com/"
+
+      - name: Terraform Init
+        run: | 
+          terraform init \
+            -backend-config="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
+            -backend-config="resource_group_name=${{ inputs.AZURE_RESOURCE_GROUP_NAME }}" \
+            -backend-config="storage_account_name=${{ inputs.AZURE_BACKEND_STORAGE_ACCOUNT_NAME }}" \
+            -backend-config="container_name=${{ inputs.AZURE_BACKEND_CONTAINER_NAME }}" \
+            -backend-config="key=${{ inputs.AZURE_BACKEND_STATE_FILE }}" \
+            -backend-config="use_azuread_auth=true"
+
+      - name: Terraform Import
+        continue-on-error: true
+        if: inputs.OPTION_RUN_IMPORT == true #${{ github.event.inputs.OPTION_RUN_IMPORT == true }} #inputs.OPTION_RUN_IMPORT == true
+        run: |
+          terraform import -input=false azurerm_resource_group.this ${{ inputs.AZURE_RESOURCE_GROUP_RID }}
+          terraform import -input=false azurerm_user_assigned_identity.this ${{ inputs.AZURE_MANAGED_IDENTITY_RID }}
+          terraform import -input=false azurerm_federated_identity_credential.this ${{ inputs.AZURE_FEDERATED_CREDENTIAL_RID }}
+
+      - name: Terraform Format
+        run: terraform fmt -check
+
+      - name: Terraform Plan
+        if: github.event_name == 'pull_request' || github.event_name == 'push'
+        id: tf-plan
+        run: |
+          terraform plan -input=false | tee plan_output.log
+
+      - name: Terraform Plan & Prevent Destroy (Scheduled Runs Only)
+        if: github.event_name == 'schedule'
+        run: |          
+          terraform plan -out=tfplan.binary
+          terraform show -json tfplan.binary > tfplan.json
+          if jq -e '.resource_changes[] | select(.change.actions[] == "delete" or .change.actions[] == "destroy")' tfplan.json > /dev/null; then
+            echo "Destroy operation detected."
+            exit 1
+          else
+            echo "No destroy operations detected."
+            exit 0
+          fi
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule')
+        run: |
+          terraform apply -auto-approve -input=false

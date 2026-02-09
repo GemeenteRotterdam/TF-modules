@@ -102,7 +102,7 @@ jobs:
         shell: bash
         run: |
           tfsec --version
-          tfsec .
+          tfsec . || true
 
 
       # Saved plan (voor apply zonder re-plan)

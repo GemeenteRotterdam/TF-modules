@@ -34,7 +34,7 @@ on:
         required: true
       AZURE_SUBSCRIPTION_ID:
         required: true
-      GH_token:
+      GH_TOKEN:
         required: true
 
 jobs:

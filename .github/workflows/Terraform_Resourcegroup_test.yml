@@ -67,28 +67,9 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
-      - name: Configure git auth for private Terraform modules (.netrc)
-        shell: bash
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      - name: Configure git for private modules
         run: |
-          set -euo pipefail
-          echo "::add-mask::$GH_TOKEN"
-
-          # Git niet interactief laten worden
-          export GIT_TERMINAL_PROMPT=0
-
-          # Credential helpers uitschakelen (voorkomt null@github.com)
-          git config --global --unset-all credential.helper || true
-          git config --global credential.helper ""
-          git config --global --unset-all http.https://github.com/.extraheader || true
-
-          # .netrc veilig schrijven (zonder heredoc)
-          printf "machine github.com\nlogin x-access-token\npassword %s\n" "$GH_TOKEN" > "$HOME/.netrc"
-          chmod 600 "$HOME/.netrc"
-
-          # Sanity check
-          git ls-remote https://github.com/GemeenteRotterdam/TFmodule-KeyVaultKey.git >/dev/null
+          git config --global url."https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/".insteadOf "https://github.com/"
 
       - name: Terraform Init
         run: | 

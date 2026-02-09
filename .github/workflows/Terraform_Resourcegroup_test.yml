@@ -139,8 +139,6 @@ jobs:
     name: Terraform Apply (requires approval)
     runs-on: ${{ inputs.GITHUB_RUNNER_POOL }}
     needs: plan
-
-    # Dit is de "OK" knop: zet in GitHub je Environment op required reviewers
     environment: production
 
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule')

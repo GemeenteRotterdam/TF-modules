@@ -67,7 +67,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
-      - name: Configure git credentials for private modules
+      - name: Configure git auth for private Terraform modules
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -75,16 +75,27 @@ jobs:
           set -euo pipefail
           echo "::add-mask::$GH_TOKEN"
 
-          # voorkom dat checkout headers blijven hangen
+          # Check (zonder token te loggen) dat hij echt aanwezig is
+          echo "GH_TOKEN length: ${#GH_TOKEN}"
+
+          # Zorg dat git altijd dezelfde HOME gebruikt (handig op self-hosted runners)
+          echo "HOME=$HOME"
+
+          # Haal eventueel overgebleven checkout headers weg
           git config --global --unset-all http.https://github.com/.extraheader || true
 
-          # zet PAT als credential voor github.com (HTTPS)
-          git config --global credential.helper store
-          printf "https://x-access-token:%s@github.com\n" "$GH_TOKEN" > ~/.git-credentials
+          # Schakel interactieve prompts/askpass uit (voorkomt 'null@github.com' situaties)
+          echo "GIT_ASKPASS=" >> "$GITHUB_ENV"
+          echo "SSH_ASKPASS=" >> "$GITHUB_ENV"
+          export GIT_TERMINAL_PROMPT=0
 
-          # sanity check
-          git ls-remote https://github.com/GemeenteRotterdam/TFmodule-KeyVaultKey.git >/dev/null
+          # Sla credentials expliciet op in een bestand dat git zeker leest
+          git config --global credential.helper "store --file $HOME/.git-credentials"
+          printf "https://x-access-token:%s@github.com\n" "$GH_TOKEN" > "$HOME/.git-credentials"
+          chmod 0600 "$HOME/.git-credentials"
 
+          # Sanity check: kan repo gelezen worden?
+          git ls-remote https://github.com/GemeenteRotterdam/TFmodule-KeyVaultKey.git refs/tags/v1.0.0 >/dev/null
 
       - name: Terraform Init
         run: | 

@@ -1,0 +1,56 @@
+name: Setup Tools
+
+on:
+  workflow_call:
+    inputs:
+      GITHUB_RUNNER_POOL:
+        required: false
+        default: rdam
+        type: string
+    
+    secrets:
+      GH_TOKEN:
+        required: true
+
+jobs:
+  setup:
+    name: Install Required Tools
+    runs-on: ${{ inputs.GITHUB_RUNNER_POOL }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Git for authentication
+        run: |
+          git config --global url."https://${{ secrets.GH_TOKEN }}@github.com/".insteadOf "https://github.com/"
+
+      - name: Install Required Packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip nodejs npm jq
+
+      - name: Install Azure CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ca-certificates curl apt-transport-https lsb-release gnupg
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+      - name: Install TFLint
+        run: |
+          set -euo pipefail
+          TFLINT_VERSION="v0.54.0"
+          curl -sSL "https://github.com/terraform-linters/tflint/releases/download/${TFLINT_VERSION}/tflint_linux_amd64.zip" -o /tmp/tflint.zip
+          unzip -o /tmp/tflint.zip -d /tmp
+          sudo mv /tmp/tflint /usr/local/bin/tflint
+          sudo chmod +x /usr/local/bin/tflint
+          tflint --version
+
+      - name: Install tfsec
+        run: |
+          set -euo pipefail
+          TFSEC_VERSION="v1.28.1"
+          curl -sSL "https://github.com/aquasecurity/tfsec/releases/download/${TFSEC_VERSION}/tfsec-linux-amd64" -o /tmp/tfsec
+          sudo mv /tmp/tfsec /usr/local/bin/tfsec
+          sudo chmod +x /usr/local/bin/tfsec
+          tfsec --version

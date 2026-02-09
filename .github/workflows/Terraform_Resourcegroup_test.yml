@@ -141,7 +141,7 @@ jobs:
     needs: plan
 
     # Dit is de "OK" knop: zet in GitHub je Environment op required reviewers
-    environment: production-apply
+    environment: production
 
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule')
     env:

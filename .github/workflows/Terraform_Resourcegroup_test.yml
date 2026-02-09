@@ -62,7 +62,6 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           enable-AzPSSession: false
-          #auth-type: IDENTITY
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -72,7 +71,7 @@ jobs:
           git config --global url."https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/".insteadOf "https://github.com/"
 
       - name: Terraform Init
-        run: | 
+        run: |
           terraform init \
             -backend-config="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
             -backend-config="resource_group_name=${{ inputs.AZURE_BACKEND_RESOURCE_GROUP_NAME }}" \
@@ -84,17 +83,20 @@ jobs:
       - name: Terraform Format
         run: terraform fmt -check
 
-      - name: Terraform Plan
+      # ✅ PR/push: maak een saved plan (en toon output voor logs)
+      - name: Terraform Plan (PR/Push)
         if: github.event_name == 'pull_request' || github.event_name == 'push'
         id: tf-plan
         run: |
-          terraform plan -input=false | tee plan_output.log
+          terraform plan -input=false -out=tfplan
+          terraform show -no-color tfplan | tee plan_output.log
 
+      # ✅ Schedule: maak saved plan + destroy preventie op JSON
       - name: Terraform Plan & Prevent Destroy (Scheduled Runs Only)
         if: github.event_name == 'schedule'
-        run: |        
-          terraform plan -out=tfplan.binary
-          terraform show -json tfplan.binary > tfplan.json
+        run: |
+          terraform plan -input=false -out=tfplan
+          terraform show -json tfplan > tfplan.json
           if jq -e '.resource_changes[] | select(.change.actions[] == "delete" or .change.actions[] == "destroy")' tfplan.json > /dev/null; then
             echo "Destroy operation detected."
             exit 1
@@ -103,7 +105,8 @@ jobs:
             exit 0
           fi
 
+      # ✅ Apply gebruikt het saved plan → GEEN tweede plan meer
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule')
         run: |
-          terraform apply -auto-approve -input=false
+          terraform apply -auto-approve -input=false tfplan

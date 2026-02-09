@@ -67,7 +67,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
-      - name: Configure git auth for private Terraform modules
+      - name: Configure git auth for private Terraform modules (.netrc)
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -75,27 +75,20 @@ jobs:
           set -euo pipefail
           echo "::add-mask::$GH_TOKEN"
 
-          # Check (zonder token te loggen) dat hij echt aanwezig is
-          echo "GH_TOKEN length: ${#GH_TOKEN}"
-
-          # Zorg dat git altijd dezelfde HOME gebruikt (handig op self-hosted runners)
-          echo "HOME=$HOME"
-
-          # Haal eventueel overgebleven checkout headers weg
-          git config --global --unset-all http.https://github.com/.extraheader || true
-
-          # Schakel interactieve prompts/askpass uit (voorkomt 'null@github.com' situaties)
-          echo "GIT_ASKPASS=" >> "$GITHUB_ENV"
-          echo "SSH_ASKPASS=" >> "$GITHUB_ENV"
+          # Git niet interactief laten worden
           export GIT_TERMINAL_PROMPT=0
 
-          # Sla credentials expliciet op in een bestand dat git zeker leest
-          git config --global credential.helper "store --file $HOME/.git-credentials"
-          printf "https://x-access-token:%s@github.com\n" "$GH_TOKEN" > "$HOME/.git-credentials"
-          chmod 0600 "$HOME/.git-credentials"
+          # Credential helpers uitschakelen (voorkomt null@github.com)
+          git config --global --unset-all credential.helper || true
+          git config --global credential.helper ""
+          git config --global --unset-all http.https://github.com/.extraheader || true
 
-          # Sanity check: kan repo gelezen worden?
-          git ls-remote https://github.com/GemeenteRotterdam/TFmodule-KeyVaultKey.git refs/tags/v1.0.0 >/dev/null
+          # .netrc veilig schrijven (zonder heredoc)
+          printf "machine github.com\nlogin x-access-token\npassword %s\n" "$GH_TOKEN" > "$HOME/.netrc"
+          chmod 600 "$HOME/.netrc"
+
+          # Sanity check
+          git ls-remote https://github.com/GemeenteRotterdam/TFmodule-KeyVaultKey.git >/dev/null
 
       - name: Terraform Init
         run: | 

@@ -94,7 +94,8 @@ jobs:
         run: tflint --init
 
       - name: TFLint
-        run: tflint -f compact
+        run: tflint -f compact --minimum-failure-severity=error
+
 
       # tfsec (security scan)
       - name: Run tfsec (binary)

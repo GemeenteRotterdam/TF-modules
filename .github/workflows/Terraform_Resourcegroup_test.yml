@@ -34,6 +34,8 @@ on:
         required: true
       AZURE_SUBSCRIPTION_ID:
         required: true
+      GH_token:
+        required: true
 
 jobs:
   setup-terraform:

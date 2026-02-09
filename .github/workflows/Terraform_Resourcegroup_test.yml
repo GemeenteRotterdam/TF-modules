@@ -82,11 +82,11 @@ jobs:
       - name: Terraform Format
         run: terraform fmt -check
 
-      # ✅ Punt 4: Validate
+      # Validate
       - name: Terraform Validate
         run: terraform validate -no-color
 
-      # ✅ Punt 4: TFLint
+      # TFLint
       - name: Setup TFLint
         uses: terraform-linters/setup-tflint@v4
 
@@ -96,13 +96,15 @@ jobs:
       - name: TFLint
         run: tflint -f compact
 
-      # ✅ Punt 5: tfsec (security scan)
-      - name: Run tfsec
-        uses: aquasecurity/tfsec-action@v1.0.3
-        with:
-          soft_fail: false
+      # tfsec (security scan)
+      - name: Run tfsec (binary)
+        shell: bash
+        run: |
+          tfsec --version
+          tfsec .
 
-      # ✅ Saved plan (voor apply zonder re-plan)
+
+      # Saved plan (voor apply zonder re-plan)
       - name: Terraform Plan
         id: tf-plan
         if: github.event_name == 'pull_request' || github.event_name == 'push' || github.event_name == 'schedule'
@@ -111,7 +113,6 @@ jobs:
           terraform show -no-color tfplan | tee plan_output.log
           terraform show -json tfplan > tfplan.json
 
-      # (optioneel) jouw destroy-preventie kan blijven op schedule:
       - name: Prevent Destroy (Scheduled Runs Only)
         if: github.event_name == 'schedule'
         run: |
@@ -122,7 +123,7 @@ jobs:
             echo "No destroy operations detected."
           fi
 
-      # ✅ Upload artifacts zodat apply job exact dit plan kan gebruiken
+      # Upload artifacts zodat apply job exact dit plan kan gebruiken
       - name: Upload plan artifacts
         uses: actions/upload-artifact@v4
         if: always()
@@ -138,7 +139,7 @@ jobs:
     runs-on: ${{ inputs.GITHUB_RUNNER_POOL }}
     needs: plan
 
-    # ✅ Dit is de "OK" knop: zet in GitHub je Environment op required reviewers
+    # Dit is de "OK" knop: zet in GitHub je Environment op required reviewers
     environment: production-apply
 
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule')

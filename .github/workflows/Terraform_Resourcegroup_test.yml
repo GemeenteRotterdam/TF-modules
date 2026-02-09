@@ -67,9 +67,24 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
-      - name: Configure git for private modules
+      - name: Configure git credentials for private modules
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          git config --global url."https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/".insteadOf "https://github.com/"
+          set -euo pipefail
+          echo "::add-mask::$GH_TOKEN"
+
+          # voorkom dat checkout headers blijven hangen
+          git config --global --unset-all http.https://github.com/.extraheader || true
+
+          # zet PAT als credential voor github.com (HTTPS)
+          git config --global credential.helper store
+          printf "https://x-access-token:%s@github.com\n" "$GH_TOKEN" > ~/.git-credentials
+
+          # sanity check
+          git ls-remote https://github.com/GemeenteRotterdam/TFmodule-KeyVaultKey.git >/dev/null
+
 
       - name: Terraform Init
         run: | 

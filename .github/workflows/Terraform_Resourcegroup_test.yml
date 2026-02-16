@@ -64,6 +64,14 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+      
+      - name: Debug GH_TOKEN
+        run: |
+          if [ -z "${{ secrets.GH_TOKEN }}" ]; then
+            echo "GH_TOKEN is EMPTY"
+          else
+            echo "GH_TOKEN is PRESENT"
+          fi
 
       - name: Configure git for private modules
         run: |

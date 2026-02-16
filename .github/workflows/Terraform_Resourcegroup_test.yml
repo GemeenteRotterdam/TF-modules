@@ -112,6 +112,13 @@ jobs:
           tfsec --version
           tfsec . || true
 
+      - name: Render terraform docs and push changes back to PR
+        uses: terraform-docs/gh-actions@main
+        with:
+          working-dir: .
+          output-file: README.md
+          output-method: inject
+          git-push: "true"
 
       # Saved plan (voor apply zonder re-plan)
       - name: Terraform Plan

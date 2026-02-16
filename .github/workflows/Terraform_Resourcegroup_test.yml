@@ -188,16 +188,6 @@ jobs:
             echo "GH_TOKEN is PRESENT"
           fi
 
-      - name: Render terraform docs and push changes back to PR
-        uses: terraform-docs/gh-actions@v1.4.1
-        with:
-          working-dir: .
-          output-file: README.md
-          output-method: inject
-          git-push: "true"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Terraform Init
         run: |
           terraform init \

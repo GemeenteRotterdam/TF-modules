@@ -73,9 +73,24 @@ jobs:
             echo "GH_TOKEN is PRESENT"
           fi
 
-      - name: Configure git for private modules
+      - name: Configure git auth for private modules (.netrc)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          git config --global url."https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/".insteadOf "https://github.com/"
+          set -euo pipefail
+
+          cat > ~/.netrc <<EOF
+          machine github.com
+          login x-access-token
+          password ${GH_TOKEN}
+          EOF
+
+          chmod 600 ~/.netrc
+
+          # Disable interactive prompts
+          git config --global credential.helper ""
+          export GIT_TERMINAL_PROMPT=0
 
       - name: Terraform Init
         run: |

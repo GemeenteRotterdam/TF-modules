@@ -109,11 +109,11 @@ jobs:
 
 
       # tfsec (security scan)
-      - name: Run tfsec (binary)
+      - name: Run tfsec
         shell: bash
         run: |
-          /usr/local/bin/tfsec --version
-          /usr/local/bin/tfsec . || true
+          tfsec . || true
+
 
 
       # Saved plan (voor apply zonder re-plan)

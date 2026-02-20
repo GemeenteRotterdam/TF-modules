@@ -46,11 +46,12 @@ jobs:
           sudo chmod +x /usr/local/bin/tflint
           tflint --version
 
-      - name: Install tfsec
+      - name: Install tfsec (no sudo)
+        shell: bash
         run: |
           set -euo pipefail
           TFSEC_VERSION="v1.28.1"
-          curl -sSL "https://github.com/aquasecurity/tfsec/releases/download/${TFSEC_VERSION}/tfsec-linux-amd64" -o /tmp/tfsec
-          sudo mv /tmp/tfsec /usr/local/bin/tfsec
-          sudo chmod +x /usr/local/bin/tfsec
+          curl -sSL "https://github.com/aquasecurity/tfsec/releases/download/${TFSEC_VERSION}/tfsec-linux-amd64" -o "$GITHUB_WORKSPACE/tfsec"
+          chmod +x "$GITHUB_WORKSPACE/tfsec"
+          echo "$GITHUB_WORKSPACE" >> "$GITHUB_PATH"
           tfsec --version

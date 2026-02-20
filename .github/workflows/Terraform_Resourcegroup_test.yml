@@ -112,8 +112,9 @@ jobs:
       - name: Run tfsec (binary)
         shell: bash
         run: |
-          tfsec --version
-          tfsec . || true
+          /usr/local/bin/tfsec --version
+          /usr/local/bin/tfsec . || true
+
 
       # Saved plan (voor apply zonder re-plan)
       - name: Terraform Plan

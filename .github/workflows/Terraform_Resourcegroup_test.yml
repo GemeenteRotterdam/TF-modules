@@ -15,7 +15,7 @@ on:
       AZURE_BACKEND_CONTAINER_NAME:
         type: string
         required: true
-      GITHUB_RUNNER_POOL:
+      GH_RUNNER_POOL:
         required: false
         default: rdam
         type: string
@@ -33,7 +33,7 @@ on:
 jobs:
   plan:
     name: Terraform Plan + Checks
-    runs-on: ${{ inputs.GITHUB_RUNNER_POOL }}
+    runs-on: ${{ inputs.GH_RUNNER_POOL }}
     environment: production
     env:
       TF_VAR_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
@@ -145,7 +145,7 @@ jobs:
 
   apply:
     name: Terraform Apply (requires approval)
-    runs-on: ${{ inputs.GITHUB_RUNNER_POOL }}
+    runs-on: ${{ inputs.GH_RUNNER_POOL }}
     needs: plan
     environment: production
 
@@ -166,6 +166,7 @@ jobs:
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           allow-no-subscriptions: true
           enable-AzPSSession: false
 

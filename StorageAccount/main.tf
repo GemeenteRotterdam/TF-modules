@@ -91,7 +91,7 @@ resource "azurerm_key_vault_key" "example" {
 
   lifecycle {
     ignore_changes = [
-      expiration_date,  # prevent ForceNew on each rotated version
+      expiration_date, # prevent ForceNew on each rotated version
     ]
   }
 }

@@ -1,7 +1,7 @@
 resource "azurerm_virtual_network" "this" {
   name                           = var.virtual_network_name
   address_space                  = var.address_space
-  dns_servers                    = var.dns_servers
+  dns_servers                    = var.dns_servers // statisch 10.240.4.5, 10.240.4.6
   resource_group_name            = data.azurerm_resource_group.rg.name
   location                       = data.azurerm_resource_group.rg.location
   private_endpoint_vnet_policies = var.pep_policy

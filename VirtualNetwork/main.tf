@@ -4,7 +4,7 @@ resource "azurerm_virtual_network" "this" {
   dns_servers                    = var.dns_servers // statisch 10.240.4.5, 10.240.4.6
   resource_group_name            = data.azurerm_resource_group.rg.name
   location                       = data.azurerm_resource_group.rg.location
-  private_endpoint_vnet_policies = var.pep_policy
+  //private_endpoint_vnet_policies = var.pep_policy weghalen
 }
 
 resource "azurerm_subnet" "this" {

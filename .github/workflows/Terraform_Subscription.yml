@@ -94,7 +94,7 @@ jobs:
 
       - name: Terraform Import
         continue-on-error: true
-        if: inputs.OPTION_RUN_IMPORT == true #${{ github.event.inputs.OPTION_RUN_IMPORT == true }} #inputs.OPTION_RUN_IMPORT == true
+        if: ${{ inputs.OPTION_RUN_IMPORT == true }}
         run: |
           terraform import -input=false azurerm_resource_group.this ${{ inputs.AZURE_RESOURCE_GROUP_RID }}
           terraform import -input=false azurerm_user_assigned_identity.this ${{ inputs.AZURE_MANAGED_IDENTITY_RID }}

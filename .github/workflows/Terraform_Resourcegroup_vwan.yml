@@ -87,22 +87,13 @@ jobs:
             -backend-config="key=${{ inputs.AZURE_BACKEND_STATE_FILE }}" \
             -backend-config="use_azuread_auth=true"
 
-      # - name: Terraform Import Virtual WAN
-      #   run: |          
-      #     terraform import azurerm_virtual_hub_connection.vnet-rdam-tbms-tst-link \
-      #     /subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/vnet-rdam-tbms-tst-link
+      - name: Terraform Import Virtual WAN
+        run: |          
+          terraform import azurerm_virtual_hub_routing_intent.vhub-azdev-connectivity-tst-weu-01_RoutingIntent \
+          /subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/routingIntent/vhub-azdev-connectivity-tst-weu-01_RoutingIntent
 
-      #     terraform import azurerm_virtual_hub_connection.VNET_AZDEV_LZ_Management-link \
-      #     /subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/VNET_AZDEV_LZ_Management-link
-
-      #     terraform import azurerm_virtual_hub_connection.VNET_AZDEV_Shared_Resources-link \
-      #     /subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/VNET_AZDEV_Shared_Resources-link
-
-      #     terraform import azurerm_virtual_hub_connection.VNET_New_Resources-link \
-      #     /subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/VNET_New_Resources-link
-
-      #     terraform import azurerm_virtual_hub_connection.VNET_Rdam_PF_Connectivity_Hub-link \
-      #     /subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/VNET_Rdam_PF_Connectivity_Hub-link
+          terraform import azurerm_managed_application.sdfw-su2-azdev-connectivity-tst-weu-01 \
+          /subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Solutions/applications/sdfw-su2-azdev-connectivity-tst-weu-01
 
       - name: Terraform Format
         run: terraform fmt -check

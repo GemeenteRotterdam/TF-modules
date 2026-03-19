@@ -87,13 +87,13 @@ jobs:
             -backend-config="key=${{ inputs.AZURE_BACKEND_STATE_FILE }}" \
             -backend-config="use_azuread_auth=true"
 
-      - name: Terraform Import Virtual WAN
-        run: |          
-          terraform import azurerm_virtual_hub_route_table.defaultRouteTable \
-          /subscriptions/868496f0-273d-4bba-aef9-fc61a2f2a196/resourceGroups/rg-azdev-vwan-sbx-001-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-sbx-weu-01/hubRouteTables/defaultRouteTable
+      # - name: Terraform Import Virtual WAN
+      #   run: |          
+      #     terraform import azurerm_virtual_hub_route_table.defaultRouteTable \
+      #     /subscriptions/868496f0-273d-4bba-aef9-fc61a2f2a196/resourceGroups/rg-azdev-vwan-sbx-001-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-sbx-weu-01/hubRouteTables/defaultRouteTable
 
-          terraform import azurerm_virtual_hub_route_table.noneRouteTable \
-          /subscriptions/868496f0-273d-4bba-aef9-fc61a2f2a196/resourceGroups/rg-azdev-vwan-sbx-001-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-sbx-weu-01/hubRouteTables/noneRouteTable
+      #     terraform import azurerm_virtual_hub_route_table.noneRouteTable \
+      #     /subscriptions/868496f0-273d-4bba-aef9-fc61a2f2a196/resourceGroups/rg-azdev-vwan-sbx-001-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-sbx-weu-01/hubRouteTables/noneRouteTable
           
           
       - name: Terraform Format

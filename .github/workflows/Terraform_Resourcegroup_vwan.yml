@@ -87,9 +87,6 @@ jobs:
             -backend-config="key=${{ inputs.AZURE_BACKEND_STATE_FILE }}" \
             -backend-config="use_azuread_auth=true"
 
-      - name: Terraform Destroy Fortinet agreement
-        run: terraform destroy -target=azurerm_marketplace_agreement.fortinet-agreement -auto-approve
-
       # - name: Terraform Import Virtual WAN
       #   run: |          
       #     terraform import azurerm_virtual_hub_route_table.defaultRouteTable \

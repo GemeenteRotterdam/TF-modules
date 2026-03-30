@@ -89,13 +89,13 @@ jobs:
 
       - name: Terraform Import Virtual WAN
         run: |          
-          terraform import module.rg["rg-rdam-connectivity-prd-weu-01-hub"] \
+          terraform import module.rg["rg-rdam-connectivity-prd-weu-01-hub"].azurerm_resource_group.rg \
           /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub
 
-          terraform import module.rg["rg-rdam-connectivity-prd-weu-01-wan"] \
+          terraform import module.rg["rg-rdam-connectivity-prd-weu-01-wan"]azurerm_resource_group.rg \
           /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-wan
 
-          terraform import module.rg["rg-rdam-connectivity-prd-weu-01-identity"] \
+          terraform import module.rg["rg-rdam-connectivity-prd-weu-01-identity"]azurerm_resource_group.rg \
           /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-identity
           
       - name: Terraform Format

@@ -87,14 +87,16 @@ jobs:
             -backend-config="key=${{ inputs.AZURE_BACKEND_STATE_FILE }}" \
             -backend-config="use_azuread_auth=true"
 
-      # - name: Terraform Import Virtual WAN
-      #   run: |          
-      #     terraform import azurerm_virtual_hub_route_table.defaultRouteTable \
-      #     /subscriptions/868496f0-273d-4bba-aef9-fc61a2f2a196/resourceGroups/rg-azdev-vwan-sbx-001-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-sbx-weu-01/hubRouteTables/defaultRouteTable
+      - name: Terraform Import Virtual WAN
+        run: |          
+          terraform import module.rg["rg-rdam-connectivity-prd-weu-01-hub"] \
+          /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub
 
-      #     terraform import azurerm_virtual_hub_route_table.noneRouteTable \
-      #     /subscriptions/868496f0-273d-4bba-aef9-fc61a2f2a196/resourceGroups/rg-azdev-vwan-sbx-001-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-sbx-weu-01/hubRouteTables/noneRouteTable
-          
+          terraform import module.rg["rg-rdam-connectivity-prd-weu-01-wan"] \
+          /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-wan
+
+          terraform import module.rg["rg-rdam-connectivity-prd-weu-01-identity"] \
+          /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-identity
           
       - name: Terraform Format
         run: terraform fmt -check

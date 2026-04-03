@@ -92,11 +92,11 @@ jobs:
           # terraform import azurerm_user_assigned_identity.id-rdam-connectivity-prd-weu-01 \
           # /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-identity/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id-rdam-connectivity-prd-weu-01
 
-          terraform import azurerm_marketplace_agreement.fortinet-agreement \
-          /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/providers/Microsoft.MarketplaceOrdering/agreements/fortinet/offers/fortigate_vwan_nva/plans/fortigate-managedvwan
+          # terraform import azurerm_marketplace_agreement.fortinet-agreement \
+          # /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/providers/Microsoft.MarketplaceOrdering/agreements/fortinet/offers/fortigate_vwan_nva/plans/fortigate-managedvwan
 
           terraform import azapi_resource.sdfw-su20-rdam-connectivity-prd-weu-01 \
-          /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Solutions/applications/sdfw-su20-rdam-connectivity-prd-weu-01
+          /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Solutions/applications/sdfw-su20-rdam-connectivity-prd-weu-01?api-version=2021-07-01
           
           
       - name: Terraform Format

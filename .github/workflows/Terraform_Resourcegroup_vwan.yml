@@ -87,13 +87,11 @@ jobs:
             -backend-config="key=${{ inputs.AZURE_BACKEND_STATE_FILE }}" \
             -backend-config="use_azuread_auth=true"
 
-      - name: Remove resource from state
-        run: terraform state rm azapi_resource.sdfw-su20-rdam-connectivity-prd-weu-01
 
       - name: Terraform Import Virtual WAN
         run: |
-          terraform import azurerm_managed_application.sdfw-su20-rdam-connectivity-prd-weu-01 \
-          /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Solutions/applications/sdfw-su20-rdam-connectivity-prd-weu-01
+          # terraform import azurerm_managed_application.sdfw-su20-rdam-connectivity-prd-weu-01 \
+          # /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Solutions/applications/sdfw-su20-rdam-connectivity-prd-weu-01
           
       - name: Terraform Format
         run: terraform fmt -check

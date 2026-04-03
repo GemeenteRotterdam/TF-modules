@@ -88,7 +88,7 @@ jobs:
             -backend-config="use_azuread_auth=true"
 
       - name: Remove resource from state
-        run: terraform state rm azapi_resource.sdfw-su20-rdam-connectivity-prd-weu-01
+        run: terraform state rm azapi_resource.sdfw-su20-rdam-connectivity-prd-weu-01?api-version=2021-07-01
 
       - name: Terraform Import Virtual WAN
         run: |

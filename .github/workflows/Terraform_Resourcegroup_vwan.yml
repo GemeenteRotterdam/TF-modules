@@ -88,10 +88,19 @@ jobs:
             -backend-config="use_azuread_auth=true"
 
 
-      - name: Terraform Import Virtual WAN
-        run: |
-          # terraform import azurerm_managed_application.sdfw-su20-rdam-connectivity-prd-weu-01 \
-          # /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Solutions/applications/sdfw-su20-rdam-connectivity-prd-weu-01
+      # - name: Terraform Import Virtual WAN
+      #   run: |
+      #     terraform import azurerm_express_route_gateway.ergw-rdam-connectivity-prd-weu-01 \
+      #     /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/expressRouteGateways/ergw-rdam-connectivity-prd-weu-01
+
+      #     terraform import azurerm_express_route_circuit.erc-rdam-connectivity-prd-weu-01 \
+      #     /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/expressRouteCircuits/erc-rdam-connectivity-prd-weu-01
+
+      #     terraform import azurerm_express_route_circuit_authorization.auth-01 \
+      #     /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/expressRouteCircuits/erc-rdam-connectivity-prd-weu-01/authorizations/auth-01
+
+      #     terraform import azurerm_express_route_circuit_peering.erc-rdam-connectivity-prd-weu-01-peering \
+      #     /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/expressRouteCircuits/erc-rdam-connectivity-prd-weu-01/peerings/AzurePrivatePeering
           
       - name: Terraform Format
         run: terraform fmt -check

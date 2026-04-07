@@ -88,10 +88,55 @@ jobs:
             -backend-config="use_azuread_auth=true"
 
 
-      # - name: Terraform Import Virtual WAN
-      #   run: |
-      #     terraform import azurerm_virtual_hub_connection.vnet_connections["vnet-rdam-patrick-test-02-link"] \
-      #     /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-rdam-connectivity-prd-weu-01/hubVirtualNetworkConnections/vnet-rdam-patrick-test-02-link
+      - name: Terraform Import Virtual WAN Connections (set 3)
+        run: |
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-rdam-migratetasz-prod-link"]' \
+          '/subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-rdam-connectivity-prd-weu-01/hubVirtualNetworkConnections/vnet-rdam-migratetasz-prod-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-rdam-hip-apim-tst-001-link"]' \
+          '/subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-rdam-connectivity-prd-weu-01/hubVirtualNetworkConnections/vnet-rdam-hip-apim-tst-001-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-rdam-hip-apim-ont-001-link"]' \
+          '/subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-rdam-connectivity-prd-weu-01/hubVirtualNetworkConnections/vnet-rdam-hip-apim-ont-001-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-rdam-aro-hip-prd-001-link"]' \
+          '/subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-rdam-connectivity-prd-weu-01/hubVirtualNetworkConnections/vnet-rdam-aro-hip-prd-001-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-rdam-hip-apim-acc-001-link"]' \
+          '/subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-rdam-connectivity-prd-weu-01/hubVirtualNetworkConnections/vnet-rdam-hip-apim-acc-001-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-rdam-hip-apim-prd-001-link"]' \
+          '/subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-rdam-connectivity-prd-weu-01/hubVirtualNetworkConnections/vnet-rdam-hip-apim-prd-001-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-rdam-backup-prd-002-link"]' \
+          '/subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-rdam-connectivity-prd-weu-01/hubVirtualNetworkConnections/vnet-rdam-backup-prd-002-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-rdam-aro-diva-np-001-link"]' \
+          '/subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-rdam-connectivity-prd-weu-01/hubVirtualNetworkConnections/vnet-rdam-aro-diva-np-001-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-rdam-finops-prd-001-link"]' \
+          '/subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-rdam-connectivity-prd-weu-01/hubVirtualNetworkConnections/vnet-rdam-finops-prd-001-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["VNET-Rdam-hip-prd-001-link"]' \
+          '/subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-rdam-connectivity-prd-weu-01/hubVirtualNetworkConnections/VNET-Rdam-hip-prd-001-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["rdameuwdtapvnetoxgn01-link"]' \
+          '/subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-rdam-connectivity-prd-weu-01/hubVirtualNetworkConnections/rdameuwdtapvnetoxgn01-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["rdameuwdtapsb1vnetoxgn01-link"]' \
+          '/subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-rdam-connectivity-prd-weu-01/hubVirtualNetworkConnections/rdameuwdtapsb1vnetoxgn01-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["VNET_Rdam_LZ_DAPR_Sandbox_POCs-link"]' \
+          '/subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-rdam-connectivity-prd-weu-01/hubVirtualNetworkConnections/VNET_Rdam_LZ_DAPR_Sandbox_POCs-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["VNET_Rdam_PF_Connectivity_Hub-link"]' \
+          '/subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-rdam-connectivity-prd-weu-01/hubVirtualNetworkConnections/VNET_Rdam_PF_Connectivity_Hub-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-rdam-aro-rap-np-001-link"]' \
+          '/subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-rdam-connectivity-prd-weu-01/hubVirtualNetworkConnections/vnet-rdam-aro-rap-np-001-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-rdam-aro-np-001-link"]' \
+          '/subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-rdam-connectivity-prd-weu-01/hubVirtualNetworkConnections/vnet-rdam-aro-np-001-link'
 
       - name: Terraform Format
         run: terraform fmt -check

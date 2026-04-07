@@ -88,16 +88,16 @@ jobs:
             -backend-config="use_azuread_auth=true"
 
 
-      # - name: Terraform Import Virtual WAN
-      #   run: |
-      #     terraform import azurerm_express_route_connection.conn-erc-rdam-connectivity-prd-weu-01 \
-      #      /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/expressRouteGateways/ergw-rdam-connectivity-prd-weu-01/expressRouteConnections/conn-erc-rdam-connectivity-prd-weu-01
+      - name: Terraform Import Virtual WAN
+        run: |
+          terraform import azurerm_virtual_hub_connection.vnet-rdam-patrick-test-01-link \
+           /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-rdam-connectivity-prd-weu-01/hubVirtualNetworkConnections/vnet-rdam-patrick-test-01-link
 
-      #     terraform import azurerm_express_route_connection.conn-erc-rdam-connectivity-prd-weu-02 \
-      #      /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/expressRouteGateways/ergw-rdam-connectivity-prd-weu-01/expressRouteConnections/conn-erc-rdam-connectivity-prd-weu-02
+          # terraform import azurerm_express_route_connection.conn-erc-rdam-connectivity-prd-weu-02 \
+          #  /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/expressRouteGateways/ergw-rdam-connectivity-prd-weu-01/expressRouteConnections/conn-erc-rdam-connectivity-prd-weu-02
 
-      #     terraform import azurerm_express_route_connection.conn-erc-rdam-connectivity-prd-weu-03 \
-      #      /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/expressRouteGateways/ergw-rdam-connectivity-prd-weu-01/expressRouteConnections/conn-erc-rdam-connectivity-prd-weu-03
+          # terraform import azurerm_express_route_connection.conn-erc-rdam-connectivity-prd-weu-03 \
+          #  /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/expressRouteGateways/ergw-rdam-connectivity-prd-weu-01/expressRouteConnections/conn-erc-rdam-connectivity-prd-weu-03
           
       - name: Terraform Format
         run: terraform fmt -check

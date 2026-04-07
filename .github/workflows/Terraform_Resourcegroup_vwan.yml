@@ -87,6 +87,11 @@ jobs:
             -backend-config="key=${{ inputs.AZURE_BACKEND_STATE_FILE }}" \
             -backend-config="use_azuread_auth=true"
 
+      - name: Terraform Import Virtual WAN
+        run: |
+          terraform import azurerm_virtual_hub_routing_intent.vhub-rdam-connectivity-prd-weu-01_RoutingIntent \
+          /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-rdam-connectivity-prd-weu-01/routingIntent/vhub-rdam-connectivity-prd-weu-01_RoutingIntent
+
       - name: Terraform Format
         run: terraform fmt -check
 

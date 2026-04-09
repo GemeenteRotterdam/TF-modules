@@ -87,10 +87,10 @@ jobs:
             -backend-config="key=${{ inputs.AZURE_BACKEND_STATE_FILE }}" \
             -backend-config="use_azuread_auth=true"
 
-      # - name: Terraform Import Virtual WAN
-      #   run: |
-      #     terraform import azurerm_role_assignment.Managed_application_operator_role \
-      #     /subscriptions/3d8dac72-0f68-451f-9748-3cd509dced16/resourceGroups/rg-rdam-connectivity-prd-weu-01-hub/providers/Microsoft.Solutions/applications/sdfw-su20-rdam-connectivity-prd-weu-01/providers/Microsoft.Authorization/roleAssignments/2a59ccd5-bf03-4e00-b36e-44f706e684c2
+      - name: Terraform Import Virtual WAN
+        run: |
+          terraform import azurerm_marketplace_agreement.fortinet-agreement \
+          /subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/providers/Microsoft.MarketplaceOrdering/agreements/fortinet/offers/fortigate_vwan_nva/plans/fortigate-managedvwan
       
       - name: Terraform Format
         run: terraform fmt -check

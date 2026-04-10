@@ -87,10 +87,10 @@ jobs:
             -backend-config="key=${{ inputs.AZURE_BACKEND_STATE_FILE }}" \
             -backend-config="use_azuread_auth=true"
 
-      # - name: Terraform Import Virtual WAN
-      #   run: |
-      #     terraform import azurerm_marketplace_agreement.fortinet-agreement \
-      #     /subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/providers/Microsoft.MarketplaceOrdering/agreements/fortinet/offers/fortigate_vwan_nva/plans/fortigate-managedvwan
+      - name: Terraform Import Virtual WAN
+        run: |
+          terraform import module.windows_vm["VCRAWWEB271"].azurerm_virtual_machine_extension.disk_setup \
+          /subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/rg-rdam-eso-maatwerk-acc-001/providers/Microsoft.Compute/virtualMachines/VCRAWWEB271/extensions/assign-drive-letter
       
       - name: Terraform Format
         run: terraform fmt -check

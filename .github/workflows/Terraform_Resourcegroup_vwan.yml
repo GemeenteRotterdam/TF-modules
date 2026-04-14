@@ -88,13 +88,13 @@ jobs:
             -backend-config="use_azuread_auth=true"
           
 
-      - name: Terraform Import Virtual WAN
-        run: |
-          terraform import 'module.kv["kv-azdev-connect-tst-002"].azurerm_key_vault.example' \
-          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-alg-tst-002/providers/Microsoft.KeyVault/vaults/kv-azdev-connect-tst-002'
+      # - name: Terraform Import Virtual WAN
+      #   run: |
+      #     terraform import 'module.kv["kv-azdev-connect-tst-002"].azurerm_key_vault.example' \
+      #     '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-alg-tst-002/providers/Microsoft.KeyVault/vaults/kv-azdev-connect-tst-002'
           
-          terraform import 'module.kv["kv-azdev-connect-tst-002"].azurerm_private_endpoint.example' \
-          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-alg-tst-002/providers/Microsoft.Network/privateEndpoints/pep-azdev-connect-tst-002'
+      #     terraform import 'module.kv["kv-azdev-connect-tst-002"].azurerm_private_endpoint.example' \
+      #     '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-alg-tst-002/providers/Microsoft.Network/privateEndpoints/pep-azdev-connect-tst-002'
       
       - name: Terraform Format
         run: terraform fmt -check

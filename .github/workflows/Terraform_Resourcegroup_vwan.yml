@@ -87,6 +87,15 @@ jobs:
             -backend-config="key=${{ inputs.AZURE_BACKEND_STATE_FILE }}" \
             -backend-config="use_azuread_auth=true"
 
+      - name: Remove resource from state
+        run:  |
+          terraform state rm azurerm_express_route_connection.conn-erc-azdev-connectivity-tst-weu-01
+          terraform state rm azurerm_express_route_connection.conn-erc-azdev-connectivity-tst-weu-02
+          terraform state rm azurerm_express_route_connection.conn-erc-azdev-connectivity-tst-weu-03
+          terraform state rm azurerm_virtual_hub_route_table.noneRouteTable
+          terraform state rm azurerm_virtual_hub_route_table.defaultRouteTable
+          
+
       # - name: Terraform Import Virtual WAN
       #   run: |
       #     terraform import 'module.windows_vm["VCRAWWEB271"].azurerm_virtual_machine_extension.disk_setup' \

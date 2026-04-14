@@ -72,7 +72,7 @@ variable "public_network_access_enabled_kv" {
   default     = false
 }
 
-variable "rbac_authorization_enabled" {
+variable "enable_rbac_authorization" {
   description = "Specify whether Azure Key Vault uses Role Based Access Control (RBAC) for authorization of data actions."
   type        = bool
   default     = true

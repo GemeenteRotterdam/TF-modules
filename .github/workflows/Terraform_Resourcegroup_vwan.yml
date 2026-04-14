@@ -89,7 +89,6 @@ jobs:
 
       - name: Remove resource from state
         run:  |
-          terraform state rm azurerm_virtual_hub_connection.vnet-azdev-netwerkbeheer-tst-001-link
           terraform state rm azurerm_virtual_hub_connection.vnet-azdev-netwerkbeheer-tst-002-link
           terraform state rm azurerm_virtual_hub_connection.vnet-azdev-patrick-tst02-link
           terraform state rm azurerm_virtual_hub_connection.azdev01-vnet-link

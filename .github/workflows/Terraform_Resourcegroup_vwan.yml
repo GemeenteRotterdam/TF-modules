@@ -86,20 +86,27 @@ jobs:
             -backend-config="container_name=${{ inputs.AZURE_BACKEND_CONTAINER_NAME }}" \
             -backend-config="key=${{ inputs.AZURE_BACKEND_STATE_FILE }}" \
             -backend-config="use_azuread_auth=true"
-
-      - name: Remove resource from state
-        run:  |
-          terraform state rm azurerm_express_route_connection.conn-erc-azdev-connectivity-tst-weu-01
-          terraform state rm azurerm_express_route_connection.conn-erc-azdev-connectivity-tst-weu-02
-          terraform state rm azurerm_express_route_connection.conn-erc-azdev-connectivity-tst-weu-03
-          terraform state rm azurerm_virtual_hub_route_table.noneRouteTable
-          terraform state rm azurerm_virtual_hub_route_table.defaultRouteTable
           
 
-      # - name: Terraform Import Virtual WAN
-      #   run: |
-      #     terraform import 'module.windows_vm["VCRAWWEB271"].azurerm_virtual_machine_extension.disk_setup' \
-      #     '/subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/rg-rdam-eso-maatwerk-acc-001/providers/Microsoft.Compute/virtualMachines/VCRAWWEB271/extensions/assign-drive-letter'
+      - name: Terraform Import Virtual WAN
+        run: |
+          terraform import 'module.rg["rg-azdev-connectivity-tst-weu-01-hub"].azurerm_resource_group.rg' \
+          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub'
+
+          terraform import 'module.rg["rg-azdev-connectivity-tst-weu-01-wan"].azurerm_resource_group.rg' \
+          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-wan'
+
+          terraform import 'module.rg["rg-azdev-connectivity-tst-weu-01-identity"].azurerm_resource_group.rg' \
+          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-identity'
+
+          terraform import azurerm_express_route_connection.conn-erc-azdev-connectivity-tst-weu-01' \
+          ' /subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/expressRouteGateways/ergw-azdev-connectivity-tst-weu-01/expressRouteConnections/conn-erc-azdev-connectivity-tst-weu-01'
+
+          terraform import 'azurerm_express_route_connection.conn-erc-azdev-connectivity-tst-weu-02' \
+          ' /subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/expressRouteGateways/ergw-azdev-connectivity-tst-weu-01/expressRouteConnections/conn-erc-azdev-connectivity-tst-weu-02'
+
+          terraform import 'azurerm_express_route_connection.conn-erc-azdev-connectivity-tst-weu-03' \
+          ' /subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/expressRouteGateways/ergw-azdev-connectivity-tst-weu-01/expressRouteConnections/conn-erc-azdev-connectivity-tst-weu-03'
       
       - name: Terraform Format
         run: terraform fmt -check

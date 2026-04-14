@@ -87,18 +87,55 @@ jobs:
             -backend-config="key=${{ inputs.AZURE_BACKEND_STATE_FILE }}" \
             -backend-config="use_azuread_auth=true"
 
-      - name: Remove resource from state
-        run:  |
-          terraform state rm azurerm_virtual_hub_connection.VNET_Rdam_PF_Connectivity_Hub-link
-          
+      - name: Terraform Import Virtual Hub Connections
+        run: |
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["VNET_AZDEV_LZ_Management-link"]' \
+          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/VNET_AZDEV_LZ_Management-link'
 
-      # - name: Terraform Import Virtual WAN
-      #   run: |
-      #     terraform import 'module.kv["kv-azdev-connect-tst-002"].azurerm_key_vault.example' \
-      #     '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-alg-tst-002/providers/Microsoft.KeyVault/vaults/kv-azdev-connect-tst-002'
-          
-      #     terraform import 'module.kv["kv-azdev-connect-tst-002"].azurerm_private_endpoint.example' \
-      #     '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-alg-tst-002/providers/Microsoft.Network/privateEndpoints/pep-azdev-connect-tst-002'
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["azdev01-vnet-link"]' \
+          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/azdev01-vnet-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["VNCWVBS001-vnet-link"]' \
+          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/VNCWVBS001-vnet-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-azdev-sql-beheer-link"]' \
+          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/vnet-azdev-sql-beheer-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-rdam-tbms-tst-link"]' \
+          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/vnet-rdam-tbms-tst-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-azdev-identity-tst-link"]' \
+          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/vnet-azdev-identity-tst-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-azdev-linux-ont-link"]' \
+          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/vnet-azdev-linux-ont-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-azdev-terraform-alg-sbx-001-link"]' \
+          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/vnet-azdev-terraform-alg-sbx-001-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-azdev-hip-apim-poc-link"]' \
+          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/vnet-azdev-hip-apim-poc-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-azdev-netwerkbeheer-tst-002-link"]' \
+          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/vnet-azdev-netwerkbeheer-tst-002-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-azdev-patrick-tst02-link"]' \
+          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/vnet-azdev-patrick-tst02-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-azdev-connectivity-terraformtest-001-link"]' \
+          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/vnet-azdev-connectivity-terraformtest-001-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["VNET_Rdam_PF_Connectivity_Hub-link"]' \
+          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/VNET_Rdam_PF_Connectivity_Hub-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["vnet-azdev-netwerkbeheer-tst-001-link"]' \
+          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/vnet-azdev-netwerkbeheer-tst-001-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["VNET_AZDEV_Shared_Resources-link"]' \
+          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/VNET_AZDEV_Shared_Resources-link'
+
+          terraform import 'azurerm_virtual_hub_connection.vnet_connections["VNET_New_Resources-link"]' \
+          '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/virtualHubs/vhub-azdev-connectivity-tst-weu-01/hubVirtualNetworkConnections/VNET_New_Resources-link'
       
       - name: Terraform Format
         run: terraform fmt -check

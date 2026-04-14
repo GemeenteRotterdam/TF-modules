@@ -89,7 +89,6 @@ jobs:
 
       - name: Remove resource from state
         run:  |
-          terraform state rm azurerm_virtual_hub_connection.VNET_New_Resources-link
           terraform state rm azurerm_virtual_hub_connection.VNET_Rdam_PF_Connectivity_Hub-link
           
 

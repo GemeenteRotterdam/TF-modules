@@ -89,17 +89,6 @@ jobs:
 
       - name: Remove resource from state
         run:  |
-          terraform state rm azurerm_virtual_hub_connection.vnet-azdev-netwerkbeheer-tst-002-link
-          terraform state rm azurerm_virtual_hub_connection.vnet-azdev-patrick-tst02-link
-          terraform state rm azurerm_virtual_hub_connection.azdev01-vnet-link
-          terraform state rm azurerm_virtual_hub_connection.VNCWVBS001-vnet-link
-          terraform state rm azurerm_virtual_hub_connection.vnet-azdev-hip-apim-poc-link
-          terraform state rm azurerm_virtual_hub_connection.vnet-azdev-identity-tst-link
-          terraform state rm azurerm_virtual_hub_connection.vnet-azdev-linux-ont-link
-          terraform state rm azurerm_virtual_hub_connection.vnet-azdev-sql-beheer-link
-          terraform state rm azurerm_virtual_hub_connection.vnet-azdev-terraform-alg-sbx-001-link
-          terraform state rm azurerm_virtual_hub_connection.vnet-rdam-tbms-tst-link
-          terraform state rm azurerm_virtual_hub_connection.VNET_AZDEV_LZ_Management-link
           terraform state rm azurerm_virtual_hub_connection.VNET_AZDEV_Shared_Resources-link
           terraform state rm azurerm_virtual_hub_connection.VNET_New_Resources-link
           terraform state rm azurerm_virtual_hub_connection.VNET_Rdam_PF_Connectivity_Hub-link

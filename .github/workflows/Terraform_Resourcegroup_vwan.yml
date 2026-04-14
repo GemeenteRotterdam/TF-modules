@@ -99,7 +99,7 @@ jobs:
           terraform import 'module.rg["rg-azdev-connectivity-tst-weu-01-identity"].azurerm_resource_group.rg' \
           '/subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-identity'
 
-          terraform import azurerm_express_route_connection.conn-erc-azdev-connectivity-tst-weu-01' \
+          terraform import 'azurerm_express_route_connection.conn-erc-azdev-connectivity-tst-weu-01' \
           ' /subscriptions/69e07918-e789-4249-ba3d-957a716c36d2/resourceGroups/rg-azdev-connectivity-tst-weu-01-hub/providers/Microsoft.Network/expressRouteGateways/ergw-azdev-connectivity-tst-weu-01/expressRouteConnections/conn-erc-azdev-connectivity-tst-weu-01'
 
           terraform import 'azurerm_express_route_connection.conn-erc-azdev-connectivity-tst-weu-02' \

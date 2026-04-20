@@ -35,6 +35,11 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Terraform Import
+        run: |
+          terraform import 'module.KeyVaultenStorageAccount.azurerm_role_assignment.key_vault_role' \
+          '/subscriptions/f3e2048f-ac79-4c42-a8b0-1dea8e449284/resourceGroups/rg-rdam-gaia-app-acc-001/providers/Microsoft.KeyVault/vaults/kv-rdam-gaia-app-acc-001/providers/Microsoft.Authorization/roleAssignments/61f36a05-a995-452e-917a-ea5b018e39e7'
+
       - name: Terraform Format
         run: terraform fmt -check
 

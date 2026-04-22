@@ -79,7 +79,7 @@ resource "azurerm_key_vault_key" "example" {
   key_opts     = var.key_opts
   depends_on   = [azurerm_role_assignment.example]
 
-  tags = merge(data.azurerm_resource_group.resource_group.tags, var.extra_tags, { source = "Terraform" })
+  tags = { source = "Terraform" }
 
   rotation_policy {
     automatic {

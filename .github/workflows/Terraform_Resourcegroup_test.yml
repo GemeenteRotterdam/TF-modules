@@ -87,26 +87,8 @@ jobs:
             -backend-config="key=${{ inputs.AZURE_BACKEND_STATE_FILE }}" \
             -backend-config="use_azuread_auth=true"
 
-      - name: Terraform Import
-        run: |
-          terraform import 'module.VCRPWAPP510.azurerm_virtual_machine_data_disk_attachment.example' \
-          '/subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/RG-RDAM-WIBON-APP-PRD-001/providers/Microsoft.Compute/virtualMachines/VCRPWAPP510/dataDisks/VCRPWAPP510_DataDisk_1'
-
-          terraform import 'module.VCRPWAPP510.azurerm_virtual_machine_extension.disk_setup' \
-          '/subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/RG-RDAM-WIBON-APP-PRD-001/providers/Microsoft.Compute/virtualMachines/VCRPWAPP510/extensions/assign-drive-letter'
-
-          terraform import 'module.VCRPWAPP510.azurerm_virtual_machine_extension.azure_policy_windows' \
-          '/subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/RG-RDAM-WIBON-APP-PRD-001/providers/Microsoft.Compute/virtualMachines/VCRPWAPP510/extensions/AzurePolicyforWindows'
-
-          terraform import 'module.VCRPWAPP510.azurerm_virtual_machine_extension.monitoring_dependency_agent' \
-          '/subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/RG-RDAM-WIBON-APP-PRD-001/providers/Microsoft.Compute/virtualMachines/VCRPWAPP510/extensions/Microsoft.Azure.Monitoring.DependencyAgent'
-
-          terraform import 'module.VCRPWAPP510.azurerm_virtual_machine_extension.azure_monitor_windows_agent' \
-          '/subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/RG-RDAM-WIBON-APP-PRD-001/providers/Microsoft.Compute/virtualMachines/VCRPWAPP510/extensions/AzureMonitorWindowsAgent'
-
-          terraform import 'module.VCRPWAPP510.azurerm_virtual_machine_extension.azure_monitor_windows_agent' \
-          '/subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/RG-RDAM-WIBON-APP-PRD-001/providers/Microsoft.Compute/virtualMachines/VCRPWAPP510/extensions/AzureMonitorWindowsAgent'
-
+      # - name: Terraform Import
+      #   run: |
 
       - name: Terraform Format
         run: terraform fmt -check

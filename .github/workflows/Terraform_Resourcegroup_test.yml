@@ -90,7 +90,7 @@ jobs:
       - name: Terraform Import
         run: |
           terraform import 'module.VCRPWAPP510.azurerm_virtual_machine_data_disk_attachment.example' \
-          '/subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/RG-RDAM-WIBON-APP-PRD-001/providers/Microsoft.Compute/disks/disk01/dataDiskAttachments/VCRPWAPP510'
+          '/subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/RG-RDAM-WIBON-APP-PRD-001/providers/Microsoft.Compute/virtualMachines/VCRPWAPP510/dataDisks/VCRPWAPP510_DataDisk_1'
 
           terraform import 'module.VCRPWAPP510.azurerm_virtual_machine_extension.disk_setup' \
           '/subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/RG-RDAM-WIBON-APP-PRD-001/providers/Microsoft.Compute/virtualMachines/VCRPWAPP510/extensions/assign-drive-letter'

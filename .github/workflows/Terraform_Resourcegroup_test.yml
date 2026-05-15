@@ -89,9 +89,6 @@ jobs:
 
       - name: Terraform Import
         run: |
-          terraform import 'module.VCRPWAPP510.azurerm_network_interface.main' \
-          '/subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/rg-rdam-wibon-app-prd-001/providers/Microsoft.Network/networkInterfaces/VCRPWAPP510-nic'
-
           terraform import 'module.VCRPWAPP510.azurerm_windows_virtual_machine.main' \
           '/subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/RG-RDAM-WIBON-APP-PRD-001/providers/Microsoft.Compute/virtualMachines/VCRPWAPP510'
 

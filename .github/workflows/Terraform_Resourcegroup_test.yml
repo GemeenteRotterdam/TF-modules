@@ -87,6 +87,11 @@ jobs:
             -backend-config="key=${{ inputs.AZURE_BACKEND_STATE_FILE }}" \
             -backend-config="use_azuread_auth=true"
 
+      - name: Terraform Import Resource Group
+        run: |
+          terraform import 'module.rg["rg-rdam-wibon-app-prd-001"].azurerm_resource_group.this' \
+          '/subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/RG-RDAM-WIBON-APP-PRD-001'
+
       - name: Terraform Format
         run: terraform fmt -check
 

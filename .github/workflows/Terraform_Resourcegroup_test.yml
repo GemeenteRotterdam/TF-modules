@@ -90,8 +90,18 @@ jobs:
       # - name: Terraform Import
       #   run: |
 
-      - name: Terraform State List
-        run: terraform state list
+      # - name: Terraform State List
+      #   run: terraform state list
+
+      - name: Remove resources from Terraform state
+        run: |
+          terraform state rm module.VCRPWAPP510.azurerm_managed_disk.example
+          terraform state rm module.VCRPWAPP510.azurerm_network_interface.main
+          terraform state rm module.VCRPWAPP510.azurerm_virtual_machine_extension.azure_monitor_windows_agent
+          terraform state rm module.VCRPWAPP510.azurerm_virtual_machine_extension.azure_policy_windows
+          terraform state rm module.VCRPWAPP510.azurerm_virtual_machine_extension.disk_setup
+          terraform state rm module.VCRPWAPP510.azurerm_virtual_machine_extension.monitoring_dependency_agent
+          terraform state rm module.VCRPWAPP510.azurerm_windows_virtual_machine.main
         
       - name: Terraform Format
         run: terraform fmt -check

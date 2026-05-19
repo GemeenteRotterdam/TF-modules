@@ -89,6 +89,9 @@ jobs:
 
       # - name: Terraform Import
       #   run: |
+
+      - name: Terraform State List
+        run: terraform state list
         
       - name: Terraform Format
         run: terraform fmt -check

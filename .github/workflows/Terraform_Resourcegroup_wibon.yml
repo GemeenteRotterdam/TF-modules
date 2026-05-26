@@ -89,7 +89,7 @@ jobs:
 
       - name: Terraform Import
         run: |
-          terraform import 'module.rg["rg-rdam-wibon-app-prd-001"].azurerm_resource_group.rg'
+          terraform import 'module.rg["rg-rdam-wibon-app-prd-001"].azurerm_resource_group.rg' \
           '/subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/rg-rdam-wibon-app-prd-001'
 
       # - name: Terraform State List

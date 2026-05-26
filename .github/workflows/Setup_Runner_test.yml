@@ -21,6 +21,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Debug sudo
+        run: |
+          whoami
+          sudo -n true
+          sudo -n apt-get update
+
       - name: Set up Git for authentication
         run: |
           git config --global url."https://${{ secrets.GH_TOKEN }}@github.com/".insteadOf "https://github.com/"

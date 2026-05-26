@@ -92,6 +92,10 @@ jobs:
 
       # - name: Terraform State List
       #   run: terraform state list
+
+      - name: Remove resource from Terraform state
+        run: |
+          terraform state rm 'module.rg["rg-rdam-wibon-app-prd-001"]'
         
       - name: Terraform Format
         run: terraform fmt -check

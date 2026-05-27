@@ -89,8 +89,8 @@ jobs:
 
       - name: Terraform Import
         run: |
-          terraform import 'module.windows_vm["VCRPWAPP510"].azurerm_managed_disk.example' \
-          '/subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/rg-rdam-wibon-app-prd-001/providers/Microsoft.Compute/disks/VCRPWAPP510_DataDisk_1'
+          terraform import 'module.windows_vm["VCRPWAPP510"].azurerm_virtual_machine_data_disk_attachment.example' \
+          '/subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/rg-rdam-wibon-app-prd-001/providers/Microsoft.Compute/virtualMachines/VCRPWAPP510/dataDisks/VCRPWAPP510_DataDisk_1'
 
       # - name: Terraform State List
       #   run: terraform state list

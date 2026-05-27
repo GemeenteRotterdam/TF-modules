@@ -87,10 +87,10 @@ jobs:
             -backend-config="key=${{ inputs.AZURE_BACKEND_STATE_FILE }}" \
             -backend-config="use_azuread_auth=true"
 
-      - name: Terraform Import
-        run: |
-          terraform import 'module.windows_vm["VCRPWAPP510"].azurerm_virtual_machine_extension.azure_policy_windows' \
-          '/subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/RG-RDAM-WIBON-APP-PRD-001/providers/Microsoft.Compute/virtualMachines/VCRPWAPP510/extensions/AzurePolicyforWindows'
+      # - name: Terraform Import
+      #   run: |
+      #     terraform import 'module.windows_vm["VCRPWAPP510"].azurerm_virtual_machine_extension.azure_policy_windows' \
+      #     '/subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/RG-RDAM-WIBON-APP-PRD-001/providers/Microsoft.Compute/virtualMachines/VCRPWAPP510/extensions/AzurePolicyforWindows'
 
       # - name: Terraform State List
       #   run: terraform state list

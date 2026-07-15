@@ -91,7 +91,7 @@ jobs:
         run: |
           terraform import \
           'module.windows_vm["VCRPWWEB272"].azurerm_virtual_machine_data_disk_attachment.example' \
-          '/subscriptions/***/resourceGroups/rg-rdam-woonverklaring-app-prd-001/providers/Microsoft.Compute/virtualMachines/VCRPWWEB272/dataDisks/VCRPWWEB272_DataDisk_1'
+          '/subscriptions/3c978daf-4ed2-4427-9e31-656744f48380/resourceGroups/rg-rdam-woonverklaring-app-prd-001/providers/Microsoft.Compute/virtualMachines/VCRPWWEB272/dataDisks/VCRPWWEB272_DataDisk_1'
             
       - name: Terraform Format
         run: terraform fmt -check

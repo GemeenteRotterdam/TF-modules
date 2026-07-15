@@ -86,6 +86,12 @@ jobs:
             -backend-config="container_name=${{ inputs.AZURE_BACKEND_CONTAINER_NAME }}" \
             -backend-config="key=${{ inputs.AZURE_BACKEND_STATE_FILE }}" \
             -backend-config="use_azuread_auth=true"
+
+      - name: Terraform State List
+        run: terraform state list
+
+      # - name: Remove resource from state
+      #   run: terraform state rm 'module.resource_group.azurerm_resource_group.resource_group'
       
       - name: Terraform Format
         run: terraform fmt -check

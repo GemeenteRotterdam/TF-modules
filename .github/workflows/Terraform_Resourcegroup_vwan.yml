@@ -90,8 +90,6 @@ jobs:
       - name: Remove VCRPWWEB272 from Terraform state
         run: |
           terraform state rm \
-            'module.windows_vm["VCRPWWEB272"].data.azurerm_resource_group.rg' \
-            'module.windows_vm["VCRPWWEB272"].data.azurerm_subnet.snet' \
             'module.windows_vm["VCRPWWEB272"].azurerm_managed_disk.example' \
             'module.windows_vm["VCRPWWEB272"].azurerm_network_interface.main' \
             'module.windows_vm["VCRPWWEB272"].azurerm_virtual_machine_data_disk_attachment.example' \

@@ -88,7 +88,6 @@ jobs:
             -backend-config="use_azuread_auth=true"
 
       - name: Import VM Run Commands and data disk attachment
-        shell: bash
         run: |
           terraform import \
           'module.windows_vm["VCRPWWEB272"].azurerm_managed_disk.example' \

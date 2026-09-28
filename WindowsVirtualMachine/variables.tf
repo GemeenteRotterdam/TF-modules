@@ -218,6 +218,13 @@ variable "vm_agent_platform_updates_enabled" {
   default = false
 }
 
+variable "bypass_platform_safety_checks_on_user_schedule_enabled" {
+  type    = bool
+  default = false
+}
+
+
+
 
 
 

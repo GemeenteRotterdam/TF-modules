@@ -13,24 +13,25 @@ resource "azurerm_network_interface" "main" {
 }
 
 resource "azurerm_windows_virtual_machine" "main" {
-  name                              = var.vm_name
-  location                          = data.azurerm_resource_group.rg.location
-  resource_group_name               = data.azurerm_resource_group.rg.name
-  size                              = var.vm_size
-  admin_username                    = var.admin_username
-  admin_password                    = var.admin_password
-  network_interface_ids             = [azurerm_network_interface.main.id]
-  license_type                      = var.license_type
-  secure_boot_enabled               = var.secure_boot_enabled
-  vtpm_enabled                      = var.vtpm_enabled
-  enable_automatic_updates          = var.automatic_updates_enabled
-  patch_mode                        = var.patch_mode
-  encryption_at_host_enabled        = var.encryption_at_host_enabled
-  computer_name                     = var.vm_name
-  patch_assessment_mode             = var.patch_assessment_mode
-  source_image_id                   = var.source_image_id
-  availability_set_id               = var.availability_set_id
-  vm_agent_platform_updates_enabled = var.vm_agent_platform_updates_enabled
+  name                                                   = var.vm_name
+  location                                               = data.azurerm_resource_group.rg.location
+  resource_group_name                                    = data.azurerm_resource_group.rg.name
+  size                                                   = var.vm_size
+  admin_username                                         = var.admin_username
+  admin_password                                         = var.admin_password
+  network_interface_ids                                  = [azurerm_network_interface.main.id]
+  license_type                                           = var.license_type
+  secure_boot_enabled                                    = var.secure_boot_enabled
+  vtpm_enabled                                           = var.vtpm_enabled
+  enable_automatic_updates                               = var.automatic_updates_enabled
+  patch_mode                                             = var.patch_mode
+  encryption_at_host_enabled                             = var.encryption_at_host_enabled
+  computer_name                                          = var.vm_name
+  patch_assessment_mode                                  = var.patch_assessment_mode
+  source_image_id                                        = var.source_image_id
+  availability_set_id                                    = var.availability_set_id
+  vm_agent_platform_updates_enabled                      = var.vm_agent_platform_updates_enabled
+  bypass_platform_safety_checks_on_user_schedule_enabled = var.bypass_platform_safety_checks_on_user_schedule_enabled
 
   os_disk {
     caching                = var.caching_os_disk

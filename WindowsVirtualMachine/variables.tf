@@ -213,6 +213,11 @@ variable "tag_update_schedule" {
   }
 }
 
+variable "vm_agent_platform_updates_enabled" {
+  type    = bool
+  default = false
+}
+
 
 
 

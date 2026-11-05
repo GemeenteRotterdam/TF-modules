@@ -120,5 +120,7 @@ variable "disk_encryption_set_id" {
   type        = string
 }
 
-
-
+variable "vm_agent_platform_updates_enabled" {
+  type        = string
+  default     = false
+}

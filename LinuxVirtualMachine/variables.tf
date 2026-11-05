@@ -125,11 +125,6 @@ variable "vm_agent_platform_updates_enabled" {
   default     = false
 }
 
-variable "patch_mode" {
-  type        = string
-  default     = "ImageDefault"
-}
-
 variable "bypass_platform_safety_checks_on_user_schedule_enabled" {
   type        = string
   default     = false

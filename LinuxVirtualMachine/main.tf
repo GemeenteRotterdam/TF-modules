@@ -42,7 +42,6 @@ resource "azurerm_linux_virtual_machine" "example" {
   encryption_at_host_enabled                             = var.encryption_at_host_enabled
   computer_name                                          = var.vm_name
   vm_agent_platform_updates_enabled                      = var.vm_agent_platform_updates_enabled
-  patch_mode                                             = var.patch_mode
   bypass_platform_safety_checks_on_user_schedule_enabled = var.bypass_platform_safety_checks_on_user_schedule_enabled
   //disable_password_authentication = var.disable_password_authentication
 

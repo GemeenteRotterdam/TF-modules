@@ -29,12 +29,7 @@ variable "tags" {
   default = {}
 }
 
-variable "mi_rg_name" {
-  description = "Resource Group name of the managed identity where the federated credential will be set."
-  type        = string
-}
-
-variable "mi_parent_id" {
+variable "user_assigned_identity_id" {
   description = "ID of the managed Identity where the federated credential will be set."
   type        = string
 }

@@ -21,10 +21,9 @@ resource "azurerm_resource_group" "rg" {
 }
 
 resource "azurerm_federated_identity_credential" "rg" {
-  name                = "GitHub-${azurerm_resource_group.rg.name}"
-  resource_group_name = var.mi_rg_name
-  audience            = ["api://AzureADTokenExchange"]
-  issuer              = "https://token.actions.githubusercontent.com"
-  parent_id           = var.mi_parent_id
-  subject             = "repo:GemeenteRotterdam/${azurerm_resource_group.rg.name}:environment:production"
+  name                      = "GitHub-${azurerm_resource_group.rg.name}"
+  audience                  = ["api://AzureADTokenExchange"]
+  issuer                    = "https://token.actions.githubusercontent.com"
+  user_assigned_identity_id = var.user_assigned_identity_id
+  subject                   = "repo:GemeenteRotterdam/${azurerm_resource_group.rg.name}:environment:production"
 }
